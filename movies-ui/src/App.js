@@ -1,8 +1,17 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Navbar from './components/misc/Navbar'
+import Home from './components/home/Home'
+import Admin from './components/admin/Admin'
 
 function App() {
   return (
-    <h1>Hello</h1>
+    <Router>
+      <Navbar />
+      <Route path='/' exact component={Home} />
+      <Route path='/home' exact component={Home} />
+      <Route path='/admin' exact component={Admin} />
+    </Router>
   );
 }
 
