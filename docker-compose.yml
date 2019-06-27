@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+
+  mongodb:
+    image: mongo:4.0.10
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: echo 'db.stats().ok' | mongo localhost:27017/bookreviewdb --quiet
+      start_period: 20s
