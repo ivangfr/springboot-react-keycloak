@@ -10,9 +10,10 @@ import lombok.Data;
 public class Movie {
 
   @Id
-  private String id;
+  private String imdbId;
   private String title;
   private String director;
   private Integer year;
+  private String poster;
 
 }

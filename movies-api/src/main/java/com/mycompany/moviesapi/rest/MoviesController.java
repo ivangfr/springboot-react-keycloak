@@ -3,6 +3,8 @@ package com.mycompany.moviesapi.rest;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import com.mycompany.moviesapi.exception.MovieNotFoundException;
 import com.mycompany.moviesapi.model.Movie;
 import com.mycompany.moviesapi.rest.dto.CreateMovieDto;
@@ -41,32 +43,32 @@ public class MoviesController {
         .collect(Collectors.toList());
   }
 
-  @GetMapping("/{id}")
-  public MovieDto getMovie(@PathVariable String id) throws MovieNotFoundException {
-    Movie movie = movieService.validateAndGetMovie(id);
+  @GetMapping("/{imdbId}")
+  public MovieDto getMovie(@PathVariable String imdbId) throws MovieNotFoundException {
+    Movie movie = movieService.validateAndGetMovie(imdbId);
     return mapperFacade.map(movie, MovieDto.class);
   }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public MovieDto createMovie(@RequestBody CreateMovieDto createMovieDto) {
+  public MovieDto createMovie(@Valid @RequestBody CreateMovieDto createMovieDto) {
     Movie movie = mapperFacade.map(createMovieDto, Movie.class);
     movie = movieService.saveMovie(movie);
     return mapperFacade.map(movie, MovieDto.class);
   }
 
-  @PutMapping("/{id}")
-  public MovieDto updateMovie(@PathVariable String id, @RequestBody UpdateMovieDto updateMovieDto)
+  @PutMapping("/{imdbId}")
+  public MovieDto updateMovie(@PathVariable String imdbId, @Valid @RequestBody UpdateMovieDto updateMovieDto)
       throws MovieNotFoundException {
-    Movie movie = movieService.validateAndGetMovie(id);
+    Movie movie = movieService.validateAndGetMovie(imdbId);
     mapperFacade.map(updateMovieDto, movie);
     movie = movieService.saveMovie(movie);
     return mapperFacade.map(movie, MovieDto.class);
   }
 
-  @DeleteMapping("/{id}")
-  public MovieDto deleteMovie(@PathVariable String id) throws MovieNotFoundException {
-    Movie movie = movieService.validateAndGetMovie(id);
+  @DeleteMapping("/{imdbId}")
+  public MovieDto deleteMovie(@PathVariable String imdbId) throws MovieNotFoundException {
+    Movie movie = movieService.validateAndGetMovie(imdbId);
     movieService.deleteMovie(movie);
     return mapperFacade.map(movie, MovieDto.class);
   }
