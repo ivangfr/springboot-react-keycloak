@@ -9,4 +9,37 @@ services:
       - "27017:27017"
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017/bookreviewdb --quiet
+      start_period: 10s
+
+  mysql:
+    image: mysql:5.7.26
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root_password
+    healthcheck:
+      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+      start_period: 10s
+
+  keycloak:
+    image: jboss/keycloak:6.0.1
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=mysql
+      - DB_ADDR=mysql
+      - DB_USER=keycloak         # The jboss/keycloak docker documentation says that 'keycloak' is the default value for
+      - DB_PASSWORD=password     # DB_USER and 'password' the default for DB_PASSWORD. However, I needed to explicitly set
+      - JDBC_PARAMS=useSSL=false # them, otherwise I was not able to run the version 6.0.1
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    healthcheck:
+      test: "curl -f http://localhost:8080/auth || exit 1"
       start_period: 20s

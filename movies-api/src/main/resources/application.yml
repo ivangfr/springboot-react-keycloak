@@ -14,3 +14,11 @@ management:
   endpoint:
     health:
       show-details: always
+
+keycloak:
+  auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/auth
+  realm: company-services
+  resource: movies-api
+  ssl-required: external
+  principal-attribute: preferred_username
+  use-resource-role-mappings: true
