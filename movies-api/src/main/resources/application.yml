@@ -3,7 +3,7 @@ spring:
     name: movies-api
   data:
     mongodb:
-      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/bookreviewdb
+      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/moviesdb
 
 management:
   security:

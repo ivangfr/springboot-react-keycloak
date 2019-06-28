@@ -1,0 +1,12 @@
+{
+  "realm": "company-services",
+  "auth-server-url": "http://localhost:8080/auth",
+  "ssl-required": "external",
+  "resource": "movies-api",
+  "verify-token-audience": true,
+  "credentials": {
+    "secret": "89b82633-d17d-4183-9dbe-dc68ef282ea3"
+  },
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}

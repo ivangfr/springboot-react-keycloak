@@ -31,7 +31,7 @@ echo "Creating client"
 CLIENT_ID=$(curl -si -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
 -H "Content-Type: application/json" \
--d '{"clientId": "movies-api", "directAccessGrantsEnabled": true, "redirectUris": ["http://localhost:9080"]}' \
+-d '{"clientId": "movies-api", "directAccessGrantsEnabled": true, "redirectUris": ["http://localhost:3000/*"]}' \
 | grep -oE '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}')
 
 echo "CLIENT_ID=$CLIENT_ID"

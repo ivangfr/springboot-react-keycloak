@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import moviesApi from '../misc/movies-api'
+import MovieList from './MovieList'
 
 class Home extends Component {
   state = {
-    book: []
+    isLoading: false,
+    movies: []
   }
 
   componentDidMount() {
@@ -12,16 +14,23 @@ class Home extends Component {
   }
 
   getMovies = () => {
+    this.setState({ isLoading: true })
+
     moviesApi.get('movies')
-    .then(response => {
-      console.log(response)
-    })
+      .then(response => {
+        const movies = response.data
+        this.setState({
+          isLoading: false,
+          movies
+        })
+      })
   }
 
   render() {
+    const { isLoading, movies } = this.state
     return (
       <Container>
-        <h1>Home</h1>
+        <MovieList isLoading={isLoading} movies={movies} />
       </Container>
     )
   }
