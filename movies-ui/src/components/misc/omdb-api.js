@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export default axios.create({
-  baseURL: `http://www.omdbapi.com/`
+  baseURL: `https://www.omdbapi.com`
 })

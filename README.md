@@ -24,3 +24,7 @@ ACCESS_TOKEN=$(curl -s -X POST \
 
 echo $ACCESS_TOKEN
 ```
+
+# TODO
+
+- On logout redirect to '/';

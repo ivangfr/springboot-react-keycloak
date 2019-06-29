@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Header, Segment } from 'semantic-ui-react'
-import MovieCard from './MovieCard';
+import MovieCard from './MovieCard'
 
 function MovieList({ isLoading, movies }) {
   if (isLoading) {

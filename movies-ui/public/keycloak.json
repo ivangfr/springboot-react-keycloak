@@ -5,7 +5,7 @@
   "resource": "movies-api",
   "verify-token-audience": true,
   "credentials": {
-    "secret": "89b82633-d17d-4183-9dbe-dc68ef282ea3"
+    "secret": "6dfbc23f-c50c-41a2-8583-3dffde58fc74"
   },
   "use-resource-role-mappings": true,
   "confidential-port": 0

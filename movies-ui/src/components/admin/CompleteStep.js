@@ -1,0 +1,16 @@
+import React from 'react'
+import { Segment, Form } from 'semantic-ui-react'
+import MovieCard from '../home/MovieCard'
+
+function CompleteStep({ movie, createMovie }) {
+  return (
+    <Segment compact>
+      <MovieCard movie={movie} />
+      <Form>
+        <Form.Button fluid primary onClick={createMovie}>Create</Form.Button>
+      </Form>
+    </Segment>
+  )
+}
+
+export default CompleteStep

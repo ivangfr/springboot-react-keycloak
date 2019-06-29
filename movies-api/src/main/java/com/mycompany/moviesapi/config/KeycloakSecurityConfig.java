@@ -50,8 +50,10 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     super.configure(http);
-    http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/api/movies")
-        .hasRole("MANAGE_MOVIES").antMatchers(HttpMethod.PATCH, "/api/movies/*").hasRole("MANAGE_MOVIES")
-        .antMatchers(HttpMethod.DELETE, "/api/movies/*").hasRole("MANAGE_MOVIES").anyRequest().permitAll();
+    http.cors().and().csrf().disable().authorizeRequests()
+      .antMatchers(HttpMethod.POST, "/api/movies").hasRole("MANAGE_MOVIES")
+      .antMatchers(HttpMethod.PATCH, "/api/movies/*").hasRole("MANAGE_MOVIES")
+      .antMatchers(HttpMethod.DELETE, "/api/movies/*").hasRole("MANAGE_MOVIES")
+      .anyRequest().permitAll();
   }
 }

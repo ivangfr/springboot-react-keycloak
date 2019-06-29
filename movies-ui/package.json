@@ -7,6 +7,7 @@
     "keycloak-js": "^6.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-keycloak": "^6.0.4",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "semantic-ui-react": "^0.87.2"
