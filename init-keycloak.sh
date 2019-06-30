@@ -31,7 +31,7 @@ echo "Creating client"
 CLIENT_ID=$(curl -si -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
 -H "Content-Type: application/json" \
--d '{"clientId": "movies-api", "directAccessGrantsEnabled": true, "redirectUris": ["http://localhost:3000/*"]}' \
+-d '{"clientId": "movies-app", "directAccessGrantsEnabled": true, "redirectUris": ["http://localhost:3000/*"]}' \
 | grep -oE '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}')
 
 echo "CLIENT_ID=$CLIENT_ID"
@@ -39,10 +39,10 @@ echo "CLIENT_ID=$CLIENT_ID"
 echo "---------"
 echo "Getting client secret"
 
-MOVIESAPI_CLIENT_SECRET=$(curl -s "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients/$CLIENT_ID/client-secret" \
+MOVIESAPP_CLIENT_SECRET=$(curl -s "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients/$CLIENT_ID/client-secret" \
 -H "Authorization: Bearer $ADMIN_TOKEN" | jq -r '.value')
 
-echo "MOVIESAPI_CLIENT_SECRET=$MOVIESAPI_CLIENT_SECRET"
+echo "MOVIESAPP_CLIENT_SECRET=$MOVIESAPP_CLIENT_SECRET"
 
 echo "---------"
 echo "Creating client role"
@@ -85,10 +85,10 @@ curl -s -X POST \
 -d "username=ivan.franchin" \
 -d "password=123" \
 -d "grant_type=password" \
--d "client_secret=$MOVIESAPI_CLIENT_SECRET" \
--d "client_id=movies-api" | jq -r .access_token
+-d "client_secret=$MOVIESAPP_CLIENT_SECRET" \
+-d "client_id=movies-app" | jq -r .access_token
 
 echo
 echo "---------"
-echo "MOVIESAPI_CLIENT_SECRET=$MOVIESAPI_CLIENT_SECRET"
+echo "MOVIESAPI_CLIENT_SECRET=$MOVIESAPP_CLIENT_SECRET"
 echo "---------"

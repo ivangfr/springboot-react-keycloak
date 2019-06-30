@@ -18,7 +18,7 @@ management:
 keycloak:
   auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/auth
   realm: company-services
-  resource: movies-api
+  resource: movies-app
   ssl-required: external
   principal-attribute: preferred_username
   use-resource-role-mappings: true

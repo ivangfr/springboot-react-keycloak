@@ -2,7 +2,7 @@
   "realm": "company-services",
   "auth-server-url": "http://localhost:8080/auth",
   "ssl-required": "external",
-  "resource": "movies-api",
+  "resource": "movies-app",
   "verify-token-audience": true,
   "credentials": {
     "secret": "6dfbc23f-c50c-41a2-8583-3dffde58fc74"
