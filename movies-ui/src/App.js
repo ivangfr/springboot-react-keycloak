@@ -4,20 +4,22 @@ import { KeycloakProvider } from 'react-keycloak'
 import Keycloak from 'keycloak-js'
 import Navbar from './components/misc/Navbar'
 import Home from './components/home/Home'
-import Admin from './components/admin/Admin'
+import Movie from './components/movie/Movie'
+import MovieWizard from './components/wizard/MovieWizard'
 
 const keycloak = Keycloak('/keycloak.json', { onLoad: 'login-required', promiseType: 'native' })
 
 function App() {
   return (
-    <KeycloakProvider keycloak={keycloak}>
-      <Router>
+    <Router>
+      <KeycloakProvider keycloak={keycloak}>
         <Navbar />
         <Route path='/' exact component={Home} />
         <Route path='/home' exact component={Home} />
-        <Route path='/admin' exact component={Admin} />
-      </Router>
-    </KeycloakProvider>
+        <Route path='/movies' exact component={Movie} />
+        <Route path='/wizard' exact component={MovieWizard} />
+      </KeycloakProvider>
+    </Router>
   )
 }
 

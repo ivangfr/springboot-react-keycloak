@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, Container } from 'semantic-ui-react'
+import { Menu, Container, Dropdown } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
 import { withKeycloak } from 'react-keycloak'
 
 class Navbar extends Component {
@@ -8,8 +9,9 @@ class Navbar extends Component {
   }
 
   handleLogInOut = () => {
-    const { keycloak } = this.props
+    const { keycloak, history } = this.props
     if (keycloak.authenticated) {
+      history.push('/')
       keycloak.logout()
     } else {
       keycloak.login()
@@ -31,7 +33,12 @@ class Navbar extends Component {
         <Container>
           <Menu.Item header>Movies UI</Menu.Item>
           <Menu.Item as={NavLink} exact to="/home">Home</Menu.Item>
-          <Menu.Item as={NavLink} exact to="/admin" onClick={this.checkAuthenticated}>Admin</Menu.Item>
+          <Dropdown item text='Admin'>
+            <Dropdown.Menu>
+              <Dropdown.Item as={NavLink} exact to="/movies" onClick={this.checkAuthenticated}>Movies</Dropdown.Item>
+              <Dropdown.Item as={NavLink} exact to="/wizard" onClick={this.checkAuthenticated}>Movie Wizard</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
           <Menu.Item as={NavLink} exact to="/login" onClick={this.handleLogInOut}>{logInOut}</Menu.Item>
         </Container>
       </Menu >
@@ -39,4 +46,4 @@ class Navbar extends Component {
   }
 }
 
-export default withKeycloak(Navbar)
+export default withRouter(withKeycloak(Navbar))

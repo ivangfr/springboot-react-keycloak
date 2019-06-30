@@ -27,4 +27,4 @@ echo $ACCESS_TOKEN
 
 # TODO
 
-- On logout redirect to '/';
+- add alerts when book not found, book created, errors, etc;

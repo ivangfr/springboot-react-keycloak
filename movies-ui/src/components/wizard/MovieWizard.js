@@ -7,7 +7,7 @@ import CompleteStep from './CompleteStep'
 import omdbApi from '../misc/omdb-api'
 import moviesApi from '../misc/movies-api'
 
-class Admin extends Component {
+class MovieWizard extends Component {
   state = {
     step: 1,
 
@@ -32,8 +32,18 @@ class Admin extends Component {
 
   previousStep = () => {
     let { step } = this.state
+
+    let { imdbIdError, titleError, directorError, yearError, posterError } = this.state
+    if (step === 2) {
+      imdbIdError = false
+      titleError = false
+      directorError = false
+      yearError = false
+      posterError = false
+    }
+
     step = step > 1 ? step - 1 : step
-    this.setState({ step })
+    this.setState({ step, imdbIdError, titleError, directorError, yearError, posterError })
   }
 
   nextStep = () => {
@@ -81,15 +91,22 @@ class Admin extends Component {
 
     omdbApi.get(`?apikey=${process.env.REACT_APP_OMDB_API_KEY}&t=${encodeURI(this.state.search)}`)
       .then(response => {
-        const movie = {
-          imdbId: response.data.imdbID,
-          title: response.data.Title,
-          director: response.data.Director,
-          year: response.data.Year,
-          poster: response.data.Poster
+        const { Error } = response.data
+        let movies = []
+        if (Error) {
+          console.log(Error)
+        } else {
+          const movie = {
+            imdbId: response.data.imdbID,
+            title: response.data.Title,
+            director: response.data.Director,
+            year: response.data.Year,
+            poster: response.data.Poster
+          }
+          movies.push(movie)
         }
         this.setState({
-          movies: [movie],
+          movies,
           isLoading: false
         })
       })
@@ -101,9 +118,9 @@ class Admin extends Component {
   createMovie = () => {
     const { keycloak } = this.props
     const { imdbId, title, director, year, poster } = this.state
-    const book = { imdbId: imdbId, title: title, director: director, year: year, poster: poster }
+    const movie = { imdbId: imdbId, title: title, director: director, year: year, poster: poster }
 
-    moviesApi.post('movies', book, {
+    moviesApi.post('movies', movie, {
         headers: {
           'Content-type': 'application/json',
           'Authorization': 'Bearer ' + keycloak.token
@@ -111,6 +128,7 @@ class Admin extends Component {
       })
       .then((response) => {
         console.log(response)
+        this.props.history.push("/home")
       })
       .catch(error => {
         console.log(error)
@@ -228,4 +246,4 @@ class Admin extends Component {
   }
 }
 
-export default withKeycloak(Admin)
+export default withKeycloak(MovieWizard)
