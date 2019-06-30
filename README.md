@@ -27,4 +27,4 @@ echo $ACCESS_TOKEN
 
 # TODO
 
-- add alerts when book not found, book created, errors, etc;
+- add alerts when moviw not found, movie created, errors, etc;
