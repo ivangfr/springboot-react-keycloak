@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom'
 import { withKeycloak } from 'react-keycloak'
 
 class Navbar extends Component {
-  state = {
-  }
 
   handleLogInOut = () => {
     const { keycloak, history } = this.props
@@ -28,12 +26,13 @@ class Navbar extends Component {
   render() {
     const { keycloak } = this.props
     const logInOut = keycloak.authenticated ? "Logout" : "Login"
+    const adminMenuVisibility = keycloak.authenticated ? { "display": "block" } : { "display": "none" }
     return (
       <Menu>
         <Container>
           <Menu.Item header>Movies UI</Menu.Item>
           <Menu.Item as={NavLink} exact to="/home">Home</Menu.Item>
-          <Dropdown item text='Admin'>
+          <Dropdown item text='Admin' style={adminMenuVisibility}>
             <Dropdown.Menu>
               <Dropdown.Item as={NavLink} exact to="/movies" onClick={this.checkAuthenticated}>Movies</Dropdown.Item>
               <Dropdown.Item as={NavLink} exact to="/wizard" onClick={this.checkAuthenticated}>Movie Wizard</Dropdown.Item>

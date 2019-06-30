@@ -7,7 +7,7 @@ function CompleteStep({ movie, createMovie }) {
     <Segment compact>
       <MovieCard movie={movie} />
       <Form>
-        <Form.Button fluid primary onClick={createMovie}>Create</Form.Button>
+        <Form.Button fluid primary onClick={() => createMovie(movie)}>Create</Form.Button>
       </Form>
     </Segment>
   )

@@ -24,6 +24,9 @@ class Home extends Component {
           movies
         })
       })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   render() {

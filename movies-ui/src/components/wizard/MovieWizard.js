@@ -49,7 +49,7 @@ class MovieWizard extends Component {
   nextStep = () => {
     let { step } = this.state
 
-    if (step === 2 && !this.isValidMovieForm()) {
+    if (step === 2 && !this.isValidForm()) {
       return
     }
 
@@ -91,8 +91,8 @@ class MovieWizard extends Component {
 
     omdbApi.get(`?apikey=${process.env.REACT_APP_OMDB_API_KEY}&t=${encodeURI(this.state.search)}`)
       .then(response => {
-        const { Error } = response.data
         let movies = []
+        const { Error } = response.data
         if (Error) {
           console.log(Error)
         } else {
@@ -115,10 +115,8 @@ class MovieWizard extends Component {
       })
   }
 
-  createMovie = () => {
+  createMovie = (movie) => {
     const { keycloak } = this.props
-    const { imdbId, title, director, year, poster } = this.state
-    const movie = { imdbId: imdbId, title: title, director: director, year: year, poster: poster }
 
     moviesApi.post('movies', movie, {
         headers: {
@@ -127,7 +125,6 @@ class MovieWizard extends Component {
         }
       })
       .then((response) => {
-        console.log(response)
         this.props.history.push("/home")
       })
       .catch(error => {
@@ -135,12 +132,13 @@ class MovieWizard extends Component {
       })
   }
 
-  isValidMovieForm = () => {
+  isValidForm = () => {
     const imdbIdError = this.state.imdbId.trim() === ''
     const titleError = this.state.title.trim() === ''
     const directorError = this.state.director.trim() === ''
     const yearError = this.state.year.trim() === ''
     const posterError = this.state.poster.trim() === ''
+    
     this.setState({ imdbIdError, titleError, directorError, yearError, posterError })
     return imdbIdError || titleError || directorError || yearError || posterError ? false : true
   }
