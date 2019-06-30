@@ -13,7 +13,7 @@ public class Movie {
   private String imdbId;
   private String title;
   private String director;
-  private Integer year;
+  private String year;
   private String poster;
 
 }

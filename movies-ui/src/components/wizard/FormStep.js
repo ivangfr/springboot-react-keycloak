@@ -31,7 +31,6 @@ function FormStep({ imdbId, title, director, year, poster, imdbIdError, titleErr
         <Form.Input
           label='Year'
           id='year'
-          type='number'
           onChange={handleChange}
           value={year}
           error={yearError}
