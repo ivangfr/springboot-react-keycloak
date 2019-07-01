@@ -90,5 +90,5 @@ curl -s -X POST \
 
 echo
 echo "---------"
-echo "MOVIESAPI_CLIENT_SECRET=$MOVIESAPP_CLIENT_SECRET"
+echo "MOVIESAPP_CLIENT_SECRET=$MOVIESAPP_CLIENT_SECRET"
 echo "---------"
