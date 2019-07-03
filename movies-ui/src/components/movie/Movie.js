@@ -129,7 +129,7 @@ class Movie extends Component {
       <Container>
         <Header as='h3' textAlign='center'>Movies</Header>
         <Grid>
-          <Grid.Column width={4}>
+          <Grid.Column mobile={16} tablet={16} computer={4}>
             <Segment>
               <MovieForm
                 form={this.state.form}
@@ -139,7 +139,7 @@ class Movie extends Component {
               />
             </Segment>
           </Grid.Column>
-          <Grid.Column width={12}>
+          <Grid.Column mobile={16} tablet={16} computer={12}>
             <Segment>
               <MovieTable
                 movies={this.state.movies}

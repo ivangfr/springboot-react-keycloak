@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Grid, Step, Button, Icon } from 'semantic-ui-react'
+import { Container, Grid, Responsive, Segment, Step, Button, Icon } from 'semantic-ui-react'
 import { withKeycloak } from 'react-keycloak'
 import SearchStep from './SearchStep'
 import FormStep from './FormStep'
@@ -119,11 +119,11 @@ class MovieWizard extends Component {
     const { keycloak } = this.props
 
     moviesApi.post('movies', movie, {
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': 'Bearer ' + keycloak.token
-        }
-      })
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + keycloak.token
+      }
+    })
       .then((response) => {
         this.props.history.push("/home")
       })
@@ -138,7 +138,7 @@ class MovieWizard extends Component {
     const directorError = this.state.director.trim() === ''
     const yearError = this.state.year.trim() === ''
     const posterError = this.state.poster.trim() === ''
-    
+
     this.setState({ imdbIdError, titleError, directorError, yearError, posterError })
     return imdbIdError || titleError || directorError || yearError || posterError ? false : true
   }
@@ -191,32 +191,34 @@ class MovieWizard extends Component {
     return (
       <Container>
         <Grid>
-          <Grid.Column width={4}>
-            <Step.Group vertical>
-              <Step active={step === 1}>
-                <Icon name='search' />
-                <Step.Content>
-                  <Step.Title>Search</Step.Title>
-                  <Step.Description>Search movie</Step.Description>
-                </Step.Content>
-              </Step>
+          <Grid.Column mobile={16} tablet={4} computer={4}>
+            <Responsive as={Segment} minWidth="768">
+              <Step.Group fluid vertical >
+                <Step active={step === 1}>
+                  <Icon name='search' />
+                  <Step.Content>
+                    <Step.Title>Search</Step.Title>
+                    <Step.Description>Search movie</Step.Description>
+                  </Step.Content>
+                </Step>
 
-              <Step active={step === 2}>
-                <Icon name='film' />
-                <Step.Content>
-                  <Step.Title>Movie</Step.Title>
-                  <Step.Description>Movie Form</Step.Description>
-                </Step.Content>
-              </Step>
+                <Step active={step === 2}>
+                  <Icon name='film' />
+                  <Step.Content>
+                    <Step.Title>Movie</Step.Title>
+                    <Step.Description>Movie Form</Step.Description>
+                  </Step.Content>
+                </Step>
 
-              <Step active={step === 3}>
-                <Icon name='flag checkered' />
-                <Step.Content>
-                  <Step.Title>Complete</Step.Title>
-                  <Step.Description>Preview and complete</Step.Description>
-                </Step.Content>
-              </Step>
-            </Step.Group>
+                <Step active={step === 3}>
+                  <Icon name='flag checkered' />
+                  <Step.Content>
+                    <Step.Title>Complete</Step.Title>
+                    <Step.Description>Preview and complete</Step.Description>
+                  </Step.Content>
+                </Step>
+              </Step.Group>
+            </Responsive>
 
             <Button.Group fluid>
               <Button
@@ -229,7 +231,7 @@ class MovieWizard extends Component {
                 onClick={this.nextStep}>Next</Button>
             </Button.Group>
           </Grid.Column>
-          <Grid.Column width={12}>
+          <Grid.Column mobile={16} tablet={12} computer={12}>
             {stepContent}
           </Grid.Column>
         </Grid>

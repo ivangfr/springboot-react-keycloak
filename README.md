@@ -20,7 +20,7 @@ ReactJS frontend application where `users` can see the list of movies and `admin
 
 ### jq
 
-In order to run some commands/scripts, you must have [`jq`](https://stedolan.github.io/jq) installed on you machine**
+In order to run some commands/scripts, you must have [`jq`](https://stedolan.github.io/jq) installed on you machine
 
 ### OMDb API
 
@@ -91,12 +91,14 @@ The gif below shows an admin adding two movies using the wizard option. First, h
 
 You can manage movies accessing directly the `movies-api` endpoint using its Swagger website or `curl`. However, for the sensitive endpoint like `POST /api/movies`, `PUT /api/movies/{id}` and `DELETE /api/movies/{id}`, you need to inform an access token issued by `Keycloak`. Below are the steps to get the access token.
 
-- First thing you need to do is to export to the `movie-app` client secret (generated on [Configure Keycloak](https://github.com/ivangfr/springboot-react-keycloak#configure-keycloak)) to an environment variable
+- Open a terminal
+
+- Export the `movie-app` client secret (generated on [Configure Keycloak](https://github.com/ivangfr/springboot-react-keycloak#configure-keycloak)) to the environment variable `MOVIESAPP_CLIENT_SECRET`
 ```
 MOVIESAPP_CLIENT_SECRET=...
 ```
 
-- In a terminal, run the following commands
+- Run the following commands to get the access token
 ```
 ACCESS_TOKEN="$(curl -s -X POST \
   "http://localhost:8080/auth/realms/company-services/protocol/openid-connect/token" \
@@ -106,8 +108,6 @@ ACCESS_TOKEN="$(curl -s -X POST \
   -d "grant_type=password" \
   -d "client_secret=$MOVIESAPP_CLIENT_SECRET" \
   -d "client_id=movies-app" | jq -r .access_token)"
-  
-echo $ACCESS_TOKEN 
 ```
 
 ### Calling movies-api endpoints using curl

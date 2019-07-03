@@ -18,7 +18,7 @@ function MovieList({ isLoading, movies }) {
 
   return (
     movies && movies.length > 0 ? (
-      <Card.Group itemsPerRow={5} centered>
+      <Card.Group doubling centered>
         {movieList}
       </Card.Group >
     ) : (
