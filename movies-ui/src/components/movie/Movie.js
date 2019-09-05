@@ -42,6 +42,9 @@ class Movie extends Component {
         const movies = response.data
         this.setState({ movies })
       })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   saveMovie = () => {
@@ -72,7 +75,6 @@ class Movie extends Component {
     const { keycloak } = this.props
     moviesApi.delete(`movies/${id}`, {
       headers: {
-        'Content-type': 'application/json',
         'Authorization': 'Bearer ' + keycloak.token
       }
     })

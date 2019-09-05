@@ -10,11 +10,11 @@ The goal of this project is to secure an application called `movies-app`, using 
 
 ### movies-api
 
-Spring-boot Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete - can just be accessed if an acceess token (JWT) issued by `Keycloak` is provided. `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
+Spring-boot Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete - can just be accessed if an access token (JWT) issued by `Keycloak` is provided. `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
 ### movies-ui
 
-ReactJS frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using his/her username/password. Those credentials are handled by `Keycloak`. All the requests from `movies-ui` to sensitive endpoints in `movies-api` have the presence of the access token (JWT) that is generated when the `admin` logs in. It uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+ReactJS frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using username and password credentials. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in. `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Prerequisites
 
@@ -24,72 +24,79 @@ In order to run some commands/scripts, you must have [`jq`](https://stedolan.git
 
 ### OMDb API
 
-- To use the `Wizard` option to search and add a movie, you need to get an API KEY from [OMDb API](https://www.omdbapi.com/). In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
+In order to use the `Wizard` option to search and add a movie, you need to get an API KEY from [OMDb API](https://www.omdbapi.com/). In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
-- Once you have the API KEY, in `springboot-react-keycloak` root folder, create a file called `.env.local` with the following content
+Once you have the API KEY, in `springboot-react-keycloak/movies-ui` folder, create a file called `.env.local` with the following content
 ```
 REACT_APP_OMDB_API_KEY=<your-api-key>
 ```
 
 ## Start environment
 
-- In a terminal and inside `springboot-react-keycloak` root folder run
+In a terminal and inside `springboot-react-keycloak` root folder run
 ```
 docker-compose up -d
 ```
 
-- Wait a little bit until all containers are Up (healthy). You can check their status running
+Wait a little bit until all containers are Up (healthy). You can check their status running
 ```
 docker-compose ps
 ```
 
 ## Configure Keycloak
 
-- In a terminal and inside `springboot-react-keycloak` root folder, run the following script to configure `movies-app` in Keycloak
+In a terminal and inside `springboot-react-keycloak` root folder, run the following script to configure `movies-app` in Keycloak
 ```
 ./init-keycloak.sh
 ```
 
-- At the end of the script, it will be printed the secret that Keycloak generates for `movies-app`
+At the end of the script, it will be printed the secret that Keycloak generates for `movies-app`
 ```
 MOVIESAPP_CLIENT_SECRET=...
 ```
 
-- Copy the secret value and paste in `credentials.secret` property present in `springboot-react-keycloak/movies-ui/public/keycloak.json` file.
+Copy the secret value and paste in `credentials.secret` property present in `springboot-react-keycloak/movies-ui/public/keycloak.json` file.
 
 ## Running movies-app using Maven & Npm
 
 ### movies-api
 
-Inside `springboot-react-keycloak/movies-api` run
+In a terminal and inside `springboot-react-keycloak/movies-api`, run the following Maven command
 ```
 ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
 ```
 
 ### movies-ui
 
-Inside `springboot-react-keycloak/movies-ui` run
+Open another terminal and go to `springboot-react-keycloak/movies-ui` folder
+
+Execute the command below if you are running `movies-ui` for the first time
+```
+npm install
+```
+
+Then, to start `movies-ui` run
 ```
 npm start
 ```
 
-## Microservices URLs
+## Microservice URLs
 
-| Microservice | URL                                   |
-| ------------ | ------------------------------------- |
-| `movie-api`  | http://localhost:9080/swagger-ui.html |
-| `movie-ui`   | http://localhost:3000                 |
-| `Keycloak`   | http://localhost:8080                 |
+| Microservice | URL                                   | Credentials       |
+| ------------ | ------------------------------------- | ----------------- |
+| `movie-api`  | http://localhost:9080/swagger-ui.html |                   |
+| `movie-ui`   | http://localhost:3000                 | ivan.franchin/123 |
+| `Keycloak`   | http://localhost:8080/auth/admin/     | admin/admin       |
 
 ## Demo
 
-The gif below shows an admin adding two movies using the wizard option. First, he looks for the movie `american pie`. The search is looking for data at [OMDb API](https://www.omdbapi.com/). Then, he selects the movie in the table. The information on the form is already fulfilled based on the response from OMDb API. The preview of the movie card, as the customer will see it, is displayed. Finally, the button `Create` is pressed and the movie is created. After that, the movie `resident evil` is created.
+The gif below shows an admin adding two movies using the wizard option. First, he looks for the movie `American Pie`. The search is looking for data at [OMDb API](https://www.omdbapi.com/). Then, he selects the movie in the table. The information on the form is already fulfilled based on the response from OMDb API. The preview of the movie card, as the customer will see it, is displayed. Finally, the button `Create` is pressed and the movie is created. After that, the movie `Resident Evil` is created.
 
 ![add-movies-wizard](images/add-movies-wizard.gif)
 
 ## Getting Access Token
 
-You can manage movies accessing directly the `movies-api` endpoint using its Swagger website or `curl`. However, for the sensitive endpoint like `POST /api/movies`, `PUT /api/movies/{id}` and `DELETE /api/movies/{id}`, you need to inform an access token issued by `Keycloak`. Below are the steps to get the access token.
+You can manage movies accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the sensitive endpoints like `POST /api/movies`, `PUT /api/movies/{id}` and `DELETE /api/movies/{id}`, you need to inform an access token issued by `Keycloak`. Below are the steps to get the token.
 
 - Open a terminal
 
