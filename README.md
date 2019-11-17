@@ -183,9 +183,9 @@ HTTP/1.1 200
 
 ## Shutdown
 
-Go to the terminals where `movies-api` and `movies-ui` are running and press `ctrl-c`.
+Go to `movies-api` and `movies-ui` terminals and press `ctrl-c` on each one
 
-Then, to stop and remove containers, networks and volumes
+Then, to stop and remove containers, networks and volumes, run
 ```
 docker-compose down -v
 ```
