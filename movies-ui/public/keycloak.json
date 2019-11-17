@@ -5,7 +5,7 @@
   "resource": "movies-app",
   "verify-token-audience": true,
   "credentials": {
-    "secret": "6dfbc23f-c50c-41a2-8583-3dffde58fc74"
+    "secret": "31ca4137-27e9-464e-895c-a4f8b4ae0d01"
   },
   "use-resource-role-mappings": true,
   "confidential-port": 0

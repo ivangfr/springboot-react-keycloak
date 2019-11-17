@@ -1,20 +1,20 @@
 # `springboot-react-keycloak`
 
-The goal of this project is to secure an application called `movies-app`, using [`Keycloak`](https://www.keycloak.org/). `movies-app` consists of two microservices: one is a [Spring-Boot](https://spring.io/projects/spring-boot) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
+The goal of this project is to secure `movies-app`, using [`Keycloak`](https://www.keycloak.org/). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
 
 ## Project diagram
 
 ![project-diagram](images/project-diagram.png)
 
-## Microservices
+## Applications
 
 ### movies-api
 
-Spring-boot Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete - can just be accessed if an access token (JWT) issued by `Keycloak` is provided. `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
+[`Spring Boot`] Web Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete movies - can just be just accessed if an access token (JWT) issued by `Keycloak` is provided. `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
 ### movies-ui
 
-ReactJS frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using username and password credentials. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in. `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+`ReactJS` frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in. `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Prerequisites
 
@@ -24,9 +24,9 @@ In order to run some commands/scripts, you must have [`jq`](https://stedolan.git
 
 ### OMDb API
 
-In order to use the `Wizard` option to search and add a movie, you need to get an API KEY from [OMDb API](https://www.omdbapi.com/). In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
+To use the `Wizard` option to search and add a movie, you need to get an API KEY from [OMDb API](https://www.omdbapi.com/). In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
-Once you have the API KEY, in `springboot-react-keycloak/movies-ui` folder, create a file called `.env.local` with the following content
+Once you have the API KEY, create a file called `.env.local` with the following content in `springboot-react-keycloak/movies-ui` folder
 ```
 REACT_APP_OMDB_API_KEY=<your-api-key>
 ```
@@ -55,7 +55,7 @@ At the end of the script, it will be printed the secret that Keycloak generates 
 MOVIESAPP_CLIENT_SECRET=...
 ```
 
-Copy the secret value and paste in `credentials.secret` property present in `springboot-react-keycloak/movies-ui/public/keycloak.json` file.
+Copy the secret value and paste it in `credentials.secret` property present in `springboot-react-keycloak/movies-ui/public/keycloak.json` file.
 
 ## Running movies-app using Maven & Npm
 
@@ -80,13 +80,13 @@ Then, to start `movies-ui` run
 npm start
 ```
 
-## Microservice URLs
+## Applications URLs
 
-| Microservice | URL                                   | Credentials       |
-| ------------ | ------------------------------------- | ----------------- |
-| `movie-api`  | http://localhost:9080/swagger-ui.html |                   |
-| `movie-ui`   | http://localhost:3000                 | ivan.franchin/123 |
-| `Keycloak`   | http://localhost:8080/auth/admin/     | admin/admin       |
+| Application | URL                                   | Credentials       |
+| ----------- | ------------------------------------- | ----------------- |
+| movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](https://github.com/ivangfr/springboot-react-keycloak#using-movies-api-with-swagger) |
+| movie-ui    | http://localhost:3000                 | ivan.franchin/123 |
+| Keycloak    | http://localhost:8080/auth/admin/     | admin/admin       |
 
 ## Demo
 
@@ -123,7 +123,7 @@ ACCESS_TOKEN="$(curl -s -X POST \
 ```
 curl -i -X POST "http://localhost:9080/api/movies" \
   -H "Content-Type: application/json" \
-  -d '{ "imdbId": "tt0120804", "title": "Resident Evil", "director": "Paul W.S. Anderson", "year": 2002, "poster": "https://m.media-amazon.com/images/M/MV5BN2Y2MTljNjMtMDRlNi00ZWNhLThmMWItYTlmZjYyZDk4NzYxXkEyXkFqcGdeQXVyNjQ2MjQ5NzM@._V1_SX300.jpg"}'
+  -d '{ "imdbId": "tt5580036", "title": "I, Tonya", "director": "Craig Gillespie", "year": 2017, "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"}'
 ```
 
 It will return
@@ -137,18 +137,18 @@ HTTP/1.1 302
 curl -i -X POST "http://localhost:9080/api/movies" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{ "imdbId": "tt0120804", "title": "Resident Evil", "director": "Paul W.S. Anderson", "year": 2002, "poster": "https://m.media-amazon.com/images/M/MV5BN2Y2MTljNjMtMDRlNi00ZWNhLThmMWItYTlmZjYyZDk4NzYxXkEyXkFqcGdeQXVyNjQ2MjQ5NzM@._V1_SX300.jpg"}'
+  -d '{ "imdbId": "tt5580036", "title": "I, Tonya", "director": "Craig Gillespie", "year": 2017, "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"}'
 ```
 
 It will return
 ```
 HTTP/1.1 201
 {
-  "imdbId": "tt0120804",
-  "title": "Resident Evil",
-  "director": "Paul W.S. Anderson",
-  "year": "2002",
-  "poster": "https://m.media-amazon.com/images/M/MV5BN2Y2MTljNjMtMDRlNi00ZWNhLThmMWItYTlmZjYyZDk4NzYxXkEyXkFqcGdeQXVyNjQ2MjQ5NzM@._V1_SX300.jpg"
+  "imdbId": "tt5580036",
+  "title": "I, Tonya",
+  "director": "Craig Gillespie",
+  "year": "2017",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"
 }
 ```
 
@@ -162,11 +162,11 @@ It will return
 HTTP/1.1 200
 [
   {
-    "director": "Paul W.S. Anderson",
-    "imdbId": "tt0120804",
-    "poster": "https://m.media-amazon.com/images/M/MV5BN2Y2MTljNjMtMDRlNi00ZWNhLThmMWItYTlmZjYyZDk4NzYxXkEyXkFqcGdeQXVyNjQ2MjQ5NzM@._V1_SX300.jpg",
-    "title": "Resident Evil",
-    "year": "2002"
+    "imdbId": "tt5580036",
+    "title": "I, Tonya",
+    "director": "Craig Gillespie",
+    "year": "2017",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"
   }
 ]
 ```
@@ -177,15 +177,26 @@ HTTP/1.1 200
 
 - Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
 
-- Click on `Authorize` button. Paste the access token in the `Value` field prefixed by `Bearer`, like `Bearer <access-token>`. Then, click on `Authorize` and on `Close` to finalize.
+- Click on `Authorize` button. Paste the [`access token`](https://github.com/ivangfr/springboot-react-keycloak#getting-access-token) in the `Value` field prefixed by `Bearer`, like `Bearer <access-token>`. Then, click on `Authorize` and on `Close` to finalize.
 
 - Done! You can now access the sensitive endpoints.
 
 ## Shutdown
 
-To stop and remove containers, networks and volumes
+Go to the terminals where `movies-api` and `movies-ui` are running and press `ctrl-c`.
+
+Then, to stop and remove containers, networks and volumes
 ```
 docker-compose down -v
+```
+
+## How to upgrade movies-ui dependencies to latest version
+
+In a terminal and inside `springboot-react-keycloak/movies-ui` folder, run the following commands
+```
+npm i -g npm-check-updates
+ncu -u
+npm install
 ```
 
 ## TODO
