@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   mongodb:
-    image: mongo:4.2.1
+    image: mongo:4.2.5
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -12,7 +12,7 @@ services:
       start_period: 10s
 
   mysql:
-    image: mysql:5.7.28
+    image: mysql:5.7.29
     container_name: mysql
     ports:
       - "3306:3306"
@@ -26,16 +26,16 @@ services:
       start_period: 10s
 
   keycloak:
-    image: jboss/keycloak:6.0.1
+    image: jboss/keycloak:9.0.2
     container_name: keycloak
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - DB_VENDOR=mysql
       - DB_ADDR=mysql
-      - DB_USER=keycloak         # The jboss/keycloak docker documentation says that 'keycloak' is the default value for
-      - DB_PASSWORD=password     # DB_USER and 'password' the default for DB_PASSWORD. However, I needed to explicitly set
-      - JDBC_PARAMS=useSSL=false # them, otherwise I was not able to run the version 6.0.1
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+      - JDBC_PARAMS=useSSL=false
     ports:
       - "8080:8080"
     depends_on:

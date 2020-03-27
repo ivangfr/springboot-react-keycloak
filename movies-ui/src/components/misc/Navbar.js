@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Menu, Container, Dropdown } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
-import { withKeycloak } from 'react-keycloak'
+import { withKeycloak } from '@react-keycloak/web'
 
 class Navbar extends Component {
 

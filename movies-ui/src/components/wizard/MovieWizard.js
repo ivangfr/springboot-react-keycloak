@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Grid, Responsive, Segment, Step, Button, Icon } from 'semantic-ui-react'
-import { withKeycloak } from 'react-keycloak'
+import { withKeycloak } from '@react-keycloak/web'
 import SearchStep from './SearchStep'
 import FormStep from './FormStep'
 import CompleteStep from './CompleteStep'

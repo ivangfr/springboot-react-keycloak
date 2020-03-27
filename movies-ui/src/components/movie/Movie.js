@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Grid, Segment, Header } from 'semantic-ui-react'
-import { withKeycloak } from 'react-keycloak'
+import { withKeycloak } from '@react-keycloak/web'
 import MovieForm from './MovieForm'
 import MovieTable from './MovieTable'
 import moviesApi from '../misc/movies-api'
