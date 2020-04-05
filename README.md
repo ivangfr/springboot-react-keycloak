@@ -1,3 +1,5 @@
+# THIS IS THE NEW IMPROVED VERSION OF THIS FILE, GOOD LUCK
+
 # springboot-react-keycloak
 
 The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
