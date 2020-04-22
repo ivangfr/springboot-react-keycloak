@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { KeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
+import PrivateRoute from './components/misc/PrivateRoute'
 import Navbar from './components/misc/Navbar'
 import Home from './components/home/Home'
 import Movie from './components/movie/Movie'
@@ -17,8 +18,8 @@ function App() {
         <Navbar />
         <Route path='/' exact component={Home} />
         <Route path='/home' exact component={Home} />
-        <Route path='/movies' exact component={Movie} />
-        <Route path='/wizard' exact component={MovieWizard} />
+        <PrivateRoute path='/movies' exact component={Movie} />
+        <PrivateRoute path='/wizard' exact component={MovieWizard} />
       </Router>
     </KeycloakProvider>
   )
