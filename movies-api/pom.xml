@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<keycloak.version>9.0.2</keycloak.version>
+		<keycloak.version>9.0.3</keycloak.version>
 		<springfox.version>2.9.2</springfox.version>
 		<orika.version>1.5.4</orika.version>
 	</properties>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
-import moviesApi from '../misc/movies-api'
+import MoviesApi from '../misc/MoviesApi'
 import MovieList from './MovieList'
 
 class Home extends Component {
@@ -16,7 +16,7 @@ class Home extends Component {
   getMovies = () => {
     this.setState({ isLoading: true })
 
-    moviesApi.get('movies')
+    MoviesApi.get('movies')
       .then(response => {
         const movies = response.data
         this.setState({

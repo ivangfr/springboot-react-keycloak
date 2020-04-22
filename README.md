@@ -10,11 +10,15 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 - **movies-api**
 
-  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete movies - can just be just accessed if an access token (JWT) issued by `Keycloak` is provided. `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
+  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete movies - can just be just accessed if an access token (JWT) issued by `Keycloak` is provided.
+  
+  `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
 - **movies-ui**
 
-  `ReactJS` frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in. `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+  `ReactJS` frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in.
+  
+  `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Prerequisites
 
@@ -53,8 +57,6 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
   ```
 
   This script creates `company-services` realm, `movies-app` client, `MANAGE_MOVIES` client role and the user `ivan.franchin` with the role `MANAGE_MOVIES` assigned.
-
-- Copy the `MOVIESAPP_CLIENT_SECRET` value and paste it in `credentials.secret` property present in `springboot-react-keycloak/movies-ui/public/keycloak.json` file.
 
 ## Running movies-app using Maven & Npm
 
@@ -103,11 +105,6 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Open a terminal
 
-- Export the `movie-app` client secret (generated on [Configure Keycloak](#configure-keycloak)) to the environment variable `MOVIESAPP_CLIENT_SECRET`
-  ```
-  MOVIESAPP_CLIENT_SECRET=...
-  ```
-
 - Run the following commands to get the access token
   ```
   ACCESS_TOKEN="$(curl -s -X POST \
@@ -116,8 +113,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
     -d "username=ivan.franchin" \
     -d "password=123" \
     -d "grant_type=password" \
-    -d "client_secret=$MOVIESAPP_CLIENT_SECRET" \
     -d "client_id=movies-app" | jq -r .access_token)"
+
+  echo $ACCESS_TOKEN
   ```
 
 ### Calling movies-api endpoints using curl
@@ -188,7 +186,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Go to `movies-api` and `movies-ui` terminals and press `Ctrl+C` on each one
 
-- To stop and remove docker-compose containers, networks and volumes, run
+- To stop and remove docker-compose containers, networks and volumes, run the command below in `springboot-react-keycloak` root folder
   ```
   docker-compose down -v
   ```
@@ -207,11 +205,3 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 ## TODO
 
 - add confirmation dialog before deleting a movie
-
-## Issues
-
-- In `package.json`, when updated `keycloak-js` to version `9.0.2`, the following CORS error appears when trying to login
-  ```
-  Access to XMLHttpRequest at 'http://localhost:8080/auth/realms/company-services/protocol/openid-connect/token' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-  ```
-  - Maybe, it is related to the Keycloak Bug Issue [`KEYCLOAK-12542`](https://issues.redhat.com/browse/KEYCLOAK-12542)

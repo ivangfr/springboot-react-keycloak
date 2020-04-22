@@ -7,11 +7,12 @@ import Home from './components/home/Home'
 import Movie from './components/movie/Movie'
 import MovieWizard from './components/wizard/MovieWizard'
 
-const keycloak = Keycloak('/keycloak.json', { onLoad: 'login-required', promiseType: 'native' })
-
 function App() {
+  const keycloak = new Keycloak('keycloak.json')
+  const initConfig = { pkceMethod: 'S256' }
+
   return (
-    <KeycloakProvider keycloak={keycloak}>
+    <KeycloakProvider keycloak={keycloak} initConfig={initConfig}>
       <Router>
         <Navbar />
         <Route path='/' exact component={Home} />

@@ -18,11 +18,11 @@ import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
@@ -58,13 +58,15 @@ public class SwaggerConfig {
 
     @Bean
     public SecurityConfiguration security() {
-        return SecurityConfigurationBuilder.builder().useBasicAuthenticationWithAccessCodeGrant(false).build();
+        return SecurityConfigurationBuilder.builder()
+                .useBasicAuthenticationWithAccessCodeGrant(false)
+                .build();
     }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth())
-                .forPaths(regex("/api/movies.*"))
-                .forHttpMethods(in(Arrays.asList(HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE)))
+                .forPaths(regex("/api/.*"))
+                .forHttpMethods(not(in(Collections.singleton(HttpMethod.GET))))
                 .build();
     }
 

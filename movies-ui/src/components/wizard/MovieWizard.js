@@ -4,8 +4,8 @@ import { withKeycloak } from '@react-keycloak/web'
 import SearchStep from './SearchStep'
 import FormStep from './FormStep'
 import CompleteStep from './CompleteStep'
-import omdbApi from '../misc/omdb-api'
-import moviesApi from '../misc/movies-api'
+import OmdbApi from '../misc/OmdbApi'
+import MoviesApi from '../misc/MoviesApi'
 
 class MovieWizard extends Component {
   state = {
@@ -89,7 +89,7 @@ class MovieWizard extends Component {
   searchMovies = () => {
     this.setState({ isLoading: true })
 
-    omdbApi.get(`?apikey=${process.env.REACT_APP_OMDB_API_KEY}&t=${encodeURI(this.state.search)}`)
+    OmdbApi.get(`?apikey=${process.env.REACT_APP_OMDB_API_KEY}&t=${encodeURI(this.state.search)}`)
       .then(response => {
         let movies = []
         const { Error } = response.data
@@ -118,7 +118,7 @@ class MovieWizard extends Component {
   createMovie = (movie) => {
     const { keycloak } = this.props
 
-    moviesApi.post('movies', movie, {
+    MoviesApi.post('movies', movie, {
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + keycloak.token

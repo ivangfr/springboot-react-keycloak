@@ -3,7 +3,7 @@ import { Container, Grid, Segment, Header } from 'semantic-ui-react'
 import { withKeycloak } from '@react-keycloak/web'
 import MovieForm from './MovieForm'
 import MovieTable from './MovieTable'
-import moviesApi from '../misc/movies-api'
+import MoviesApi from '../misc/MoviesApi'
 
 class Movie extends Component {
   formInitialState = {
@@ -37,7 +37,7 @@ class Movie extends Component {
   }
 
   getAllMovies = () => {
-    moviesApi.get('movies')
+    MoviesApi.get('movies')
       .then(response => {
         const movies = response.data
         this.setState({ movies })
@@ -56,7 +56,7 @@ class Movie extends Component {
     const { imdbId, title, director, year, poster } = this.state.form
     const movie = { imdbId: imdbId, title: title, director: director, year: year, poster: poster }
 
-    moviesApi.post('movies', movie, {
+    MoviesApi.post('movies', movie, {
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + keycloak.token
@@ -73,7 +73,7 @@ class Movie extends Component {
 
   deleteMovie = (id) => {
     const { keycloak } = this.props
-    moviesApi.delete(`movies/${id}`, {
+    MoviesApi.delete(`movies/${id}`, {
       headers: {
         'Authorization': 'Bearer ' + keycloak.token
       }

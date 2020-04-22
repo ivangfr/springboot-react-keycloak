@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "axios": "^0.19.2",
-    "keycloak-js": "^6.0.1",
+    "keycloak-js": "^9.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "@react-keycloak/web": "^1.0.5",
+    "@react-keycloak/web": "^2.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "semantic-ui-react": "^0.88.2"

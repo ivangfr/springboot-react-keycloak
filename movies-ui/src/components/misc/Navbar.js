@@ -13,7 +13,7 @@ class Navbar extends Component {
       keycloak.logout()
     } else {
       keycloak.login()
-    } 
+    }
   }
 
   checkAuthenticated = () => {

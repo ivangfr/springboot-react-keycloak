@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.mycompany.moviesapi.exception.MovieNotFoundException;
 import com.mycompany.moviesapi.model.Movie;
 import com.mycompany.moviesapi.rest.dto.CreateMovieDto;
 import com.mycompany.moviesapi.rest.dto.MovieDto;
@@ -44,7 +43,7 @@ public class MoviesController {
   }
 
   @GetMapping("/{imdbId}")
-  public MovieDto getMovie(@PathVariable String imdbId) throws MovieNotFoundException {
+  public MovieDto getMovie(@PathVariable String imdbId) {
     Movie movie = movieService.validateAndGetMovie(imdbId);
     return mapperFacade.map(movie, MovieDto.class);
   }
@@ -58,8 +57,7 @@ public class MoviesController {
   }
 
   @PutMapping("/{imdbId}")
-  public MovieDto updateMovie(@PathVariable String imdbId, @Valid @RequestBody UpdateMovieDto updateMovieDto)
-      throws MovieNotFoundException {
+  public MovieDto updateMovie(@PathVariable String imdbId, @Valid @RequestBody UpdateMovieDto updateMovieDto) {
     Movie movie = movieService.validateAndGetMovie(imdbId);
     mapperFacade.map(updateMovieDto, movie);
     movie = movieService.saveMovie(movie);
@@ -67,7 +65,7 @@ public class MoviesController {
   }
 
   @DeleteMapping("/{imdbId}")
-  public MovieDto deleteMovie(@PathVariable String imdbId) throws MovieNotFoundException {
+  public MovieDto deleteMovie(@PathVariable String imdbId) {
     Movie movie = movieService.validateAndGetMovie(imdbId);
     movieService.deleteMovie(movie);
     return mapperFacade.map(movie, MovieDto.class);

@@ -6,6 +6,7 @@ echo "KEYCLOAK_URL: $KEYCLOAK_URL"
 
 echo
 echo "Getting admin access token"
+echo "=========================="
 
 ADMIN_TOKEN=$(curl -s -X POST \
 "http://$KEYCLOAK_URL/auth/realms/master/protocol/openid-connect/token" \
@@ -16,36 +17,30 @@ ADMIN_TOKEN=$(curl -s -X POST \
 -d 'client_id=admin-cli' | jq -r '.access_token')
 
 echo "ADMIN_TOKEN=$ADMIN_TOKEN"
-echo "---------"
 
+echo
 echo "Creating realm"
+echo "=============="
 
 curl -i -X POST "http://$KEYCLOAK_URL/auth/admin/realms" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"realm": "company-services", "enabled": true}'
 
-echo "---------"
 echo "Creating client"
+echo "==============="
 
 CLIENT_ID=$(curl -si -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
 -H "Content-Type: application/json" \
--d '{"clientId": "movies-app", "directAccessGrantsEnabled": true, "redirectUris": ["http://localhost:3000/*"]}' \
+-d '{"clientId": "movies-app", "directAccessGrantsEnabled": true, "publicClient": true, "redirectUris": ["http://localhost:3000/*"]}' \
 | grep -oE '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}')
 
 echo "CLIENT_ID=$CLIENT_ID"
 
-echo "---------"
-echo "Getting client secret"
-
-MOVIESAPP_CLIENT_SECRET=$(curl -s "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients/$CLIENT_ID/client-secret" \
--H "Authorization: Bearer $ADMIN_TOKEN" | jq -r '.value')
-
-echo "MOVIESAPP_CLIENT_SECRET=$MOVIESAPP_CLIENT_SECRET"
-
-echo "---------"
+echo
 echo "Creating client role"
+echo "===================="
 
 curl -i -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clients/$CLIENT_ID/roles" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
@@ -57,8 +52,9 @@ ROLE_ID=$(curl -s "http://$KEYCLOAK_URL/auth/admin/realms/company-services/clien
 
 echo "ROLE_ID=$ROLE_ID"
 
-echo "---------"
+echo
 echo "Creating user"
+echo "============="
 
 USER_ID=$(curl -si -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-services/users" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
@@ -68,16 +64,17 @@ USER_ID=$(curl -si -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-servi
 
 echo "USER_ID=$USER_ID"
 
-echo "---------"
+echo
 echo "Setting client role to user"
+echo "==========================="
 
 curl -i -X POST "http://$KEYCLOAK_URL/auth/admin/realms/company-services/users/$USER_ID/role-mappings/clients/$CLIENT_ID" \
 -H "Authorization: Bearer $ADMIN_TOKEN" \
 -H "Content-Type: application/json" \
 -d '[{"id":"'"$ROLE_ID"'","name":"MANAGE_MOVIES"}]'
 
-echo "---------"
 echo "Getting user access token"
+echo "========================="
 
 curl -s -X POST \
 "http://$KEYCLOAK_URL/auth/realms/company-services/protocol/openid-connect/token" \
@@ -87,8 +84,3 @@ curl -s -X POST \
 -d "grant_type=password" \
 -d "client_secret=$MOVIESAPP_CLIENT_SECRET" \
 -d "client_id=movies-app" | jq -r .access_token
-
-echo
-echo "---------"
-echo "MOVIESAPP_CLIENT_SECRET=$MOVIESAPP_CLIENT_SECRET"
-echo "---------"
