@@ -1,7 +1,7 @@
 import React from 'react'
-import { Table, Button, Image } from 'semantic-ui-react'
+import { Button, Image, Table } from 'semantic-ui-react'
 
-function MovieTable({ movies, deleteMovie, editMovie }) {
+function MovieTable({ movies, handleDeleteMovie, handleEditMovie }) {
   const movieList = movies && movies.map(movie => {
     return (
       <Table.Row key={movie.imdbId}>
@@ -11,14 +11,14 @@ function MovieTable({ movies, deleteMovie, editMovie }) {
             color='red'
             size='small'
             icon='trash'
-            onClick={() => deleteMovie(movie.imdbId)}
+            onClick={() => handleDeleteMovie(movie.imdbId)}
           />
           <Button
             circular
             color='orange'
             size='small'
             icon='edit'
-            onClick={() => editMovie(movie)}
+            onClick={() => handleEditMovie(movie)}
           />
         </Table.Cell>
         <Table.Cell>{movie.imdbId}</Table.Cell>
@@ -26,7 +26,7 @@ function MovieTable({ movies, deleteMovie, editMovie }) {
         <Table.Cell>{movie.director}</Table.Cell>
         <Table.Cell>{movie.year}</Table.Cell>
         <Table.Cell>
-          <Image src={movie.poster} rounded size='tiny' />
+          <Image src={movie.poster ? movie.poster : '/images/movie-poster.jpg'} rounded size='tiny' />
         </Table.Cell>
       </Table.Row>
     )

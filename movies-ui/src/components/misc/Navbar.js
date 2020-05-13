@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
-import { Menu, Container, Dropdown } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
 import { withKeycloak } from '@react-keycloak/web'
+import { NavLink, withRouter } from 'react-router-dom'
+import { Container, Dropdown, Menu } from 'semantic-ui-react'
 
 class Navbar extends Component {
 

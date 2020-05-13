@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, Table, Form } from 'semantic-ui-react'
+import { Form, Segment, Table } from 'semantic-ui-react'
 
 function SearchStep({ search, isLoading, movies, selectedMovie, handleChange, searchMovies, handleTableSelection }) {
   const movieList = movies ? movies.map(movie => {

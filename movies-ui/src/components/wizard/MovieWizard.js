@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Container, Grid, Responsive, Segment, Step, Button, Icon } from 'semantic-ui-react'
 import { withKeycloak } from '@react-keycloak/web'
-import SearchStep from './SearchStep'
-import FormStep from './FormStep'
+import { Button, Container, Grid, Icon, Step } from 'semantic-ui-react'
+import { handleLogError } from '../misc/Helpers'
+import { moviesApi } from '../misc/MoviesApi'
+import { omdbApi } from '../misc/OmdbApi'
 import CompleteStep from './CompleteStep'
-import OmdbApi from '../misc/OmdbApi'
-import MoviesApi from '../misc/MoviesApi'
+import FormStep from './FormStep'
+import SearchStep from './SearchStep'
 
 class MovieWizard extends Component {
   state = {
@@ -26,24 +27,22 @@ class MovieWizard extends Component {
     imdbIdError: false,
     titleError: false,
     directorError: false,
-    yearError: false,
-    posterError: false
+    yearError: false
   }
 
   previousStep = () => {
     let { step } = this.state
 
-    let { imdbIdError, titleError, directorError, yearError, posterError } = this.state
+    let { imdbIdError, titleError, directorError, yearError } = this.state
     if (step === 2) {
       imdbIdError = false
       titleError = false
       directorError = false
       yearError = false
-      posterError = false
     }
 
     step = step > 1 ? step - 1 : step
-    this.setState({ step, imdbIdError, titleError, directorError, yearError, posterError })
+    this.setState({ step, imdbIdError, titleError, directorError, yearError })
   }
 
   nextStep = () => {
@@ -89,7 +88,7 @@ class MovieWizard extends Component {
   searchMovies = () => {
     this.setState({ isLoading: true })
 
-    OmdbApi.get(`?apikey=${process.env.REACT_APP_OMDB_API_KEY}&t=${encodeURI(this.state.search)}`)
+    omdbApi.getMovies(this.state.search)
       .then(response => {
         let movies = []
         const { Error } = response.data
@@ -105,30 +104,22 @@ class MovieWizard extends Component {
           }
           movies.push(movie)
         }
-        this.setState({
-          movies,
-          isLoading: false
-        })
+        this.setState({ movies, isLoading: false })
       })
       .catch(error => {
-        console.log(error)
+        handleLogError(error)
       })
   }
 
   createMovie = (movie) => {
     const { keycloak } = this.props
 
-    MoviesApi.post('movies', movie, {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': 'Bearer ' + keycloak.token
-      }
-    })
+    moviesApi.saveMovie(movie, keycloak.token)
       .then((response) => {
         this.props.history.push("/home")
       })
       .catch(error => {
-        console.log(error)
+        handleLogError(error)
       })
   }
 
@@ -137,10 +128,9 @@ class MovieWizard extends Component {
     const titleError = this.state.title.trim() === ''
     const directorError = this.state.director.trim() === ''
     const yearError = this.state.year.trim() === ''
-    const posterError = this.state.poster.trim() === ''
 
-    this.setState({ imdbIdError, titleError, directorError, yearError, posterError })
-    return imdbIdError || titleError || directorError || yearError || posterError ? false : true
+    this.setState({ imdbIdError, titleError, directorError, yearError })
+    return (imdbIdError || titleError || directorError || yearError) ? false : true
   }
 
   getContent = () => {
@@ -161,7 +151,7 @@ class MovieWizard extends Component {
         />
       )
     } else if (step === 2) {
-      const { imdbId, title, director, year, poster, imdbIdError, titleError, directorError, yearError, posterError } = this.state
+      const { imdbId, title, director, year, poster, imdbIdError, titleError, directorError, yearError } = this.state
       stepContent = (
         <FormStep
           imdbId={imdbId}
@@ -173,7 +163,6 @@ class MovieWizard extends Component {
           titleError={titleError}
           directorError={directorError}
           yearError={yearError}
-          posterError={posterError}
           handleChange={this.handleChange}
         />
       )
@@ -192,33 +181,31 @@ class MovieWizard extends Component {
       <Container>
         <Grid>
           <Grid.Column mobile={16} tablet={4} computer={4}>
-            <Responsive as={Segment} minWidth="768">
-              <Step.Group fluid vertical >
-                <Step active={step === 1}>
-                  <Icon name='search' />
-                  <Step.Content>
-                    <Step.Title>Search</Step.Title>
-                    <Step.Description>Search movie</Step.Description>
-                  </Step.Content>
-                </Step>
+            <Step.Group fluid vertical >
+              <Step active={step === 1}>
+                <Icon name='search' />
+                <Step.Content>
+                  <Step.Title>Search</Step.Title>
+                  <Step.Description>Search movie</Step.Description>
+                </Step.Content>
+              </Step>
 
-                <Step active={step === 2}>
-                  <Icon name='film' />
-                  <Step.Content>
-                    <Step.Title>Movie</Step.Title>
-                    <Step.Description>Movie Form</Step.Description>
-                  </Step.Content>
-                </Step>
+              <Step active={step === 2}>
+                <Icon name='film' />
+                <Step.Content>
+                  <Step.Title>Movie</Step.Title>
+                  <Step.Description>Movie Form</Step.Description>
+                </Step.Content>
+              </Step>
 
-                <Step active={step === 3}>
-                  <Icon name='flag checkered' />
-                  <Step.Content>
-                    <Step.Title>Complete</Step.Title>
-                    <Step.Description>Preview and complete</Step.Description>
-                  </Step.Content>
-                </Step>
-              </Step.Group>
-            </Responsive>
+              <Step active={step === 3}>
+                <Icon name='flag checkered' />
+                <Step.Content>
+                  <Step.Title>Complete</Step.Title>
+                  <Step.Description>Preview and complete</Step.Description>
+                </Step.Content>
+              </Step>
+            </Step.Group>
 
             <Button.Group fluid>
               <Button

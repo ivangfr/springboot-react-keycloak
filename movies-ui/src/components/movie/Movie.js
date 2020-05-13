@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Grid, Segment, Header } from 'semantic-ui-react'
 import { withKeycloak } from '@react-keycloak/web'
+import { Container, Grid, Header, Segment } from 'semantic-ui-react'
+import { handleLogError } from '../misc/Helpers'
+import { moviesApi } from '../misc/MoviesApi'
 import MovieForm from './MovieForm'
 import MovieTable from './MovieTable'
-import MoviesApi from '../misc/MoviesApi'
 
 class Movie extends Component {
   formInitialState = {
@@ -16,8 +17,7 @@ class Movie extends Component {
     imdbIdError: false,
     titleError: false,
     directorError: false,
-    yearError: false,
-    posterError: false,
+    yearError: false
   }
 
   state = {
@@ -26,7 +26,7 @@ class Movie extends Component {
   }
 
   componentDidMount() {
-    this.getAllMovies()
+    this.handleGetMovies()
   }
 
   handleChange = (e) => {
@@ -36,57 +36,48 @@ class Movie extends Component {
     this.setState({ form })
   }
 
-  getAllMovies = () => {
-    MoviesApi.get('movies')
+  handleGetMovies = () => {
+    moviesApi.getMovies()
       .then(response => {
         const movies = response.data
         this.setState({ movies })
       })
       .catch(error => {
-        console.log(error)
+        handleLogError(error)
       })
   }
 
-  saveMovie = () => {
+  handleSaveMovie = () => {
     if (!this.isValidForm()) {
       return
     }
 
     const { keycloak } = this.props
     const { imdbId, title, director, year, poster } = this.state.form
-    const movie = { imdbId: imdbId, title: title, director: director, year: year, poster: poster }
+    const movie = { imdbId, title, director, year, poster }
 
-    MoviesApi.post('movies', movie, {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': 'Bearer ' + keycloak.token
-      }
-    })
+    moviesApi.saveMovie(movie, keycloak.token)
       .then(() => {
         this.clearForm()
-        this.getAllMovies()
+        this.handleGetMovies()
       })
       .catch(error => {
-        console.log(error)
+        handleLogError(error)
       })
   }
 
-  deleteMovie = (id) => {
+  handleDeleteMovie = (id) => {
     const { keycloak } = this.props
-    MoviesApi.delete(`movies/${id}`, {
-      headers: {
-        'Authorization': 'Bearer ' + keycloak.token
-      }
-    })
+    moviesApi.deleteMovie(id, keycloak.token)
       .then(() => {
-        this.getAllMovies()
+        this.handleGetMovies()
       })
       .catch(error => {
-        console.log(error)
+        handleLogError(error)
       })
   }
 
-  editMovie = (movie) => {
+  handleEditMovie = (movie) => {
     const form = {
       imdbId: movie.imdbId,
       title: movie.title,
@@ -96,8 +87,7 @@ class Movie extends Component {
       imdbIdError: false,
       titleError: false,
       directorError: false,
-      yearError: false,
-      posterError: false,
+      yearError: false
     }
     this.setState({ form })
   }
@@ -114,16 +104,14 @@ class Movie extends Component {
     const titleError = form.title.trim() === ''
     const directorError = form.director.trim() === ''
     const yearError = form.year.trim() === ''
-    const posterError = form.poster.trim() === ''
 
     form.imdbIdError = imdbIdError
     form.titleError = titleError
     form.directorError = directorError
     form.yearError = yearError
-    form.posterError = posterError
 
     this.setState({ form })
-    return (imdbIdError || titleError || directorError || yearError || posterError) ? false : true
+    return (imdbIdError || titleError || directorError || yearError) ? false : true
   }
 
   render() {
@@ -136,7 +124,7 @@ class Movie extends Component {
               <MovieForm
                 form={this.state.form}
                 handleChange={this.handleChange}
-                saveMovie={this.saveMovie}
+                handleSaveMovie={this.handleSaveMovie}
                 clearForm={this.clearForm}
               />
             </Segment>
@@ -145,8 +133,8 @@ class Movie extends Component {
             <Segment>
               <MovieTable
                 movies={this.state.movies}
-                deleteMovie={this.deleteMovie}
-                editMovie={this.editMovie}
+                handleDeleteMovie={this.handleDeleteMovie}
+                handleEditMovie={this.handleEditMovie}
               />
             </Segment>
           </Grid.Column>

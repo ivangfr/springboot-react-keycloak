@@ -25,7 +25,6 @@ public class CreateMovieDto {
   private String year;
 
   @ApiModelProperty(position = 4, example = "https://m.media-amazon.com/images/M/MV5BN2Y2MTljNjMtMDRlNi00ZWNhLThmMWItYTlmZjYyZDk4NzYxXkEyXkFqcGdeQXVyNjQ2MjQ5NzM@._V1_SX300.jpg")
-  @NotBlank
   private String poster;
 
 }

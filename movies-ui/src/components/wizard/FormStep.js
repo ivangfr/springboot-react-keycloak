@@ -1,7 +1,7 @@
 import React from 'react'
-import { Segment, Form } from 'semantic-ui-react'
+import { Form, Segment } from 'semantic-ui-react'
 
-function FormStep({ imdbId, title, director, year, poster, imdbIdError, titleError, directorError, yearError, posterError, handleChange }) {
+function FormStep({ imdbId, title, director, year, poster, imdbIdError, titleError, directorError, yearError, handleChange }) {
   return (
     <Segment>
       <Form>
@@ -41,7 +41,6 @@ function FormStep({ imdbId, title, director, year, poster, imdbIdError, titleErr
           id='poster'
           onChange={handleChange}
           value={poster}
-          error={posterError}
         />
       </Form>
     </Segment>

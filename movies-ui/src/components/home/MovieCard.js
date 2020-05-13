@@ -4,7 +4,7 @@ import { Card, Image } from 'semantic-ui-react'
 function MovieCard({ movie }) {
   return (
     <Card>
-      <Image src={movie.poster} wrapped ui={false} />
+      <Image src={movie.poster ? movie.poster : '/images/movie-poster.jpg'} wrapped ui={false} />
       <Card.Content textAlign="center">
         <Card.Header>{movie.title}</Card.Header>
       </Card.Content>

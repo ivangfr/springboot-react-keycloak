@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
-import MoviesApi from '../misc/MoviesApi'
+import { handleLogError } from '../misc/Helpers'
+import { moviesApi } from '../misc/MoviesApi'
 import MovieList from './MovieList'
 
 class Home extends Component {
@@ -10,22 +11,14 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.getMovies()
-  }
-
-  getMovies = () => {
     this.setState({ isLoading: true })
-
-    MoviesApi.get('movies')
+    moviesApi.getMovies()
       .then(response => {
         const movies = response.data
-        this.setState({
-          isLoading: false,
-          movies
-        })
+        this.setState({ movies, isLoading: false })
       })
       .catch(error => {
-        console.log(error)
+        handleLogError(error)
       })
   }
 

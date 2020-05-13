@@ -1,6 +1,6 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
 import { withKeycloak } from '@react-keycloak/web'
+import { Route } from 'react-router-dom'
 
 function PrivateRoute({ component: Component, ...rest }) {
   return rest.keycloakInitialized && <Route {...rest} render={props => (

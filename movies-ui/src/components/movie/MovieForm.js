@@ -1,7 +1,7 @@
 import React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 
-function MovieForm({ form, handleChange, saveMovie, clearForm }) {
+function MovieForm({ form, handleChange, handleSaveMovie, clearForm }) {
   return (
     <Form>
       <Form.Input
@@ -42,12 +42,11 @@ function MovieForm({ form, handleChange, saveMovie, clearForm }) {
         id='poster'
         onChange={handleChange}
         value={form.poster}
-        error={form.posterError}
       />
       <Button.Group fluid>
         <Button onClick={clearForm}>Cancel</Button>
         <Button.Or />
-        <Button positive onClick={saveMovie}>Save</Button>
+        <Button positive onClick={handleSaveMovie}>Save</Button>
       </Button.Group>
     </Form>
   )

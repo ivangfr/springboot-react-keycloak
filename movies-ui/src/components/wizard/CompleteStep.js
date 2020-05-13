@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, Form } from 'semantic-ui-react'
+import { Form, Segment } from 'semantic-ui-react'
 import MovieCard from '../home/MovieCard'
 
 function CompleteStep({ movie, createMovie }) {

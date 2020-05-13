@@ -7,14 +7,7 @@ function MovieList({ isLoading, movies }) {
     return null
   }
 
-  const movieList = movies && movies.map(movie => {
-    return (
-      <MovieCard
-        key={movie.imdbId}
-        movie={movie}
-      />
-    )
-  })
+  const movieList = movies && movies.map(movie => <MovieCard key={movie.imdbId} movie={movie} />)
 
   return (
     movies && movies.length > 0 ? (

@@ -14,6 +14,15 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
   
   `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
+  `movie-api` has the following endpoints
+
+  | Endpoint                                                          | Secured | Roles           |
+  | ----------------------------------------------------------------- | ------- | --------------- |
+  | `GET /api/movies`                                                 | No      |                 |
+  | `GET /api/movies/{imdbId}`                                        | No      |                 |
+  | `POST /api/movies -d {"imdb","title","director","year","poster"}` | Yes     | `MANAGE_MOVIES` |
+  | `DELETE /api/movies/{imdbId}`                                     | Yes     | `MANAGE_MOVIES` |
+
 - **movies-ui**
 
   `ReactJS` frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in.
@@ -73,7 +82,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
   - Open another terminal and navigate to `springboot-react-keycloak/movies-ui` folder
 
-  - \[Optional\] Run the command below if you are running the application for the first time
+  - Run the command below if you are running the application for the first time
     ```
     npm install
     ```
@@ -173,8 +182,6 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ```
 
 ### Calling movies-api endpoints using Swagger
-
-![movies-api-swagger](images/movies-api-swagger.png)
 
 - Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
 
