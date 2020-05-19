@@ -1,15 +1,12 @@
 import React from 'react'
-import { Form, Segment } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
 import MovieCard from '../home/MovieCard'
 
-function CompleteStep({ movie, createMovie }) {
+function CompleteStep({ movie }) {
   return (
-    <Segment compact>
-      <MovieCard movie={movie} />
-      <Form>
-        <Form.Button fluid primary onClick={() => createMovie(movie)}>Create</Form.Button>
-      </Form>
-    </Segment>
+    <Card.Group doubling centered>
+      <MovieCard movie={movie} link={false} />
+    </Card.Group>
   )
 }
 

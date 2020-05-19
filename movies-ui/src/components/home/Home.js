@@ -10,24 +10,25 @@ class Home extends Component {
     movies: []
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({ isLoading: true })
-    moviesApi.getMovies()
-      .then(response => {
-        const movies = response.data
-        this.setState({ movies, isLoading: false })
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
+    try {
+      const response = await moviesApi.getMovies()
+      const movies = response.data
+      this.setState({ movies, isLoading: false })
+    } catch (error) {
+      handleLogError(error)
+    }
   }
 
   render() {
     const { isLoading, movies } = this.state
     return (
-      <Container>
-        <MovieList isLoading={isLoading} movies={movies} />
-      </Container>
+      isLoading ? <></> : (
+        <Container>
+          <MovieList movies={movies} />
+        </Container>
+      )
     )
   }
 }

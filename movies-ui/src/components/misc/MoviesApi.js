@@ -3,12 +3,20 @@ import { config } from '../../Constants'
 
 export const moviesApi = {
   getMovies,
+  getMovie,
   saveMovie,
-  deleteMovie
+  deleteMovie,
+  addMovieComment,
+  getUserExtrasMe,
+  saveUserExtrasMe
 }
 
 function getMovies() {
   return instance.get('/api/movies')
+}
+
+function getMovie(imdbId) {
+  return instance.get(`/api/movies/${imdbId}`)
 }
 
 function saveMovie(movie, token) {
@@ -20,8 +28,29 @@ function saveMovie(movie, token) {
   })
 }
 
-function deleteMovie(id, token) {
-  return instance.delete(`/api/movies/${id}`, {
+function deleteMovie(imdbId, token) {
+  return instance.delete(`/api/movies/${imdbId}`, {
+    headers: { 'Authorization': bearerAuth(token) }
+  })
+}
+
+function addMovieComment(imdbId, comment, token) {
+  return instance.post(`/api/movies/${imdbId}/comments`, comment, {
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': bearerAuth(token)
+    }
+  })
+}
+
+function getUserExtrasMe(token) {
+  return instance.get(`/api/userextras/me`, {
+    headers: { 'Authorization': bearerAuth(token) }
+  })
+}
+
+function saveUserExtrasMe(token, userExtra) {
+  return instance.post(`/api/userextras/me`, userExtra, {
     headers: { 'Authorization': bearerAuth(token) }
   })
 }
@@ -31,6 +60,15 @@ function deleteMovie(id, token) {
 const instance = axios.create({
   baseURL: config.url.API_BASE_URL
 })
+
+instance.interceptors.response.use(response => {
+  return response;
+}, function (error) {
+  if (error.response.status === 404) {
+    return { status: error.response.status };
+  }
+  return Promise.reject(error.response);
+});
 
 // -- Helper functions
 

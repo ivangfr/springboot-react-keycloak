@@ -1,39 +1,41 @@
 import React from 'react'
 import { Form, Segment, Table } from 'semantic-ui-react'
 
-function SearchStep({ search, isLoading, movies, selectedMovie, handleChange, searchMovies, handleTableSelection }) {
+function SearchStep({ searchText, isLoading, movies, selectedMovie, handleChange, handleSearchMovies, handleTableSelection }) {
   const movieList = movies ? movies.map(movie => {
     const active = movie && selectedMovie && movie.imdbId === selectedMovie.imdbId ? true : false
     return (
-      <Table.Row
-        key={movie.imdbId}
-        active={active}
-        onClick={() => handleTableSelection(movie)}
-      >
+      <Table.Row key={movie.imdbId} active={active} onClick={() => handleTableSelection(movie)}>
         <Table.Cell>{movie.imdbId}</Table.Cell>
         <Table.Cell>{movie.title}</Table.Cell>
         <Table.Cell>{movie.director}</Table.Cell>
         <Table.Cell>{movie.year}</Table.Cell>
       </Table.Row>
     )
-  }) : (
-      <Table.Row>
-        <Table.Cell></Table.Cell>
-      </Table.Row>
+  }) : (<Table.Row>
+    <Table.Cell></Table.Cell>
+  </Table.Row>
     )
 
   return (
     <Segment loading={isLoading}>
-      <Form onSubmit={searchMovies}>
-        <Form.Group widths='equal'>
+      <Form onSubmit={handleSearchMovies}>
+        <Form.Group unstackable>
           <Form.Input
-            fluid
             placeholder='Search for a movie title ...'
-            id='search'
-            value={search}
+            id='searchText'
+            value={searchText}
             onChange={handleChange}
+            fluid
+            width={12}
           />
-          <Form.Button primary content='Search' />
+          <Form.Button
+            color='blue'
+            content='Search'
+            disabled={searchText.trim() === ''}
+            fluid
+            width={4}
+          />
         </Form.Group>
       </Form>
 

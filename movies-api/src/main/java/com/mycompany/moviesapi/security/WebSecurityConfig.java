@@ -20,42 +20,47 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @KeycloakConfiguration
 public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-    keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
-    auth.authenticationProvider(keycloakAuthenticationProvider);
-  }
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
+        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+        auth.authenticationProvider(keycloakAuthenticationProvider);
+    }
 
-  @Bean
-  public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
-    return new KeycloakSpringBootConfigResolver();
-  }
+    @Bean
+    public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
+        return new KeycloakSpringBootConfigResolver();
+    }
 
-  @Bean
-  @Override
-  protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-    return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-  }
+    @Bean
+    @Override
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+    }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    super.configure(http);
-    http.authorizeRequests()
-      .antMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**").permitAll()
-      .antMatchers("/api/movies", "/api/movies/**").hasRole("MANAGE_MOVIES")
-      .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-      .antMatchers("/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
-      .anyRequest().authenticated();
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    http.cors().and().csrf().disable();
-  }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**", "/actuator/**").permitAll()
+                .antMatchers("/api/movies/**/comments").hasAnyRole(MOVIES_MANAGER, USER)
+                .antMatchers("/api/movies", "/api/movies/**").hasRole(MOVIES_MANAGER)
+                .antMatchers("/api/userextras/me").hasAnyRole(MOVIES_MANAGER, USER)
+                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .antMatchers("/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
+                .anyRequest().authenticated();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors().and().csrf().disable();
+    }
 
-  @Bean
-  @Override
-  @ConditionalOnMissingBean(HttpSessionManager.class)
-  protected HttpSessionManager httpSessionManager() {
-    return new HttpSessionManager();
-  }
+    @Bean
+    @Override
+    @ConditionalOnMissingBean(HttpSessionManager.class)
+    protected HttpSessionManager httpSessionManager() {
+        return new HttpSessionManager();
+    }
+
+    public static final String MOVIES_MANAGER = "MOVIES_MANAGER";
+    public static final String USER = "USER";
 
 }

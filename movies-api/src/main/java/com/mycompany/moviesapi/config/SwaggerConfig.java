@@ -18,6 +18,7 @@ import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class SwaggerConfig {
                 .paths(regex("/api/.*"))
                 .build()
                 .apiInfo(getApiInfo())
-                .securityContexts(Collections.singletonList(securityContext()))
+                .securityContexts(Arrays.asList(moviesSecurityContext(), userExtrasSecurityContext()))
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .ignoredParameterTypes(Principal.class);
     }
@@ -63,10 +64,16 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private SecurityContext securityContext() {
+    private SecurityContext moviesSecurityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth())
-                .forPaths(regex("/api/.*"))
+                .forPaths(regex("/api/movies.*"))
                 .forHttpMethods(not(in(Collections.singleton(HttpMethod.GET))))
+                .build();
+    }
+
+    private SecurityContext userExtrasSecurityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth())
+                .forPaths(regex("/api/userextras.*"))
                 .build();
     }
 

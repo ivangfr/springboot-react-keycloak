@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { withKeycloak } from '@react-keycloak/web'
-import { Button, Container, Grid, Icon, Step } from 'semantic-ui-react'
+import { Button, Container, Grid, Icon, Step, Divider } from 'semantic-ui-react'
 import { handleLogError } from '../misc/Helpers'
 import { moviesApi } from '../misc/MoviesApi'
 import { omdbApi } from '../misc/OmdbApi'
 import CompleteStep from './CompleteStep'
 import FormStep from './FormStep'
 import SearchStep from './SearchStep'
+import { Redirect } from 'react-router-dom'
+import { isAdmin } from '../misc/Helpers'
 
 class MovieWizard extends Component {
   state = {
@@ -14,7 +16,7 @@ class MovieWizard extends Component {
 
     // Search Step
     isLoading: false,
-    search: '',
+    searchText: '',
     movies: [],
     selectedMovie: null,
 
@@ -30,10 +32,9 @@ class MovieWizard extends Component {
     yearError: false
   }
 
-  previousStep = () => {
-    let { step } = this.state
+  handlePreviousStep = () => {
+    let { step, imdbIdError, titleError, directorError, yearError } = this.state
 
-    let { imdbIdError, titleError, directorError, yearError } = this.state
     if (step === 2) {
       imdbIdError = false
       titleError = false
@@ -45,7 +46,7 @@ class MovieWizard extends Component {
     this.setState({ step, imdbIdError, titleError, directorError, yearError })
   }
 
-  nextStep = () => {
+  handleNextStep = () => {
     let { step } = this.state
 
     if (step === 2 && !this.isValidForm()) {
@@ -85,12 +86,13 @@ class MovieWizard extends Component {
     }
   }
 
-  searchMovies = () => {
+  handleSearchMovies = async () => {
     this.setState({ isLoading: true })
+    const {searchText} = this.state
 
-    omdbApi.getMovies(this.state.search)
-      .then(response => {
-        let movies = []
+    try {
+      const response = await omdbApi.getMovies(searchText)
+      let movies = []
         const { Error } = response.data
         if (Error) {
           console.log(Error)
@@ -105,29 +107,31 @@ class MovieWizard extends Component {
           movies.push(movie)
         }
         this.setState({ movies, isLoading: false })
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
+    } catch (error) {
+      handleLogError(error)
+    }
   }
 
-  createMovie = (movie) => {
+  handleCreateMovie = async () => {
     const { keycloak } = this.props
-
-    moviesApi.saveMovie(movie, keycloak.token)
-      .then((response) => {
-        this.props.history.push("/home")
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
+    const { imdbId, title, director, year, poster } = this.state
+    
+    const movie = { imdbId, title, director, year, poster }
+    try {
+      await moviesApi.saveMovie(movie, keycloak.token)
+      this.props.history.push("/home")
+    } catch (error) {
+      handleLogError(error)
+    }
   }
 
   isValidForm = () => {
-    const imdbIdError = this.state.imdbId.trim() === ''
-    const titleError = this.state.title.trim() === ''
-    const directorError = this.state.director.trim() === ''
-    const yearError = this.state.year.trim() === ''
+    const {imdbId, title, director, year} = this.state
+
+    const imdbIdError = imdbId.trim() === ''
+    const titleError = title.trim() === ''
+    const directorError = director.trim() === ''
+    const yearError = year.trim() === ''
 
     this.setState({ imdbIdError, titleError, directorError, yearError })
     return (imdbIdError || titleError || directorError || yearError) ? false : true
@@ -138,15 +142,15 @@ class MovieWizard extends Component {
 
     let stepContent = null
     if (step === 1) {
-      const { isLoading, search, movies, selectedMovie } = this.state
+      const { isLoading, searchText, movies, selectedMovie } = this.state
       stepContent = (
         <SearchStep
-          search={search}
+          searchText={searchText}
           isLoading={isLoading}
           movies={movies}
           selectedMovie={selectedMovie}
           handleChange={this.handleChange}
-          searchMovies={this.searchMovies}
+          handleSearchMovies={this.handleSearchMovies}
           handleTableSelection={this.handleTableSelection}
         />
       )
@@ -170,16 +174,13 @@ class MovieWizard extends Component {
       const { imdbId, title, director, year, poster } = this.state
       const movie = { imdbId, title, director, year, poster }
       stepContent = (
-        <CompleteStep
-          movie={movie}
-          createMovie={this.createMovie}
-        />
+        <CompleteStep movie={movie} />
       )
     }
 
     return (
       <Container>
-        <Grid>
+        <Grid columns={2}>
           <Grid.Column mobile={16} tablet={4} computer={4}>
             <Step.Group fluid vertical >
               <Step active={step === 1}>
@@ -210,13 +211,20 @@ class MovieWizard extends Component {
             <Button.Group fluid>
               <Button
                 disabled={step === 1}
-                onClick={this.previousStep}>Back</Button>
+                onClick={this.handlePreviousStep}>Back</Button>
               <Button.Or />
               <Button
                 positive
                 disabled={step === 3}
-                onClick={this.nextStep}>Next</Button>
+                onClick={this.handleNextStep}>Next</Button>
             </Button.Group>
+
+            {step === 3 && (
+              <>
+                <Divider />
+                <Button fluid color='blue' onClick={this.handleCreateMovie}>Create</Button>
+              </>
+            )}
           </Grid.Column>
           <Grid.Column mobile={16} tablet={12} computer={12}>
             {stepContent}
@@ -228,8 +236,7 @@ class MovieWizard extends Component {
 
   render() {
     const { keycloak } = this.props
-    const { authenticated } = keycloak
-    return keycloak && authenticated ? this.getContent() : <div></div>
+    return keycloak && keycloak.authenticated && isAdmin(keycloak) ? this.getContent() : <Redirect to='/' />
   }
 }
 

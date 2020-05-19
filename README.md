@@ -1,6 +1,6 @@
 # springboot-react-keycloak
 
-The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
+The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with PKCE). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
 
 ## Project diagram
 
@@ -10,22 +10,25 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 - **movies-api**
 
-  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its sensitive endpoints - like create, update and delete movies - can just be just accessed if an access token (JWT) issued by `Keycloak` is provided.
+  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its secured endpoints can just be just accessed if an access token (JWT) issued by `Keycloak` is provided.
   
   `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
   `movie-api` has the following endpoints
 
-  | Endpoint                                                          | Secured | Roles           |
-  | ----------------------------------------------------------------- | ------- | --------------- |
-  | `GET /api/movies`                                                 | No      |                 |
-  | `GET /api/movies/{imdbId}`                                        | No      |                 |
-  | `POST /api/movies -d {"imdb","title","director","year","poster"}` | Yes     | `MANAGE_MOVIES` |
-  | `DELETE /api/movies/{imdbId}`                                     | Yes     | `MANAGE_MOVIES` |
+  | Endpoint                                                          | Secured | Roles                       |
+  | ----------------------------------------------------------------- | ------- | --------------------------- |
+  | `GET /api/users/me`                                               | Yes     | `MOVIES_MANAGER` and `USER` |
+  | `POST /api/users/me -d {avatar}`                                  | Yes     | `MOVIES_MANAGER` and `USER` | 
+  | `GET /api/movies`                                                 | No      |                             |
+  | `GET /api/movies/{imdbId}`                                        | No      |                             |
+  | `POST /api/movies -d {"imdb","title","director","year","poster"}` | Yes     | `MOVIES_MANAGER`            |
+  | `DELETE /api/movies/{imdbId}`                                     | Yes     | `MANAGE_MOVIES`             |
+  | `POST /api/movies/{imdbId}/comments -d {"text"}`                  | Yes     | `MOVIES_MANAGER` and `USER` |
 
 - **movies-ui**
 
-  `ReactJS` frontend application where `users` can see the list of movies and `admins` can manage movies. In order to access the `Admin` section, the `admin` should login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to sensitive endpoints in `movies-api` have the access token (JWT) that is generated when the `admin` logs in.
+  `ReactJS` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT) that is generated when `user` / `admin` logs in.
   
   `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
@@ -44,6 +47,10 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
   REACT_APP_OMDB_API_KEY=<your-api-key>
   ```
 
+## PKCE
+
+As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key for Code Exchange`) since version `7.0.0`, we are using it in this project. 
+
 ## Start environment
 
 - In a terminal and inside `springboot-react-keycloak` root folder run
@@ -56,17 +63,6 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
   docker-compose ps
   ```
 
-## Configure Keycloak
-
-- In a terminal, make sure you are in `springboot-react-keycloak` root folder
-
-- Run the following script to configure `movies-app` in Keycloak
-  ```
-  ./init-keycloak.sh
-  ```
-
-  This script creates `company-services` realm, `movies-app` client, `MANAGE_MOVIES` client role and the user `ivan.franchin` with the role `MANAGE_MOVIES` assigned.
-
 ## Running movies-app using Maven & Npm
 
 - **movies-api**
@@ -77,6 +73,16 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
     ```
     ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
     ```
+
+  - Once the startup finishes, `KeycloakInitializerRunner.java` class will run and initialize `company-services` realm in `Keycloak`. Basically, it will create:
+    - Realm: `company-services`
+    - Client: `movies-app`
+    - Client Roles: `MOVIES_MANAGER` and `USER`
+    - Two users
+      - `admin`: with roles `MANAGE_MOVIES` and `USER`
+      - `user`: only with role `USER`
+
+  - **Social Identity Providers** like `Google`, `Facebook`, `Twitter`, `GitHub`, etc can be configured by following the steps described in [`Keycloak` Documentation](https://www.keycloak.org/docs/latest/server_admin/#social-identity-providers)
 
 - **movies-ui**
 
@@ -94,21 +100,25 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Applications URLs
 
-| Application | URL                                   | Credentials       |
-| ----------- | ------------------------------------- | ----------------- |
+| Application | URL                                   | Credentials                  |
+| ----------- | ------------------------------------- | ---------------------------- |
 | movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](#getting-access-token) |
-| movie-ui    | http://localhost:3000                 | ivan.franchin/123 |
-| Keycloak    | http://localhost:8080/auth/admin/     | admin/admin       |
+| movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user` |
+| Keycloak    | http://localhost:8080/auth/admin/     | `admin/admin`                |
 
 ## Demo
 
-The gif below shows an admin adding two movies using the wizard feature. First, he looks for the movie `American Pie`. The search is looking for data at [OMDb API](https://www.omdbapi.com/). Then, he selects the movie shown in the table. The information in the form is already fulfilled based on the response from OMDb API. The preview of the movie card, as the customer will see it, is displayed. Finally, the button `Create` is pressed and the movie is created. After that, the movie `Resident Evil` is created.
+- The gif below shows an `admin` logging in and adding one movie using the wizard feature
 
-![add-movies-wizard](images/add-movies-wizard.gif)
+  ![demo-admin](images/demo-admin.gif)
+
+- The gif below shows a `user` logging in using his Github account; then he changes his avatar and comment a movie
+
+  ![demo-user-github](images/demo-user-github.gif)
 
 ## Testing movies-api endpoints
 
-You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the sensitive endpoints like `POST /api/movies`, `PUT /api/movies/{id}` and `DELETE /api/movies/{id}`, you need to inform an access token issued by `Keycloak`.
+You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}` and `DELETE /api/movies/{id}`, you need to inform an access token issued by `Keycloak`.
 
 ### Getting Access Token
 
@@ -119,8 +129,8 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ACCESS_TOKEN="$(curl -s -X POST \
     "http://localhost:8080/auth/realms/company-services/protocol/openid-connect/token" \
     -H "Content-Type: application/x-www-form-urlencoded" \
-    -d "username=ivan.franchin" \
-    -d "password=123" \
+    -d "username=admin" \
+    -d "password=admin" \
     -d "grant_type=password" \
     -d "client_id=movies-app" | jq -r .access_token)"
 
@@ -185,9 +195,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
 
-- Click on `Authorize` button. Paste the `access token` (obtained at #getting-access-token) in the `Value` field prefixed by `Bearer`, like `Bearer <access-token>`. Then, click on `Authorize` and on `Close` to finalize.
+- Click on `Authorize` button. Paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field prefixed by `Bearer`, like `Bearer <access-token>`. Then, click on `Authorize` and on `Close` to finalize.
 
-- Done! You can now access the sensitive endpoints
+- Done! You can now access the secured endpoints
 
 ## Shutdown
 
@@ -197,6 +207,18 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ```
   docker-compose down -v
   ```
+
+## Useful Commands
+
+- **MongoDB**
+
+  List all movies
+  ```
+  docker exec -it mongodb mongo
+  use moviesdb
+  db.movies.find()
+  ```
+  > Type `exit` to get out of MongoDB shell
 
 ## How to upgrade movies-ui dependencies to latest version
 
@@ -208,7 +230,3 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ncu -u
   npm install
   ```
-
-## TODO
-
-- add confirmation dialog before deleting a movie

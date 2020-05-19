@@ -2,15 +2,11 @@ import React from 'react'
 import { Card, Header, Segment } from 'semantic-ui-react'
 import MovieCard from './MovieCard'
 
-function MovieList({ isLoading, movies }) {
-  if (isLoading) {
-    return null
-  }
-
-  const movieList = movies && movies.map(movie => <MovieCard key={movie.imdbId} movie={movie} />)
+function MovieList({ movies }) {
+  const movieList = movies.map(movie => <MovieCard key={movie.imdbId} movie={movie} link={true} />)
 
   return (
-    movies && movies.length > 0 ? (
+    movies.length > 0 ? (
       <Card.Group doubling centered>
         {movieList}
       </Card.Group >
