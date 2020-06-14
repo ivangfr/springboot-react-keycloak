@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -17,7 +17,7 @@
 		<java.version>11</java.version>
 		<keycloak.version>10.0.2</keycloak.version>
 		<springfox.version>2.9.2</springfox.version>
-		<orika.version>1.5.4</orika.version>
+		<mapstruct.version>1.3.1.Final</mapstruct.version>
 	</properties>
 
 	<dependencies>
@@ -61,11 +61,17 @@
 			<version>${springfox.version}</version>
 		</dependency>
 
-		<!-- Orika -->
+		<!-- MapStruct -->
 		<dependency>
-			<groupId>ma.glasnost.orika</groupId>
-			<artifactId>orika-core</artifactId>
-			<version>${orika.version}</version>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${mapstruct.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

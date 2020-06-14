@@ -6,7 +6,7 @@ function MoviesForm({ form, handleChange, handleSaveMovie, clearForm }) {
     <Form>
       <Form.Input
         fluid
-        label='ImdbID'
+        label='ImdbID *'
         id='imdbId'
         onChange={handleChange}
         value={form.imdbId}
@@ -14,7 +14,7 @@ function MoviesForm({ form, handleChange, handleSaveMovie, clearForm }) {
       />
       <Form.Input
         fluid
-        label='Title'
+        label='Title *'
         id='title'
         onChange={handleChange}
         value={form.title}
@@ -22,7 +22,7 @@ function MoviesForm({ form, handleChange, handleSaveMovie, clearForm }) {
       />
       <Form.Input
         fluid
-        label='Director'
+        label='Director *'
         id='director'
         onChange={handleChange}
         value={form.director}
@@ -30,7 +30,7 @@ function MoviesForm({ form, handleChange, handleSaveMovie, clearForm }) {
       />
       <Form.Input
         fluid
-        label='Year'
+        label='Year *'
         id='year'
         onChange={handleChange}
         value={form.year}

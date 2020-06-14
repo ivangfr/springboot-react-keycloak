@@ -1,12 +1,12 @@
 package com.mycompany.moviesapi.rest;
 
+import com.mycompany.moviesapi.mapper.MovieMapper;
 import com.mycompany.moviesapi.model.Movie;
 import com.mycompany.moviesapi.rest.dto.AddCommentRequest;
 import com.mycompany.moviesapi.rest.dto.CreateMovieRequest;
 import com.mycompany.moviesapi.rest.dto.MovieDto;
 import com.mycompany.moviesapi.rest.dto.UpdateMovieRequest;
 import com.mycompany.moviesapi.service.MovieService;
-import ma.glasnost.orika.MapperFacade;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,41 +32,42 @@ import java.util.stream.Collectors;
 public class MoviesController {
 
     private final MovieService movieService;
-    private final MapperFacade mapperFacade;
+    private final MovieMapper movieMapper;
 
     @GetMapping
     public List<MovieDto> getMovies() {
-        return movieService.getMovies().stream().map(movie -> mapperFacade.map(movie, MovieDto.class))
+        return movieService.getMovies().stream()
+                .map(movie -> movieMapper.toMovieDto(movie))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{imdbId}")
     public MovieDto getMovie(@PathVariable String imdbId) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
-        return mapperFacade.map(movie, MovieDto.class);
+        return movieMapper.toMovieDto(movie);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MovieDto createMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
-        Movie movie = mapperFacade.map(createMovieRequest, Movie.class);
+        Movie movie = movieMapper.toMovie(createMovieRequest);
         movie = movieService.saveMovie(movie);
-        return mapperFacade.map(movie, MovieDto.class);
+        return movieMapper.toMovieDto(movie);
     }
 
     @PutMapping("/{imdbId}")
     public MovieDto updateMovie(@PathVariable String imdbId, @Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
-        mapperFacade.map(updateMovieRequest, movie);
+        movieMapper.updateMovieFromDto(updateMovieRequest, movie);
         movie = movieService.saveMovie(movie);
-        return mapperFacade.map(movie, MovieDto.class);
+        return movieMapper.toMovieDto(movie);
     }
 
     @DeleteMapping("/{imdbId}")
     public MovieDto deleteMovie(@PathVariable String imdbId) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
         movieService.deleteMovie(movie);
-        return mapperFacade.map(movie, MovieDto.class);
+        return movieMapper.toMovieDto(movie);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -76,7 +77,7 @@ public class MoviesController {
         Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.getText(), LocalDateTime.now());
         movie.getComments().add(0, comment);
         movie = movieService.saveMovie(movie);
-        return mapperFacade.map(movie, MovieDto.class);
+        return movieMapper.toMovieDto(movie);
     }
 
 }
