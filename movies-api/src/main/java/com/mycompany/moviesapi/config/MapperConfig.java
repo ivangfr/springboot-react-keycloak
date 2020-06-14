@@ -12,16 +12,15 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Configuration
 public class MapperConfig {
 
     private final UserExtraService userExtraService;
-
-    public MapperConfig(UserExtraService userExtraService) {
-        this.userExtraService = userExtraService;
-    }
 
     @Bean
     MapperFactory mapperFactory() {

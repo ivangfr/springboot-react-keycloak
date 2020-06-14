@@ -18,23 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/movies")
 public class MoviesController {
 
     private final MovieService movieService;
     private final MapperFacade mapperFacade;
-
-    public MoviesController(MovieService movieService, MapperFacade mapperFacade) {
-        this.movieService = movieService;
-        this.mapperFacade = mapperFacade;
-    }
 
     @GetMapping
     public List<MovieDto> getMovies() {

@@ -3,6 +3,7 @@ package com.mycompany.moviesapi.runner;
 import com.mycompany.moviesapi.security.WebSecurityConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class KeycloakInitializerRunner implements CommandLineRunner {
 
@@ -30,10 +32,6 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
     private String keycloakServerUrl;
 
     private final Keycloak keycloakAdmin;
-
-    public KeycloakInitializerRunner(Keycloak keycloakAdmin) {
-        this.keycloakAdmin = keycloakAdmin;
-    }
 
     @Override
     public void run(String... args) throws Exception {

@@ -34,13 +34,17 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Prerequisites
 
-- **jq**
+- `Java 11+`
 
-  In order to run some commands/scripts, you must have [`jq`](https://stedolan.github.io/jq) installed on you machine
+- `Docker`
 
-- **OMDb API**
+- `Docker-Compose`
 
-  To use the `Wizard` option to search and add a movie, you need to get an API KEY from [OMDb API](https://www.omdbapi.com/). In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
+- [`jq`](https://stedolan.github.io/jq)
+
+- [OMDb API](https://www.omdbapi.com/) KEY
+
+  To use the `Wizard` option to search and add a movie, you need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
   Once you have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content 
   ```
@@ -74,7 +78,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
     ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
     ```
 
-  - Once the startup finishes, `KeycloakInitializerRunner.java` class will run and initialize `company-services` realm in `Keycloak`. Basically, it will create:
+    Once the startup finishes, `KeycloakInitializerRunner.java` class will run and initialize `company-services` realm in `Keycloak`. Basically, it will create:
     - Realm: `company-services`
     - Client: `movies-app`
     - Client Roles: `MOVIES_MANAGER` and `USER`

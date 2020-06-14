@@ -5,16 +5,15 @@ import com.mycompany.moviesapi.model.UserExtra;
 import com.mycompany.moviesapi.repository.UserExtraRepository;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserExtraServiceImpl implements UserExtraService {
 
     private final UserExtraRepository userExtraRepository;
-
-    public UserExtraServiceImpl(UserExtraRepository userExtraRepository) {
-        this.userExtraRepository = userExtraRepository;
-    }
 
     @Override
     public UserExtra validateAndGetUserExtra(String username) {

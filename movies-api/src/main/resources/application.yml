@@ -8,7 +8,7 @@ spring:
 management:
   endpoints:
     web:
-      exposure.include: "*"
+      exposure.include: "beans,env,health,info,metrics,mappings"
   endpoint:
     health:
       show-details: always

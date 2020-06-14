@@ -9,19 +9,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/userextras")
 public class UserExtraController {
 
     private final UserExtraService userExtraService;
-
-    public UserExtraController(UserExtraService userExtraService) {
-        this.userExtraService = userExtraService;
-    }
 
     @GetMapping("/me")
     public UserExtra getUserExtra(Principal principal) {

@@ -5,16 +5,15 @@ import com.mycompany.moviesapi.model.Movie;
 import com.mycompany.moviesapi.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
-
-    public MovieServiceImpl(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
 
     @Override
     public Movie validateAndGetMovie(String imdbId) {
