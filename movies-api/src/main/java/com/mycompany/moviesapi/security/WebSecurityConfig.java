@@ -47,7 +47,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/api/movies", "/api/movies/**").hasRole(MOVIES_MANAGER)
                 .antMatchers("/api/userextras/me").hasAnyRole(MOVIES_MANAGER, USER)
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .antMatchers("/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().and().csrf().disable();

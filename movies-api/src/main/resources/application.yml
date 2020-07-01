@@ -8,7 +8,7 @@ spring:
 management:
   endpoints:
     web:
-      exposure.include: "beans,env,health,info,metrics,mappings"
+      exposure.include: beans, env, health, info, metrics, mappings
   endpoint:
     health:
       show-details: always
@@ -20,3 +20,8 @@ keycloak:
   ssl-required: external
   principal-attribute: preferred_username
   use-resource-role-mappings: true
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC

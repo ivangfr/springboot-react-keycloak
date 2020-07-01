@@ -7,6 +7,9 @@ import com.mycompany.moviesapi.rest.dto.CreateMovieRequest;
 import com.mycompany.moviesapi.rest.dto.MovieDto;
 import com.mycompany.moviesapi.rest.dto.UpdateMovieRequest;
 import com.mycompany.moviesapi.service.MovieService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.RequiredArgsConstructor;
-
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.mycompany.moviesapi.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,7 +40,7 @@ public class MoviesController {
     @GetMapping
     public List<MovieDto> getMovies() {
         return movieService.getMovies().stream()
-                .map(movie -> movieMapper.toMovieDto(movie))
+                .map(movieMapper::toMovieDto)
                 .collect(Collectors.toList());
     }
 
@@ -47,6 +50,7 @@ public class MoviesController {
         return movieMapper.toMovieDto(movie);
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MovieDto createMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
@@ -55,6 +59,7 @@ public class MoviesController {
         return movieMapper.toMovieDto(movie);
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @PutMapping("/{imdbId}")
     public MovieDto updateMovie(@PathVariable String imdbId, @Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
@@ -63,6 +68,7 @@ public class MoviesController {
         return movieMapper.toMovieDto(movie);
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @DeleteMapping("/{imdbId}")
     public MovieDto deleteMovie(@PathVariable String imdbId) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
@@ -70,6 +76,7 @@ public class MoviesController {
         return movieMapper.toMovieDto(movie);
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{imdbId}/comments")
     public MovieDto addMovieComment(@PathVariable String imdbId, @Valid @RequestBody AddCommentRequest addCommentRequest, Principal principal) {

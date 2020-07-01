@@ -10,7 +10,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 - **movies-api**
 
-  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its secured endpoints can just be just accessed if an access token (JWT) issued by `Keycloak` is provided.
+  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its secured endpoints can just be accessed if an access token (JWT) issued by `Keycloak` is provided.
   
   `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
@@ -18,8 +18,8 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
   | Endpoint                                                          | Secured | Roles                       |
   | ----------------------------------------------------------------- | ------- | --------------------------- |
-  | `GET /api/users/me`                                               | Yes     | `MOVIES_MANAGER` and `USER` |
-  | `POST /api/users/me -d {avatar}`                                  | Yes     | `MOVIES_MANAGER` and `USER` | 
+  | `GET /api/userextras/me`                                          | Yes     | `MOVIES_MANAGER` and `USER` |
+  | `POST /api/userextras/me -d {avatar}`                             | Yes     | `MOVIES_MANAGER` and `USER` | 
   | `GET /api/movies`                                                 | No      |                             |
   | `GET /api/movies/{imdbId}`                                        | No      |                             |
   | `POST /api/movies -d {"imdb","title","director","year","poster"}` | Yes     | `MOVIES_MANAGER`            |
@@ -34,14 +34,11 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Prerequisites
 
-- `Java 11+`
-
-- `Docker`
-
-- `Docker-Compose`
-
+- [`Java 11+`](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- [`npm`](https://www.npmjs.com/get-npm)
+- [`Docker`](https://www.docker.com/)
+- [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
-
 - [OMDb API](https://www.omdbapi.com/) KEY
 
   To use the `Wizard` option to search and add a movie, you need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
@@ -104,11 +101,11 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 ## Applications URLs
 
-| Application | URL                                   | Credentials                  |
-| ----------- | ------------------------------------- | ---------------------------- |
+| Application | URL                                   | Credentials                           |
+| ----------- | ------------------------------------- | ------------------------------------- |
 | movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](#getting-access-token) |
-| movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user` |
-| Keycloak    | http://localhost:8080/auth/admin/     | `admin/admin`                |
+| movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user`          |
+| Keycloak    | http://localhost:8080/auth/admin/     | `admin/admin`                         |
 
 ## Demo
 
@@ -122,7 +119,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 ## Testing movies-api endpoints
 
-You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}` and `DELETE /api/movies/{id}`, you need to inform an access token issued by `Keycloak`.
+You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, you need to inform an access token issued by `Keycloak`.
 
 ### Getting Access Token
 
@@ -199,7 +196,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
 
-- Click on `Authorize` button. Paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field prefixed by `Bearer`, like `Bearer <access-token>`. Then, click on `Authorize` and on `Close` to finalize.
+- Click on `Authorize` button.
+
+- In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field. Then, click on `Authorize` and on `Close` to finalize.
 
 - Done! You can now access the secured endpoints
 

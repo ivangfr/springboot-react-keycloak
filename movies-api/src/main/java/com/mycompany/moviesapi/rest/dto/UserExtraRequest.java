@@ -1,12 +1,12 @@
 package com.mycompany.moviesapi.rest.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class UserExtraRequest {
 
-    @ApiModelProperty(example = "avatar")
+    @Schema(example = "avatar")
     private String avatar;
 
 }

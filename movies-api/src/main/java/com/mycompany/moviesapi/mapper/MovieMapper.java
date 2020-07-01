@@ -1,15 +1,12 @@
 package com.mycompany.moviesapi.mapper;
 
-import java.util.Optional;
-
 import com.mycompany.moviesapi.model.Movie;
-import com.mycompany.moviesapi.model.UserExtra;
 import com.mycompany.moviesapi.rest.dto.CreateMovieRequest;
 import com.mycompany.moviesapi.rest.dto.MovieDto;
 import com.mycompany.moviesapi.rest.dto.UpdateMovieRequest;
 import com.mycompany.moviesapi.service.UserExtraService;
-
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 )
 public abstract class MovieMapper {
 
-  @Autowired
-  private UserExtraService userExtraService;
-  
-  public abstract Movie toMovie(CreateMovieRequest createMovieRequest);
+    @Autowired
+    protected UserExtraService userExtraService;
 
-  public abstract void updateMovieFromDto(UpdateMovieRequest updateMovieRequest, @MappingTarget Movie movie);
+    public abstract Movie toMovie(CreateMovieRequest createMovieRequest);
 
-  public abstract MovieDto toMovieDto(Movie movie);
+    public abstract void updateMovieFromDto(UpdateMovieRequest updateMovieRequest, @MappingTarget Movie movie);
 
-  public MovieDto.CommentDto toMovieDtoCommentDto(Movie.Comment comment) {
-    MovieDto.CommentDto commentDto = new MovieDto.CommentDto();
-    commentDto.setUsername(comment.getUsername());
-    commentDto.setText(comment.getText());
-    commentDto.setTimestamp(comment.getTimestamp());
-    
-    Optional<UserExtra> userExtra = userExtraService.getUserExtra(comment.getUsername());
-    commentDto.setAvatar(userExtra.isPresent() ? userExtra.get().getAvatar() : comment.getUsername());
-    return commentDto;
-  }
+    public abstract MovieDto toMovieDto(Movie movie);
+
+    @Mapping(
+            target = "avatar",
+            expression = "java( userExtraService.getUserExtra(comment.getUsername()).isPresent() ? userExtraService.getUserExtra(comment.getUsername()).get().getAvatar() : comment.getUsername() )"
+    )
+    public abstract MovieDto.CommentDto toMovieDtoCommentDto(Movie.Comment comment);
 
 }
