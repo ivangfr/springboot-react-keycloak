@@ -17,7 +17,7 @@ public class UserExtraServiceImpl implements UserExtraService {
 
     @Override
     public UserExtra validateAndGetUserExtra(String username) {
-        return getUserExtra(username).orElseThrow(() -> new UserExtraNotFoundException(String.format("UserExtra of %s not found", username)));
+        return getUserExtra(username).orElseThrow(() -> new UserExtraNotFoundException(username));
     }
 
     @Override

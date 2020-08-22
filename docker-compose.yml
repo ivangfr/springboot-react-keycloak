@@ -12,7 +12,7 @@ services:
       start_period: 10s
 
   mysql:
-    image: mysql:5.7.30
+    image: mysql:5.7.31
     container_name: mysql
     ports:
       - "3306:3306"
