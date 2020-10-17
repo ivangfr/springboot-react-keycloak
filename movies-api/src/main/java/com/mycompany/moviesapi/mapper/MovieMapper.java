@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {UserExtraService.class}
+        uses = UserExtraService.class
 )
 public abstract class MovieMapper {
 
