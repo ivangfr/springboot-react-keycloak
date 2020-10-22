@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeycloakProvider } from '@react-keycloak/web'
+import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Home from './components/home/Home'
@@ -19,7 +19,7 @@ function App() {
     realm: "company-services",
     clientId: "movies-app"
   })
-  const initConfig = { pkceMethod: 'S256' }
+  const initOptions = { pkceMethod: 'S256' }
 
   const handleOnEvent = async (event, error) => {
     if (event === 'onAuthSuccess') {
@@ -47,9 +47,9 @@ function App() {
   )
 
   return (
-    <KeycloakProvider
-      keycloak={keycloak}
-      initConfig={initConfig}
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      initOptions={initOptions}
       LoadingComponent={loadingComponent}
       onEvent={(event, error) => handleOnEvent(event, error)}
     >
@@ -65,7 +65,7 @@ function App() {
           <Route component={Home} />
         </Switch>
       </Router>
-    </KeycloakProvider>
+    </ReactKeycloakProvider>
   )
 }
 

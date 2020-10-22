@@ -16,7 +16,8 @@
 	<properties>
 		<java.version>11</java.version>
 		<keycloak.version>11.0.2</keycloak.version>
-		<mapstruct.version>1.4.1.Final</mapstruct.version>
+		<lombok.version>1.18.12</lombok.version>
+		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
 		<springdoc.openapi.version>1.4.8</springdoc.openapi.version>
 	</properties>
 
@@ -57,12 +58,15 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>${mapstruct.version}</version>
+			<version>${org.mapstruct.version}</version>
 		</dependency>
+
+		<!-- Lombok -->
 		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-processor</artifactId>
-			<version>${mapstruct.version}</version>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<optional>true</optional>
 			<scope>provided</scope>
 		</dependency>
 
@@ -78,11 +82,6 @@
 			<version>${springdoc.openapi.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -113,6 +112,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<!-- Lombok -->
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<!-- MapStruct -->
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
