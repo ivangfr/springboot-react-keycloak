@@ -8,7 +8,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Applications
 
-- **movies-api**
+- ### movies-api
 
   `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its secured endpoints can just be accessed if an access token (JWT) issued by `Keycloak` is provided.
   
@@ -26,7 +26,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
   | `DELETE /api/movies/{imdbId}`                                     | Yes     | `MANAGE_MOVIES`             |
   | `POST /api/movies/{imdbId}/comments -d {"text"}`                  | Yes     | `MOVIES_MANAGER` and `USER` |
 
-- **movies-ui**
+- ### movies-ui
 
   `ReactJS` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT) that is generated when `user` / `admin` logs in.
   
@@ -187,7 +187,8 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
       "title": "I, Tonya",
       "director": "Craig Gillespie",
       "year": "2017",
-      "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"
+      "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg",
+      "comments": []
     }
   ]
   ```
