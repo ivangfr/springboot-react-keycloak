@@ -5,6 +5,10 @@ spring:
     mongodb:
       uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/moviesdb
 
+app:
+  cors:
+    allowed-origins: http://localhost:3000
+
 management:
   endpoints:
     web:
