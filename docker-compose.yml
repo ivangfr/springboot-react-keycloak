@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:4.4.2
+    image: mongo:4.4.4
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -26,7 +26,7 @@ services:
       start_period: 10s
 
   keycloak:
-    image: jboss/keycloak:12.0.2
+    image: jboss/keycloak:12.0.4
     container_name: keycloak
     environment:
       - KEYCLOAK_USER=admin
