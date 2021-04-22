@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:4.4.4
+    image: mongo:4.4.5
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -12,7 +12,7 @@ services:
       start_period: 10s
 
   mysql:
-    image: mysql:5.7.32
+    image: mysql:5.7.34
     container_name: mysql
     ports:
       - "3306:3306"
