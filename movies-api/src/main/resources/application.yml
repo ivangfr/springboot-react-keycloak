@@ -29,3 +29,4 @@ springdoc:
   show-actuator: true
   swagger-ui:
     groups-order: DESC
+    disable-swagger-default-url: true
