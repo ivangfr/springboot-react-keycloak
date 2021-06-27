@@ -1,0 +1,20 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "deploy": "cp build/src/*.js ../resources/static/js && cp -r build/_snowpack ../resources/static/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "snowpack": "^3.6.2"
+  },
+  "dependencies": {
+    "@hotwired/turbo": "^7.0.0-beta.7"
+  }
+}

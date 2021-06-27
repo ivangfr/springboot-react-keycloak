@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Hotwire Widgets</title>
+</head>
+
+<body>
+<th:block th:fragment="movies(movies)">
+    <div id="no_movies" th:if="${movies.size() == 0}">There are no movies yet</div>
+    <ol th:if="${movies.size() > 0}">
+        <tr th:each="movie : ${movies}">
+            <td th:text="${movie.imdbId}">1</td>
+            <td><a href="#" th:text="${movie.title}">Title ...</a></td>
+            <td th:text="${movie.director}">Text ...</td>
+        </tr>
+    </ol>
+</th:block>
+</body>
+
+</html>

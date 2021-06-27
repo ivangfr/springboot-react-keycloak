@@ -2,9 +2,15 @@
 <html lang="de"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+    <header th:replace="~{fragments/header::header}"></header>
     <title>Hotwire Demo</title>
 </head>
 <body>
-Hello
+  <div class="container">
+      <turbo-frame id="comments">
+          <div th:replace="~{fragments/movies :: movies(${movies})}"></div>
+      </turbo-frame>
+  </div>
+  <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 </html>
