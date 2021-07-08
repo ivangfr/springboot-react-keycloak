@@ -42,7 +42,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**", "/actuator/**", "/hotwire/**", "js/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**", "/actuator/**", "/hotwire/**", "/js/**", "/css/**").permitAll()
                 .antMatchers("/api/movies/**/comments").hasAnyRole(MOVIES_MANAGER, USER)
                 .antMatchers("/api/movies", "/api/movies/**").hasRole(MOVIES_MANAGER)
                 .antMatchers("/api/userextras/me").hasAnyRole(MOVIES_MANAGER, USER)
