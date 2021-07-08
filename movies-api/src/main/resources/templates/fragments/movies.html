@@ -8,13 +8,17 @@
 <body>
 <th:block th:fragment="movies(movies)">
     <div id="no_movies" th:if="${movies.size() == 0}">There are no movies yet</div>
-    <ol th:if="${movies.size() > 0}">
-        <tr th:each="movie : ${movies}">
-            <td th:text="${movie.imdbId}">1</td>
-            <td><a href="#" th:text="${movie.title}">Title ...</a></td>
-            <td th:text="${movie.director}">Text ...</td>
-        </tr>
-    </ol>
+    <div th:if="${movies.size() > 0}" class="movies-container">
+        <a href="#" th:each="movie : ${movies}" class="movie-card">
+            <img class="card-poster" th:src="${movie.poster}"/>
+            <div class="card-title" th:text="${movie.title}"></div>
+            <div class="card-details">
+                <p class="description">imdbId: <strong th:text="${movie.imdbId}"></strong></p>
+                <p class="description">Author: <strong th:text="${movie.director}"></strong></p>
+                <p class="description"></p>Year: <strong th:text="${movie.year}"></strong></p>
+            </div>
+        </a>
+    </div>
 </th:block>
 </body>
 
