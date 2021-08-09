@@ -205,9 +205,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 ## Shutdown
 
-- Go to `movies-api` and `movies-ui` terminals and press `Ctrl+C` on each one
+- To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`
 
-- To stop and remove docker-compose containers, networks and volumes, run the command below in `springboot-react-keycloak` root folder
+- To stop and remove docker-compose containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below
   ```
   docker-compose down -v
   ```

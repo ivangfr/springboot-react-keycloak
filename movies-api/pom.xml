@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
+		<version>2.5.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -16,10 +16,10 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<keycloak.version>14.0.0</keycloak.version>
+		<keycloak.version>15.0.0</keycloak.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-		<springdoc-openapi.version>1.5.9</springdoc-openapi.version>
+		<springdoc-openapi.version>1.5.10</springdoc-openapi.version>
 	</properties>
 
 	<dependencies>
