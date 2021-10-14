@@ -32,5 +32,4 @@ public abstract class MovieMapper {
             expression = "java( userExtraService.getUserExtra(comment.getUsername()).isPresent() ? userExtraService.getUserExtra(comment.getUsername()).get().getAvatar() : comment.getUsername() )"
     )
     public abstract MovieDto.CommentDto toMovieDtoCommentDto(Movie.Comment comment);
-
 }

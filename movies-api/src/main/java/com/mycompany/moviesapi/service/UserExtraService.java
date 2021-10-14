@@ -11,5 +11,4 @@ public interface UserExtraService {
     Optional<UserExtra> getUserExtra(String username);
 
     UserExtra saveUserExtra(UserExtra userExtra);
-
 }

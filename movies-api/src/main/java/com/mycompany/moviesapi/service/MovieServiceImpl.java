@@ -34,5 +34,4 @@ public class MovieServiceImpl implements MovieService {
     public void deleteMovie(Movie movie) {
         movieRepository.delete(movie);
     }
-
 }

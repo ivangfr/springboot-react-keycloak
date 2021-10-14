@@ -3,13 +3,12 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:4.4.6
+    image: mongo:5.0.3
     container_name: mongodb
     ports:
       - "27017:27017"
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017/moviesdb --quiet
-      start_period: 10s
 
   mysql:
     image: mysql:5.7.35
@@ -23,7 +22,6 @@ services:
       - MYSQL_ROOT_PASSWORD=root_password
     healthcheck:
       test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
-      start_period: 10s
 
   keycloak:
     image: jboss/keycloak:15.0.2
@@ -42,4 +40,3 @@ services:
       - mysql
     healthcheck:
       test: "curl -f http://localhost:8080/auth || exit 1"
-      start_period: 20s

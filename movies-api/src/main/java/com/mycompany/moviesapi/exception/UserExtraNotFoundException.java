@@ -11,5 +11,4 @@ public class UserExtraNotFoundException extends RuntimeException {
     public UserExtraNotFoundException(String username) {
         super(String.format("UserExtra of %s not found", username));
     }
-
 }

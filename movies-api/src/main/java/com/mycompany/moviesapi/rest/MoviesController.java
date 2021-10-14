@@ -86,5 +86,4 @@ public class MoviesController {
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
     }
-
 }

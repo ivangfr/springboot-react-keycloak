@@ -28,5 +28,4 @@ public class Movie {
         private String text;
         private LocalDateTime timestamp;
     }
-
 }

@@ -62,5 +62,4 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     public static final String MOVIES_MANAGER = "MOVIES_MANAGER";
     public static final String USER = "USER";
-
 }

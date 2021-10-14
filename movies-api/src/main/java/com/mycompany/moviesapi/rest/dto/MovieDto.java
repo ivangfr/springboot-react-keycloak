@@ -22,5 +22,4 @@ public class MovieDto {
         private String text;
         private LocalDateTime timestamp;
     }
-
 }

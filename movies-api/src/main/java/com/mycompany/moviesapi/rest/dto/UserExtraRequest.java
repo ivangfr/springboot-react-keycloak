@@ -8,5 +8,4 @@ public class UserExtraRequest {
 
     @Schema(example = "avatar")
     private String avatar;
-
 }

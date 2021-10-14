@@ -22,5 +22,4 @@ public class KeycloakAdminConfig {
                 .clientId("admin-cli")
                 .build();
     }
-
 }

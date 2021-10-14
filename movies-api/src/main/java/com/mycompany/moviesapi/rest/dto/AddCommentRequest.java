@@ -11,5 +11,4 @@ public class AddCommentRequest {
     @Schema(example = "Very good!")
     @NotBlank
     private String text;
-
 }

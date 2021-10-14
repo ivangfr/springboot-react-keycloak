@@ -29,5 +29,4 @@ public class UserExtraServiceImpl implements UserExtraService {
     public UserExtra saveUserExtra(UserExtra userExtra) {
         return userExtraRepository.save(userExtra);
     }
-
 }

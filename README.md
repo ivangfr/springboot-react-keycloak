@@ -4,13 +4,13 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Project diagram
 
-![project-diagram](images/project-diagram.png)
+![project-diagram](documentation/project-diagram.png)
 
 ## Applications
 
 - ### movies-api
 
-  `Spring Boot` Web Java backend application that exposes a Rest API to manage **movies**. Its secured endpoints can just be accessed if an access token (JWT) issued by `Keycloak` is provided.
+  `Spring Boot` Web Java backend application that exposes a REST API to manage **movies**. Its secured endpoints can just be accessed if an access token (JWT) issued by `Keycloak` is provided.
   
   `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
@@ -34,8 +34,8 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Prerequisites
 
-- [`Java 11+`](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- [`npm`](https://www.npmjs.com/get-npm)
+- [`Java 11+`](https://www.oracle.com/java/technologies/downloads/#java11)
+- [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Docker`](https://www.docker.com/)
 - [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
@@ -52,14 +52,14 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key for Code Exchange`) since version `7.0.0`, we are using it in this project. 
 
-## Start environment
+## Start Environment
 
 - In a terminal and inside `springboot-react-keycloak` root folder run
   ```
   docker-compose up -d
   ```
 
-- Wait a little bit until all containers are Up (healthy). You can check their status running
+- Wait for all Docker containers to be with state `Up (healthy)`. To check it, run
   ```
   docker-compose ps
   ```
@@ -111,11 +111,11 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 - The gif below shows an `admin` logging in and adding one movie using the wizard feature
 
-  ![demo-admin](images/demo-admin.gif)
+  ![demo-admin](documentation/demo-admin.gif)
 
 - The gif below shows a `user` logging in using his Github account; then he changes his avatar and comment a movie
 
-  ![demo-user-github](images/demo-user-github.gif)
+  ![demo-user-github](documentation/demo-user-github.gif)
 
 ## Testing movies-api endpoints
 
@@ -151,7 +151,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ```
   HTTP/1.1 302
   ```
-  > Here, the application is trying to redirect the request to an authentication link.
+  > The application is trying to redirect the request to an authentication link.
 
 - Trying again to add a movie, now with access token (obtained at #getting-access-token)
   ```
@@ -203,6 +203,17 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Done! You can now access the secured endpoints
 
+## Useful Commands
+
+- **MongoDB**
+
+  List all movies
+  ```
+  docker exec -it mongodb mongo moviesdb
+  db.movies.find()
+  ```
+  > Type `exit` to get out of MongoDB shell
+
 ## Shutdown
 
 - To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`
@@ -211,18 +222,6 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
   ```
   docker-compose down -v
   ```
-
-## Useful Commands
-
-- **MongoDB**
-
-  List all movies
-  ```
-  docker exec -it mongodb mongo
-  use moviesdb
-  db.movies.find()
-  ```
-  > Type `exit` to get out of MongoDB shell
 
 ## How to upgrade movies-ui dependencies to latest version
 

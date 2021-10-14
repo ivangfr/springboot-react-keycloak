@@ -39,5 +39,4 @@ public class UserExtraController {
         userExtra.setAvatar(updateUserExtraRequest.getAvatar());
         return userExtraService.saveUserExtra(userExtra);
     }
-
 }

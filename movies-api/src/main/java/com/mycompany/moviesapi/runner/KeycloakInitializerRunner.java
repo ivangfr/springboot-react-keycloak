@@ -54,7 +54,6 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         ClientRepresentation clientRepresentation = new ClientRepresentation();
         clientRepresentation.setClientId(MOVIES_APP_CLIENT_ID);
         clientRepresentation.setDirectAccessGrantsEnabled(true);
-        clientRepresentation.setDefaultRoles(new String[]{MOVIES_APP_ROLES.get(0)});
         clientRepresentation.setPublicClient(true);
         clientRepresentation.setRedirectUris(Collections.singletonList(MOVIES_APP_REDIRECT_URL));
         realmRepresentation.setClients(Collections.singletonList(clientRepresentation));
