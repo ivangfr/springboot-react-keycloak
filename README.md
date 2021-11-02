@@ -59,7 +59,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
   docker-compose up -d
   ```
 
-- Wait for all Docker containers to be with state `Up (healthy)`. To check it, run
+- Wait for all Docker containers to be up and running. To check it, run
   ```
   docker-compose ps
   ```
@@ -197,9 +197,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
 
-- Click on `Authorize` button.
+- Click `Authorize` button.
 
-- In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field. Then, click on `Authorize` and on `Close` to finalize.
+- In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field. Then, click `Authorize` and `Close` to finalize.
 
 - Done! You can now access the secured endpoints
 
