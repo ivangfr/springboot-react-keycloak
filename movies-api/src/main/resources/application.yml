@@ -4,6 +4,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/moviesdb
+  main:
+    allow-circular-references: true
 
 app:
   cors:

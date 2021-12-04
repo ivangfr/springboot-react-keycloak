@@ -229,6 +229,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - Run the following commands
   ```
+  npm upgrade
   npm i -g npm-check-updates
   ncu -u
   npm install
