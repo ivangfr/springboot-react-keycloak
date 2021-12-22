@@ -17,7 +17,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
   `movie-api` has the following endpoints
 
   | Endpoint                                                          | Secured | Roles                       |
-  | ----------------------------------------------------------------- | ------- | --------------------------- |
+  |-------------------------------------------------------------------|---------|-----------------------------|
   | `GET /api/userextras/me`                                          | Yes     | `MOVIES_MANAGER` and `USER` |
   | `POST /api/userextras/me -d {avatar}`                             | Yes     | `MOVIES_MANAGER` and `USER` | 
   | `GET /api/movies`                                                 | No      |                             |
@@ -102,7 +102,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 ## Applications URLs
 
 | Application | URL                                   | Credentials                           |
-| ----------- | ------------------------------------- | ------------------------------------- |
+|-------------|---------------------------------------|---------------------------------------|
 | movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](#getting-access-token) |
 | movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user`          |
 | Keycloak    | http://localhost:8080/auth/admin/     | `admin/admin`                         |

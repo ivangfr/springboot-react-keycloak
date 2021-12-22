@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:5.0.4
+    image: mongo:5.0.5
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -24,7 +24,7 @@ services:
       test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
 
   keycloak:
-    image: jboss/keycloak:15.0.2
+    image: jboss/keycloak:16.1.0
     container_name: keycloak
     environment:
       - KEYCLOAK_USER=admin
