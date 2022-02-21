@@ -39,7 +39,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 - [`Docker`](https://www.docker.com/)
 - [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
-- [OMDb API](https://www.omdbapi.com/) KEY
+- [`OMDb API`](https://www.omdbapi.com/) KEY
 
   To use the `Wizard` option to search and add a movie, you need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
@@ -105,7 +105,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 |-------------|---------------------------------------|---------------------------------------|
 | movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](#getting-access-token) |
 | movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user`          |
-| Keycloak    | http://localhost:8080/auth/admin/     | `admin/admin`                         |
+| Keycloak    | http://localhost:8080/admin           | `admin/admin`                         |
 
 ## Demo
 
@@ -128,7 +128,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 - Run the following commands to get the access token
   ```
   ACCESS_TOKEN="$(curl -s -X POST \
-    "http://localhost:8080/auth/realms/company-services/protocol/openid-connect/token" \
+    "http://localhost:8080/realms/company-services/protocol/openid-connect/token" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "username=admin" \
     -d "password=admin" \

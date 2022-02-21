@@ -20,7 +20,7 @@ management:
       show-details: always
 
 keycloak:
-  auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/auth
+  auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}
   realm: company-services
   resource: movies-app
   ssl-required: external
