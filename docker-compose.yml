@@ -24,7 +24,7 @@ services:
       test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:17.0.0
+    image: quay.io/keycloak/keycloak:17.0.1
     container_name: keycloak
     environment:
       - KEYCLOAK_ADMIN=admin
