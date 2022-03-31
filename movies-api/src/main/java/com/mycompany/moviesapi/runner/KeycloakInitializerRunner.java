@@ -11,7 +11,6 @@ import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Component
 public class KeycloakInitializerRunner implements CommandLineRunner {
-
-    @Value("${keycloak.auth-server-url}")
-    private String keycloakServerUrl;
 
     private final Keycloak keycloakAdmin;
 
@@ -91,7 +87,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         UserPass admin = MOVIES_APP_USERS.get(0);
         log.info("Testing getting token for '{}' ...", admin.getUsername());
 
-        Keycloak keycloakMovieApp = KeycloakBuilder.builder().serverUrl(keycloakServerUrl)
+        Keycloak keycloakMovieApp = KeycloakBuilder.builder().serverUrl(KEYCLOAK_SERVER_URL)
                 .realm(COMPANY_SERVICE_REALM_NAME).username(admin.getUsername()).password(admin.getPassword())
                 .clientId(MOVIES_APP_CLIENT_ID).build();
 
@@ -99,6 +95,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         log.info("'{}' initialization completed successfully!", COMPANY_SERVICE_REALM_NAME);
     }
 
+    private static final String KEYCLOAK_SERVER_URL = "http://localhost:8080";
     private static final String COMPANY_SERVICE_REALM_NAME = "company-services";
     private static final String MOVIES_APP_CLIENT_ID = "movies-app";
     private static final List<String> MOVIES_APP_ROLES = Arrays.asList(WebSecurityConfig.USER,

@@ -149,9 +149,8 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
   It should return
   ```
-  HTTP/1.1 302
+  HTTP/1.1 401
   ```
-  > The application is trying to redirect the request to an authentication link.
 
 - Trying again to add a movie, now with access token (obtained at #getting-access-token)
   ```
