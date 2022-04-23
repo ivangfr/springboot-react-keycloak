@@ -1,9 +1,8 @@
 package com.mycompany.moviesapi.runner;
 
 import com.mycompany.moviesapi.security.WebSecurityConfig;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -14,9 +13,9 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,11 +29,14 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
     private final Keycloak keycloakAdmin;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         log.info("Initializing '{}' realm in Keycloak ...", COMPANY_SERVICE_REALM_NAME);
 
-        Optional<RealmRepresentation> representationOptional = keycloakAdmin.realms().findAll().stream()
-                .filter(r -> r.getRealm().equals(COMPANY_SERVICE_REALM_NAME)).findAny();
+        Optional<RealmRepresentation> representationOptional = keycloakAdmin.realms()
+                .findAll()
+                .stream()
+                .filter(r -> r.getRealm().equals(COMPANY_SERVICE_REALM_NAME))
+                .findAny();
         if (representationOptional.isPresent()) {
             log.info("Removing already pre-configured '{}' realm", COMPANY_SERVICE_REALM_NAME);
             keycloakAdmin.realm(COMPANY_SERVICE_REALM_NAME).remove();
@@ -52,32 +54,27 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         clientRepresentation.setDirectAccessGrantsEnabled(true);
         clientRepresentation.setPublicClient(true);
         clientRepresentation.setRedirectUris(Collections.singletonList(MOVIES_APP_REDIRECT_URL));
+        clientRepresentation.setDefaultRoles(new String[]{WebSecurityConfig.USER});
         realmRepresentation.setClients(Collections.singletonList(clientRepresentation));
 
         // Users
-        List<UserRepresentation> userRepresentations = MOVIES_APP_USERS.stream().map(userPass -> {
-            // Client roles
-            Map<String, List<String>> clientRoles = new HashMap<>();
-            if ("admin".equals(userPass.getUsername())) {
-                clientRoles.put(MOVIES_APP_CLIENT_ID, MOVIES_APP_ROLES);
-            } else {
-                clientRoles.put(MOVIES_APP_CLIENT_ID, Collections.singletonList(MOVIES_APP_ROLES.get(0)));
-            }
+        List<UserRepresentation> userRepresentations = MOVIES_APP_USERS.stream()
+                .map(userPass -> {
+                    // User Credentials
+                    CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
+                    credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+                    credentialRepresentation.setValue(userPass.getPassword());
 
-            // User Credentials
-            CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
-            credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
-            credentialRepresentation.setValue(userPass.getPassword());
+                    // User
+                    UserRepresentation userRepresentation = new UserRepresentation();
+                    userRepresentation.setUsername(userPass.getUsername());
+                    userRepresentation.setEnabled(true);
+                    userRepresentation.setCredentials(Collections.singletonList(credentialRepresentation));
+                    userRepresentation.setClientRoles(getClientRoles(userPass));
 
-            // User
-            UserRepresentation userRepresentation = new UserRepresentation();
-            userRepresentation.setUsername(userPass.getUsername());
-            userRepresentation.setEnabled(true);
-            userRepresentation.setCredentials(Collections.singletonList(credentialRepresentation));
-            userRepresentation.setClientRoles(clientRoles);
-
-            return userRepresentation;
-        }).collect(Collectors.toList());
+                    return userRepresentation;
+                })
+                .collect(Collectors.toList());
         realmRepresentation.setUsers(userRepresentations);
 
         // Create Realm
@@ -95,20 +92,26 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         log.info("'{}' initialization completed successfully!", COMPANY_SERVICE_REALM_NAME);
     }
 
+    private Map<String, List<String>> getClientRoles(UserPass userPass) {
+        List<String> roles = new ArrayList<>();
+        roles.add(WebSecurityConfig.USER);
+        if ("admin".equals(userPass.getUsername())) {
+            roles.add(WebSecurityConfig.MOVIES_MANAGER);
+        }
+        return Map.of(MOVIES_APP_CLIENT_ID, roles);
+    }
+
     private static final String KEYCLOAK_SERVER_URL = "http://localhost:8080";
     private static final String COMPANY_SERVICE_REALM_NAME = "company-services";
     private static final String MOVIES_APP_CLIENT_ID = "movies-app";
-    private static final List<String> MOVIES_APP_ROLES = Arrays.asList(WebSecurityConfig.USER,
-            WebSecurityConfig.MOVIES_MANAGER);
     private static final String MOVIES_APP_REDIRECT_URL = "http://localhost:3000/*";
-    private static final List<UserPass> MOVIES_APP_USERS = Arrays.asList(new UserPass("admin", "admin"),
+    private static final List<UserPass> MOVIES_APP_USERS = Arrays.asList(
+            new UserPass("admin", "admin"),
             new UserPass("user", "user"));
 
-    @Data
-    @AllArgsConstructor
+    @Value
     private static class UserPass {
-        private String username;
-        private String password;
+        String username;
+        String password;
     }
-
 }

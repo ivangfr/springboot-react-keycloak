@@ -5,7 +5,10 @@ export const getAvatarUrl = (text) => {
 }
 
 export const isAdmin = (keycloak) => {
-  return keycloak && keycloak.tokenParsed && keycloak.tokenParsed.resource_access['movies-app'].roles.includes('MOVIES_MANAGER')
+  return keycloak && 
+         keycloak.tokenParsed && 
+         keycloak.tokenParsed.resource_access['movies-app'] && 
+         keycloak.tokenParsed.resource_access['movies-app'].roles.includes('MOVIES_MANAGER')
 }
 
 export const handleLogError = (error) => {
