@@ -20,7 +20,6 @@ public class ErrorAttributesConfig {
             public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
                 return super.getErrorAttributes(webRequest,
                         options.including(Include.EXCEPTION, Include.MESSAGE, Include.BINDING_ERRORS));
-
             }
         };
     }
