@@ -21,8 +21,11 @@ public abstract class MovieMapper {
     @Autowired
     protected UserExtraService userExtraService;
 
+    @Mapping(target = "comments", ignore = true)
     public abstract Movie toMovie(CreateMovieRequest createMovieRequest);
 
+    @Mapping(target = "imdbId", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     public abstract void updateMovieFromDto(UpdateMovieRequest updateMovieRequest, @MappingTarget Movie movie);
 
     public abstract MovieDto toMovieDto(Movie movie);
