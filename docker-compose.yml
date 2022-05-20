@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:5.0.7
+    image: mongo:5.0.8
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -11,7 +11,7 @@ services:
       test: echo 'db.stats().ok' | mongo localhost:27017/moviesdb --quiet
 
   mysql:
-    image: mysql:5.7.37
+    image: mysql:5.7.38
     container_name: mysql
     ports:
       - "3306:3306"
