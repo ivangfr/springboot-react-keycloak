@@ -2,7 +2,6 @@ package com.ivanfranchin.moviesapi.runner;
 
 import com.ivanfranchin.moviesapi.security.WebSecurityConfig;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -63,11 +62,11 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
                     // User Credentials
                     CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
                     credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
-                    credentialRepresentation.setValue(userPass.getPassword());
+                    credentialRepresentation.setValue(userPass.password());
 
                     // User
                     UserRepresentation userRepresentation = new UserRepresentation();
-                    userRepresentation.setUsername(userPass.getUsername());
+                    userRepresentation.setUsername(userPass.username());
                     userRepresentation.setEnabled(true);
                     userRepresentation.setCredentials(Collections.singletonList(credentialRepresentation));
                     userRepresentation.setClientRoles(getClientRoles(userPass));
@@ -82,20 +81,20 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
 
         // Testing
         UserPass admin = MOVIES_APP_USERS.get(0);
-        log.info("Testing getting token for '{}' ...", admin.getUsername());
+        log.info("Testing getting token for '{}' ...", admin.username());
 
         Keycloak keycloakMovieApp = KeycloakBuilder.builder().serverUrl(KEYCLOAK_SERVER_URL)
-                .realm(COMPANY_SERVICE_REALM_NAME).username(admin.getUsername()).password(admin.getPassword())
+                .realm(COMPANY_SERVICE_REALM_NAME).username(admin.username()).password(admin.password())
                 .clientId(MOVIES_APP_CLIENT_ID).build();
 
-        log.info("'{}' token: {}", admin.getUsername(), keycloakMovieApp.tokenManager().grantToken().getToken());
+        log.info("'{}' token: {}", admin.username(), keycloakMovieApp.tokenManager().grantToken().getToken());
         log.info("'{}' initialization completed successfully!", COMPANY_SERVICE_REALM_NAME);
     }
 
     private Map<String, List<String>> getClientRoles(UserPass userPass) {
         List<String> roles = new ArrayList<>();
         roles.add(WebSecurityConfig.USER);
-        if ("admin".equals(userPass.getUsername())) {
+        if ("admin".equals(userPass.username())) {
             roles.add(WebSecurityConfig.MOVIES_MANAGER);
         }
         return Map.of(MOVIES_APP_CLIENT_ID, roles);
@@ -109,9 +108,6 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
             new UserPass("admin", "admin"),
             new UserPass("user", "user"));
 
-    @Value
-    private static class UserPass {
-        String username;
-        String password;
+    private record UserPass(String username, String password) {
     }
 }

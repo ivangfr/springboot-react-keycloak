@@ -34,7 +34,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Prerequisites
 
-- [`Java 11+`](https://www.oracle.com/java/technologies/downloads/#java11)
+- [`Java 17+`](https://www.oracle.com/java/technologies/downloads/#java17)
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Docker`](https://www.docker.com/)
 - [`Docker-Compose`](https://docs.docker.com/compose/install/)
@@ -194,7 +194,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 ### Calling movies-api endpoints using Swagger
 
-- Access `movies-api` Swagger website, http://localhost:9080/swagger-ui/index.html
+- Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
 
 - Click `Authorize` button.
 
