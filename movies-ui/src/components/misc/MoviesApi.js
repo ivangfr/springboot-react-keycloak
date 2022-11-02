@@ -21,10 +21,7 @@ function getMovie(imdbId) {
 
 function saveMovie(movie, token) {
   return instance.post('/api/movies', movie, {
-    headers: {
-      'Content-type': 'application/json',
-      'Authorization': bearerAuth(token)
-    }
+    headers: { 'Authorization': bearerAuth(token) }
   })
 }
 
@@ -36,10 +33,7 @@ function deleteMovie(imdbId, token) {
 
 function addMovieComment(imdbId, comment, token) {
   return instance.post(`/api/movies/${imdbId}/comments`, comment, {
-    headers: {
-      'Content-type': 'application/json',
-      'Authorization': bearerAuth(token)
-    }
+    headers: { 'Authorization': bearerAuth(token) }
   })
 }
 

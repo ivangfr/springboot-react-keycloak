@@ -101,11 +101,11 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 ## Applications URLs
 
-| Application | URL                                         | Credentials                           |
-|-------------|---------------------------------------------|---------------------------------------|
-| movie-api   | http://localhost:9080/swagger-ui/index.html | [Access Token](#getting-access-token) |
-| movie-ui    | http://localhost:3000                       | `admin/admin` or `user/user`          |
-| Keycloak    | http://localhost:8080/admin                 | `admin/admin`                         |
+| Application | URL                                   | Credentials                           |
+|-------------|---------------------------------------|---------------------------------------|
+| movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](#getting-access-token) |
+| movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user`          |
+| Keycloak    | http://localhost:8080/admin           | `admin/admin`                         |
 
 ## Demo
 
@@ -137,6 +137,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
   echo $ACCESS_TOKEN
   ```
+  > **Note**: In [jwt.io](https://jwt.io), you can decode and verify the `JWT` access token
 
 ### Calling movies-api endpoints using curl
 

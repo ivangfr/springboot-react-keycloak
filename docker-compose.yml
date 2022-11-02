@@ -3,15 +3,15 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:5.0.12
+    image: mongo:6.0.2
     container_name: mongodb
     ports:
       - "27017:27017"
     healthcheck:
-      test: echo 'db.stats().ok' | mongo localhost:27017/moviesdb --quiet
+      test: echo 'db.stats().ok' | mongosh localhost:27017/moviesdb --quiet
 
   mysql:
-    image: mysql:5.7.39
+    image: mysql:5.7.40
     container_name: mysql
     ports:
       - "3306:3306"
@@ -24,7 +24,7 @@ services:
       test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:19.0.1
+    image: quay.io/keycloak/keycloak:20.0.0
     container_name: keycloak
     environment:
       - KEYCLOAK_ADMIN=admin
