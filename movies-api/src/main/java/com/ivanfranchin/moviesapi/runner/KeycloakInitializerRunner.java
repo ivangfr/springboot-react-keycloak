@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,9 +51,9 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         clientRepresentation.setClientId(MOVIES_APP_CLIENT_ID);
         clientRepresentation.setDirectAccessGrantsEnabled(true);
         clientRepresentation.setPublicClient(true);
-        clientRepresentation.setRedirectUris(Collections.singletonList(MOVIES_APP_REDIRECT_URL));
+        clientRepresentation.setRedirectUris(List.of(MOVIES_APP_REDIRECT_URL));
         clientRepresentation.setDefaultRoles(new String[]{WebSecurityConfig.USER});
-        realmRepresentation.setClients(Collections.singletonList(clientRepresentation));
+        realmRepresentation.setClients(List.of(clientRepresentation));
 
         // Users
         List<UserRepresentation> userRepresentations = MOVIES_APP_USERS.stream()
@@ -68,7 +67,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
                     UserRepresentation userRepresentation = new UserRepresentation();
                     userRepresentation.setUsername(userPass.username());
                     userRepresentation.setEnabled(true);
-                    userRepresentation.setCredentials(Collections.singletonList(credentialRepresentation));
+                    userRepresentation.setCredentials(List.of(credentialRepresentation));
                     userRepresentation.setClientRoles(getClientRoles(userPass));
 
                     return userRepresentation;

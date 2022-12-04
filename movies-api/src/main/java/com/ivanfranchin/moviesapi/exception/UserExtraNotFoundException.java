@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserExtraNotFoundException extends RuntimeException {
 
     public UserExtraNotFoundException(String username) {
-        super(String.format("UserExtra of %s not found", username));
+        super("UserExtra of %s not found".formatted(username));
     }
 }
