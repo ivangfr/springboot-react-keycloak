@@ -4,8 +4,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/moviesdb
-  main:
-    allow-circular-references: true
   security:
     oauth2:
       resourceserver:

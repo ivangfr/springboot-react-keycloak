@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -72,7 +71,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
 
                     return userRepresentation;
                 })
-                .collect(Collectors.toList());
+                .toList();
         realmRepresentation.setUsers(userRepresentations);
 
         // Create Realm

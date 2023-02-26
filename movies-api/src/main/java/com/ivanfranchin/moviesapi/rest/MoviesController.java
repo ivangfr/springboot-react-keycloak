@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ivanfranchin.moviesapi.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -39,9 +38,7 @@ public class MoviesController {
 
     @GetMapping
     public List<MovieDto> getMovies() {
-        return movieService.getMovies().stream()
-                .map(movieMapper::toMovieDto)
-                .collect(Collectors.toList());
+        return movieService.getMovies().stream().map(movieMapper::toMovieDto).toList();
     }
 
     @GetMapping("/{imdbId}")
