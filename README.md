@@ -11,7 +11,7 @@ The goal of this project is to secure `movies-app` using [`Keycloak`](https://ww
 
 ## Project diagram
 
-![project-diagram](documentation/project-diagram.png)
+![project-diagram](documentation/project-diagram.jpeg)
 
 ## Applications
 
@@ -216,7 +216,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
   List all movies
   ```
-  docker exec -it mongodb mongo moviesdb
+  docker exec -it mongodb mongosh moviesdb
   db.movies.find()
   ```
   > Type `exit` to get out of MongoDB shell
