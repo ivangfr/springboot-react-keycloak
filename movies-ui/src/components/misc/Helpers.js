@@ -1,7 +1,7 @@
 import { config } from '../../Constants'
 
 export const getAvatarUrl = (text) => {
-  return `${config.url.AVATARS_DICEBEAR_URL}/avataaars/${text}.svg`
+  return `${config.url.AVATARS_DICEBEAR_URL}/avataaars/svg?seed=${text}`
 }
 
 export const isAdmin = (keycloak) => {
