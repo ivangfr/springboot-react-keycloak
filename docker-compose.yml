@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   mongodb:
-    image: mongo:6.0.4
+    image: mongo:6.0.6
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -11,7 +11,7 @@ services:
       test: echo 'db.stats().ok' | mongosh localhost:27017/moviesdb --quiet
 
   postgres:
-    image: postgres:15.2
+    image: postgres:15.3
     container_name: postgres
     ports:
       - "5432:5432"
