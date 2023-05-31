@@ -51,11 +51,11 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         clientRepresentation.setDirectAccessGrantsEnabled(true);
         clientRepresentation.setPublicClient(true);
         clientRepresentation.setRedirectUris(List.of(MOVIES_APP_REDIRECT_URL));
-        clientRepresentation.setDefaultRoles(new String[]{WebSecurityConfig.USER});
+        clientRepresentation.setDefaultRoles(new String[]{WebSecurityConfig.MOVIES_USER});
         realmRepresentation.setClients(List.of(clientRepresentation));
 
         // Users
-        List<UserRepresentation> userRepresentations = MOVIES_APP_USERS.stream()
+        List<UserRepresentation> userRepresentations = MOVIES_USER_LIST.stream()
                 .map(userPass -> {
                     // User Credentials
                     CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
@@ -78,7 +78,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         keycloakAdmin.realms().create(realmRepresentation);
 
         // Testing
-        UserPass admin = MOVIES_APP_USERS.get(0);
+        UserPass admin = MOVIES_USER_LIST.get(0);
         log.info("Testing getting token for '{}' ...", admin.username());
 
         Keycloak keycloakMovieApp = KeycloakBuilder.builder().serverUrl(KEYCLOAK_SERVER_URL)
@@ -91,7 +91,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
 
     private Map<String, List<String>> getClientRoles(UserPass userPass) {
         List<String> roles = new ArrayList<>();
-        roles.add(WebSecurityConfig.USER);
+        roles.add(WebSecurityConfig.MOVIES_USER);
         if ("admin".equals(userPass.username())) {
             roles.add(WebSecurityConfig.MOVIES_MANAGER);
         }
@@ -102,7 +102,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
     private static final String COMPANY_SERVICE_REALM_NAME = "company-services";
     private static final String MOVIES_APP_CLIENT_ID = "movies-app";
     private static final String MOVIES_APP_REDIRECT_URL = "http://localhost:3000/*";
-    private static final List<UserPass> MOVIES_APP_USERS = Arrays.asList(
+    private static final List<UserPass> MOVIES_USER_LIST = Arrays.asList(
             new UserPass("admin", "admin"),
             new UserPass("user", "user"));
 
