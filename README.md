@@ -1,6 +1,6 @@
 # springboot-react-keycloak
 
-The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with PKCE). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [ReactJS](https://reactjs.org/) application called `movies-ui`.
+The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with PKCE). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [React](https://react.dev/) application called `movies-ui`.
 
 ## Proof-of-Concepts & Articles
 
@@ -15,7 +15,6 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - \[**Medium**\] [**Integrating GitHub as a Social Identity Provider in Keycloak**](https://medium.com/@ivangfr/integrating-github-as-a-social-identity-provider-in-keycloak-982f521a622f)
 - \[**Medium**\] [**Integrating Google as a Social Identity Provider in Keycloak**](https://medium.com/@ivangfr/integrating-google-as-a-social-identity-provider-in-keycloak-c905577ec499)
 - \[**Medium**\] [**Building a Single Spring Boot App with Keycloak or Okta as IdP: Introduction**](https://medium.com/@ivangfr/building-a-single-spring-boot-app-with-keycloak-or-okta-as-idp-introduction-2814a4829aed)
-
 
 ## Project diagram
 
@@ -43,7 +42,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - ### movies-ui
 
-  `ReactJS` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT) that is generated when `user` / `admin` logs in.
+  `React` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT) that is generated when `user` / `admin` logs in.
   
   `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
