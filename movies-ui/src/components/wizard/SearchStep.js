@@ -3,7 +3,7 @@ import { Form, Segment, Table } from 'semantic-ui-react'
 
 function SearchStep({ searchText, isLoading, movies, selectedMovie, handleChange, handleSearchMovies, handleTableSelection }) {
   const movieList = movies ? movies.map(movie => {
-    const active = movie && selectedMovie && movie.imdbId === selectedMovie.imdbId ? true : false
+    const active = movie && selectedMovie && movie.imdbId === selectedMovie.imdbId
     return (
       <Table.Row key={movie.imdbId} active={active} onClick={() => handleTableSelection(movie)}>
         <Table.Cell>{movie.imdbId}</Table.Cell>

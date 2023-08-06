@@ -1,30 +1,25 @@
 import React from 'react'
 import { useKeycloak } from '@react-keycloak/web'
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Container, Dropdown, Menu } from 'semantic-ui-react'
 import { isAdmin } from '../misc/Helpers'
+import { useHistory } from 'react-router-dom'
 
-function Navbar(props) {
-
+function Navbar() {
   const { keycloak } = useKeycloak()
+  const history = useHistory()
 
   const handleLogInOut = () => {
     if (keycloak.authenticated) {
-      props.history.push('/')
+      history.push('/')
       keycloak.logout()
     } else {
       keycloak.login()
     }
   }
 
-  const checkAuthenticated = () => {
-    if (!keycloak.authenticated) {
-      handleLogInOut()
-    }
-  }
-
   const getUsername = () => {
-    return keycloak.authenticated && keycloak.tokenParsed && keycloak.tokenParsed.preferred_username
+    return keycloak.authenticated && keycloak.tokenParsed?.preferred_username
   }
 
   const getLogInOutText = () => {
@@ -42,8 +37,8 @@ function Navbar(props) {
         <Menu.Item as={NavLink} exact to="/home">Home</Menu.Item>
         <Dropdown item text='Admin' style={getAdminMenuStyle()}>
           <Dropdown.Menu>
-            <Dropdown.Item as={NavLink} exact to="/movies" onClick={checkAuthenticated}>Movies</Dropdown.Item>
-            <Dropdown.Item as={NavLink} exact to="/wizard" onClick={checkAuthenticated}>Movie Wizard</Dropdown.Item>
+            <Dropdown.Item as={NavLink} exact to="/movies">Movies</Dropdown.Item>
+            <Dropdown.Item as={NavLink} exact to="/wizard">Movie Wizard</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
         <Menu.Menu position='right'>
@@ -61,4 +56,4 @@ function Navbar(props) {
   )
 }
 
-export default withRouter(Navbar)
+export default Navbar

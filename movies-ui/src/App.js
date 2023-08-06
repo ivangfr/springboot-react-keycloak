@@ -26,9 +26,10 @@ function App() {
       if (keycloak.authenticated) {
         let response = await moviesApi.getUserExtrasMe(keycloak.token)
         if (response.status === 404) {
-          const userExtra = { avatar: keycloak.tokenParsed.preferred_username }
+          const username = keycloak.tokenParsed.preferred_username
+          const userExtra = { avatar: username }
           response = await moviesApi.saveUserExtrasMe(keycloak.token, userExtra)
-          console.log('UserExtra created for ' + keycloak.tokenParsed.preferred_username)
+          console.log('UserExtra created for ' + username)
         }
         keycloak['avatar'] = response.data.avatar
       }

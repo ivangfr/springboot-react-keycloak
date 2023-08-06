@@ -56,13 +56,13 @@ const instance = axios.create({
 })
 
 instance.interceptors.response.use(response => {
-  return response;
+  return response
 }, function (error) {
   if (error.response.status === 404) {
-    return { status: error.response.status };
+    return { status: error.response.status }
   }
-  return Promise.reject(error.response);
-});
+  return Promise.reject(error.response)
+})
 
 // -- Helper functions
 
