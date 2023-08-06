@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -78,9 +78,9 @@ public class MoviesController {
     @PostMapping("/{imdbId}/comments")
     public MovieDto addMovieComment(@PathVariable String imdbId,
                                     @Valid @RequestBody AddCommentRequest addCommentRequest,
-                                    JwtAuthenticationToken token) {
+                                    Principal principal) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
-        Movie.Comment comment = new Movie.Comment(token.getName(), addCommentRequest.getText(), LocalDateTime.now());
+        Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.getText(), LocalDateTime.now());
         movie.getComments().add(0, comment);
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
