@@ -51,7 +51,6 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - [`Java 17+`](https://www.oracle.com/java/technologies/downloads/#java17)
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Docker`](https://www.docker.com/)
-- [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
 - [`OMDb API`](https://www.omdbapi.com/) KEY
 
@@ -70,12 +69,12 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 - In a terminal and inside `springboot-react-keycloak` root folder run
   ```
-  docker-compose up -d
+  docker compose up -d
   ```
 
 - Wait for all Docker containers to be up and running. To check it, run
   ```
-  docker-compose ps
+  docker compose ps
   ```
 
 ## Running movies-app using Maven & Npm
@@ -232,9 +231,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`
 
-- To stop and remove docker-compose containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below
   ```
-  docker-compose down -v
+  docker compose down -v
   ```
 
 ## How to upgrade movies-ui dependencies to latest version
