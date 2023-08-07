@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { withKeycloak } from '@react-keycloak/web'
+import React, { useState } from 'react'
 import { Button, Container, Grid, Icon, Step, Divider } from 'semantic-ui-react'
 import { handleLogError } from '../misc/Helpers'
 import { moviesApi } from '../misc/MoviesApi'
@@ -9,153 +8,150 @@ import FormStep from './FormStep'
 import SearchStep from './SearchStep'
 import { Redirect } from 'react-router-dom'
 import { isAdmin } from '../misc/Helpers'
+import { useHistory } from 'react-router-dom'
+import { useKeycloak } from '@react-keycloak/web'
 
-class MovieWizard extends Component {
-  state = {
-    step: 1,
+function MovieWizard() {
 
-    // Search Step
-    isLoading: false,
-    searchText: '',
-    movies: [],
-    selectedMovie: null,
+  const [step, setStep] = useState(1)
 
-    // Form Step
-    imdbId: '',
-    title: '',
-    director: '',
-    year: '',
-    poster: '',
-    imdbIdError: false,
-    titleError: false,
-    directorError: false,
-    yearError: false
-  }
+  // Search Step
+  const [isLoading, setIsLoading] = useState(false)
+  const [searchText, setSearchText] = useState('')
+  const [movies, setMovies] = useState([])
+  const [selectedMovie, setSelectedMovie] = useState(null)
 
-  handlePreviousStep = () => {
-    let { step, imdbIdError, titleError, directorError, yearError } = this.state
+  // Form Step
+  const [imdbId, setImdbId] = useState('')
+  const [title, setTitle] = useState('')
+  const [director, setDirector] = useState('')
+  const [year, setYear] = useState('')
+  const [poster, setPoster] = useState('')
+  const [imdbIdError, setImdbIdError] = useState(false)
+  const [titleError, setTitleError] = useState(false)
+  const [directorError, setDirectorError] = useState(false)
+  const [yearError, setYearError] = useState(false)
 
+  const history = useHistory()
+  const { keycloak } = useKeycloak()
+
+  const handlePreviousStep = () => {
     if (step === 2) {
-      imdbIdError = false
-      titleError = false
-      directorError = false
-      yearError = false
+      setImdbIdError(false)
+      setTitleError(false)
+      setDirectorError(false)
+      setYearError(false)
     }
-
-    step = step > 1 ? step - 1 : step
-    this.setState({ step, imdbIdError, titleError, directorError, yearError })
+    setStep(step > 1 ? step - 1 : step)
   }
 
-  handleNextStep = () => {
-    let { step } = this.state
-
-    if (step === 2 && !this.isValidForm()) {
+  const handleNextStep = () => {
+    if (step === 2 && !isValidForm()) {
       return
     }
-
-    step = step < 3 ? step + 1 : step
-    this.setState({ step })
+    setStep(step < 3 ? step + 1 : step)
   }
 
-  handleChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
-  }
-
-  handleTableSelection = (movie) => {
-    const { selectedMovie } = this.state
-
-    if (movie && selectedMovie && movie.imdbId === selectedMovie.imdbId) {
-      this.setState({
-        selectedMovie: null,
-        imdbId: '',
-        title: '',
-        director: '',
-        year: '',
-        poster: ''
-      })
-    } else {
-      this.setState({
-        selectedMovie: movie,
-        imdbId: movie.imdbId,
-        title: movie.title,
-        director: movie.director,
-        year: movie.year,
-        poster: movie.poster
-      })
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    if (id === 'searchText') {
+      setSearchText(value);
+    } else if (id === 'imdbId') {
+      setImdbId(value);
+    } else if (id === 'title') {
+      setTitle(value);
+    } else if (id === 'director') {
+      setDirector(value);
+    } else if (id === 'year') {
+      setYear(value);
+    } else if (id === 'poster') {
+      setPoster(value);
     }
   }
 
-  handleSearchMovies = async () => {
-    this.setState({ isLoading: true })
-    const {searchText} = this.state
+  const handleTableSelection = (movie) => {
+    if (movie && selectedMovie && movie.imdbId === selectedMovie.imdbId) {
+      setSelectedMovie(null)
+      setImdbId('')
+      setTitle('')
+      setDirector('')
+      setYear('')
+      setPoster('')
+    } else {
+      setSelectedMovie(movie)
+      setImdbId(movie.imdbId)
+      setTitle(movie.title)
+      setDirector(movie.director)
+      setYear(movie.year)
+      setPoster(movie.poster)
+    }
+  }
 
+  const handleSearchMovies = async () => {
     try {
+      setIsLoading(true)
       const response = await omdbApi.getMovies(searchText)
-      let movies = []
-        const { Error } = response.data
-        if (Error) {
-          console.log(Error)
-        } else {
-          const movie = {
-            imdbId: response.data.imdbID,
-            title: response.data.Title,
-            director: response.data.Director,
-            year: response.data.Year,
-            poster: response.data.Poster
-          }
-          movies.push(movie)
+      let moviesArr = []
+      const { Error } = response.data
+      if (Error) {
+        console.log(Error)
+      } else {
+        const movie = {
+          imdbId: response.data.imdbID,
+          title: response.data.Title,
+          director: response.data.Director,
+          year: response.data.Year,
+          poster: response.data.Poster
         }
-        this.setState({ movies, isLoading: false })
+        moviesArr.push(movie)
+      }
+      setMovies(moviesArr)
     } catch (error) {
       handleLogError(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  handleCreateMovie = async () => {
-    const { keycloak } = this.props
-    const { imdbId, title, director, year, poster } = this.state
-    
+  const handleCreateMovie = async () => {
     const movie = { imdbId, title, director, year, poster }
     try {
       await moviesApi.saveMovie(movie, keycloak.token)
-      this.props.history.push("/home")
+      history.push("/home")
     } catch (error) {
       handleLogError(error)
     }
   }
 
-  isValidForm = () => {
-    const {imdbId, title, director, year} = this.state
-
+  const isValidForm = () => {
     const imdbIdError = imdbId.trim() === ''
     const titleError = title.trim() === ''
     const directorError = director.trim() === ''
     const yearError = year.trim() === ''
 
-    this.setState({ imdbIdError, titleError, directorError, yearError })
-    return (imdbIdError || titleError || directorError || yearError) ? false : true
+    setImdbIdError(imdbIdError)
+    setTitleError(titleError)
+    setDirectorError(directorError)
+    setYearError(yearError)
+
+    return !(imdbIdError || titleError || directorError || yearError)
   }
 
-  getContent = () => {
-    const { step } = this.state
-
+  const getContent = () => {
     let stepContent = null
     if (step === 1) {
-      const { isLoading, searchText, movies, selectedMovie } = this.state
       stepContent = (
         <SearchStep
           searchText={searchText}
           isLoading={isLoading}
           movies={movies}
           selectedMovie={selectedMovie}
-          handleChange={this.handleChange}
-          handleSearchMovies={this.handleSearchMovies}
-          handleTableSelection={this.handleTableSelection}
+          handleChange={handleChange}
+          handleSearchMovies={handleSearchMovies}
+          handleTableSelection={handleTableSelection}
         />
       )
     } else if (step === 2) {
-      const { imdbId, title, director, year, poster, imdbIdError, titleError, directorError, yearError } = this.state
       stepContent = (
         <FormStep
           imdbId={imdbId}
@@ -167,11 +163,10 @@ class MovieWizard extends Component {
           titleError={titleError}
           directorError={directorError}
           yearError={yearError}
-          handleChange={this.handleChange}
+          handleChange={handleChange}
         />
       )
     } else if (step === 3) {
-      const { imdbId, title, director, year, poster } = this.state
       const movie = { imdbId, title, director, year, poster }
       stepContent = (
         <CompleteStep movie={movie} />
@@ -211,18 +206,18 @@ class MovieWizard extends Component {
             <Button.Group fluid>
               <Button
                 disabled={step === 1}
-                onClick={this.handlePreviousStep}>Back</Button>
+                onClick={handlePreviousStep}>Back</Button>
               <Button.Or />
               <Button
                 positive
                 disabled={step === 3}
-                onClick={this.handleNextStep}>Next</Button>
+                onClick={handleNextStep}>Next</Button>
             </Button.Group>
 
             {step === 3 && (
               <>
                 <Divider />
-                <Button fluid color='blue' onClick={this.handleCreateMovie}>Create</Button>
+                <Button fluid color='blue' onClick={handleCreateMovie}>Create</Button>
               </>
             )}
           </Grid.Column>
@@ -234,10 +229,8 @@ class MovieWizard extends Component {
     )
   }
 
-  render() {
-    const { keycloak } = this.props
-    return keycloak && keycloak.authenticated && isAdmin(keycloak) ? this.getContent() : <Redirect to='/' />
-  }
+
+  return keycloak && keycloak.authenticated && isAdmin(keycloak) ? getContent() : <Redirect to='/' />
 }
 
-export default withKeycloak(MovieWizard)
+export default MovieWizard

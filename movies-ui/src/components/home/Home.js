@@ -1,36 +1,37 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container } from 'semantic-ui-react'
 import { handleLogError } from '../misc/Helpers'
 import { moviesApi } from '../misc/MoviesApi'
 import MovieList from './MovieList'
 
-class Home extends Component {
-  state = {
-    isLoading: false,
-    movies: []
-  }
+function Home() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [movies, setMovies] = useState([])
 
-  async componentDidMount() {
-    this.setState({ isLoading: true })
-    try {
-      const response = await moviesApi.getMovies()
-      const movies = response.data
-      this.setState({ movies, isLoading: false })
-    } catch (error) {
-      handleLogError(error)
+  useEffect(() => {
+    const fetchMovies = async () => {
+      setIsLoading(true)
+      try {
+        const response = await moviesApi.getMovies()
+        const movies = response.data
+
+        setMovies(movies)
+      } catch (error) {
+        handleLogError(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
-  }
+    fetchMovies()
+  }, [])
 
-  render() {
-    const { isLoading, movies } = this.state
-    return (
-      isLoading ? <></> : (
-        <Container>
-          <MovieList movies={movies} />
-        </Container>
-      )
+  return (
+    isLoading ? <></> : (
+      <Container>
+        <MovieList movies={movies} />
+      </Container>
     )
-  }
+  )
 }
 
 export default Home

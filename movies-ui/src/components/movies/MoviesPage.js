@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { withKeycloak } from '@react-keycloak/web'
+import React, { useEffect, useState } from 'react'
 import { Container, Grid, Header, Segment, Icon, Divider } from 'semantic-ui-react'
 import { handleLogError } from '../misc/Helpers'
 import { moviesApi } from '../misc/MoviesApi'
@@ -8,88 +7,87 @@ import MoviesTable from './MoviesTable'
 import { isAdmin } from '../misc/Helpers'
 import { Redirect } from 'react-router-dom'
 import ConfirmationModal from '../misc/ConfirmationModal'
+import { useKeycloak } from '@react-keycloak/web'
 
-class MoviesPage extends Component {
-  formInitialState = {
-    imdbId: '',
-    title: '',
-    director: '',
-    year: '',
-    poster: '',
+const formInitialState = {
+  imdbId: '',
+  title: '',
+  director: '',
+  year: '',
+  poster: '',
 
-    imdbIdError: false,
-    titleError: false,
-    directorError: false,
-    yearError: false
-  }
+  imdbIdError: false,
+  titleError: false,
+  directorError: false,
+  yearError: false
+}
 
-  modalInitialState = {
-    isOpen: false,
-    header: '',
-    content: '',
-    onAction: null,
-    onClose: null
-  }
+const modalInitialState = {
+  isOpen: false,
+  header: '',
+  content: '',
+  onAction: null,
+  onClose: null
+}
 
-  state = {
-    movies: [],
-    form: { ...this.formInitialState },
-    modal: { ...this.modalInitialState },
-    deleteMovie: null,
-  }
+function MoviesPage() {
 
-  async componentDidMount() {
-    this.handleGetMovies()
-  }
+  const [movies, setMovies] = useState([])
+  const [form, setForm] = useState({ ...formInitialState })
+  const [modal, setModal] = useState({ ...modalInitialState })
+  const [movieToBeDeleted, setMovieToBeDeleted] = useState(null)
 
-  handleChange = (e) => {
+  const { keycloak } = useKeycloak()
+
+  useEffect(() => {
+    handleGetMovies()
+  }, [])
+
+  const handleChange = (e) => {
     const { id, value } = e.target
-    const form = { ...this.state.form }
-    form[id] = value
-    this.setState({ form })
+    setForm((prevForm) => ({ ...prevForm, [id]: value }))
   }
 
-  handleGetMovies = async () => {
+  const handleGetMovies = async () => {
     try {
       const response = await moviesApi.getMovies()
       const movies = response.data
-      this.setState({ movies })
+      setMovies(movies)
     } catch (error) {
       handleLogError(error)
     }
   }
 
-  handleSaveMovie = async () => {
-    if (!this.isValidForm()) {
+  const handleSaveMovie = async () => {
+    if (!isValidForm()) {
       return
     }
 
-    const { keycloak } = this.props
-    const { imdbId, title, director, year, poster } = this.state.form
-    
+    const { imdbId, title, director, year, poster } = form
     const movie = { imdbId, title, director, year, poster }
     try {
       await moviesApi.saveMovie(movie, keycloak.token)
-      this.clearForm()
-      this.handleGetMovies()
+      clearForm()
+      handleGetMovies()
     } catch (error) {
       handleLogError(error)
     }
   }
 
-  handleDeleteMovie = (movie) => {
+  const handleDeleteMovie = (movie) => {
     const modal = {
       isOpen: true,
       header: 'Delete Movie',
       content: `Would you like to delete movie '${movie.title}'?`,
-      onAction: this.handleActionModal,
-      onClose: this.handleCloseModal
+      onAction: handleActionModal,
+      onClose: handleCloseModal
     }
-    this.setState({ modal, deleteMovie: movie })
+    setMovieToBeDeleted(movie)
+    setModal(modal)
     // The deletion is done in handleActionModal function
   }
 
-  handleEditMovie = (movie) => {
+  const handleEditMovie = (movie) => {
     const form = {
       imdbId: movie.imdbId,
       title: movie.title,
@@ -101,86 +99,84 @@ class MoviesPage extends Component {
       directorError: false,
       yearError: false
     }
-    this.setState({ form })
+    setForm(form)
   }
 
-  clearForm = () => {
-    this.setState({ form: { ...this.formInitialState } })
+  const clearForm = () => {
+    setForm({ ...formInitialState })
   }
 
-  isValidForm = () => {
-    const form = { ...this.state.form }
+  const isValidForm = () => {
     const imdbIdError = form.imdbId.trim() === ''
     const titleError = form.title.trim() === ''
     const directorError = form.director.trim() === ''
     const yearError = form.year.trim() === ''
 
-    form.imdbIdError = imdbIdError
-    form.titleError = titleError
-    form.directorError = directorError
-    form.yearError = yearError
+    setForm((prevForm) => ({
+      ...prevForm,
+      imdbIdError,
+      titleError,
+      directorError,
+      yearError
+    }))
 
-    this.setState({ form })
-    return (imdbIdError || titleError || directorError || yearError) ? false : true
+    return !(imdbIdError || titleError || directorError || yearError)
   }
 
-  handleActionModal = async (response) => {
+  const handleActionModal = async (response, movie) => {
     if (response) {
-      const { keycloak } = this.props
-      const { deleteMovie } = this.state
-
       try {
-        await moviesApi.deleteMovie(deleteMovie.imdbId, keycloak.token)
-        this.handleGetMovies()
+        await moviesApi.deleteMovie(movie.imdbId, keycloak.token)
+        handleGetMovies()
       } catch (error) {
         handleLogError(error)
       }
     }
-    this.setState({ modal: { ...this.modalInitialState } })
+    handleCloseModal()
   }
 
-  handleCloseModal = () => {
-    this.setState({ modal: { ...this.modalInitialState } })
+  const handleCloseModal = () => {
+    setModal({ ...modalInitialState })
+    setMovieToBeDeleted(null)
   }
 
-  render() {
-    const { keycloak } = this.props
-    if (!isAdmin(keycloak)) {
-      return <Redirect to='/' />
-    }
+  if (!isAdmin(keycloak)) {
+    return <Redirect to='/' />
+  }
 
-    const { movies, form, modal } = this.state
-    return (
-      <Container>
-        <Grid>
-          <Grid.Column mobile={16} tablet={16} computer={4}>
-            <Segment>
-              <Header as='h2'>
-                <Icon name='video camera' />
-                <Header.Content>Movies</Header.Content>
-              </Header>
-              <Divider />
-              <MoviesForm
-                form={form}
-                handleChange={this.handleChange}
-                handleSaveMovie={this.handleSaveMovie}
-                clearForm={this.clearForm}
-              />
-            </Segment>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={12}>
-            <MoviesTable
-              movies={movies}
-              handleDeleteMovie={this.handleDeleteMovie}
-              handleEditMovie={this.handleEditMovie}
+  return (
+    <Container>
+      <Grid>
+        <Grid.Column mobile={16} tablet={16} computer={4}>
+          <Segment>
+            <Header as='h2'>
+              <Icon name='video camera' />
+              <Header.Content>Movies</Header.Content>
+            </Header>
+            <Divider />
+            <MoviesForm
+              form={form}
+              handleChange={handleChange}
+              handleSaveMovie={handleSaveMovie}
+              clearForm={clearForm}
             />
-          </Grid.Column>
-        </Grid>
+          </Segment>
+        </Grid.Column>
+        <Grid.Column mobile={16} tablet={16} computer={12}>
+          <MoviesTable
+            movies={movies}
+            handleDeleteMovie={handleDeleteMovie}
+            handleEditMovie={handleEditMovie}
+          />
+        </Grid.Column>
+      </Grid>
 
-        <ConfirmationModal modal={modal} />
-      </Container>
-    )
-  }
+      <ConfirmationModal
+        modal={modal}
+        movie={movieToBeDeleted}
+      />
+    </Container>
+  )
 }
 
-export default withKeycloak(MoviesPage)
+export default MoviesPage
