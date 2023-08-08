@@ -3,7 +3,7 @@ import { moviesApi } from '../misc/MoviesApi'
 import { handleLogError } from '../misc/Helpers'
 import { Container, Form, Segment, Button, Divider, Grid } from 'semantic-ui-react'
 import { getAvatarUrl } from '../misc/Helpers'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useKeycloak } from '@react-keycloak/web'
 
 function UserSettings() {
@@ -12,7 +12,7 @@ function UserSettings() {
   const [originalAvatar, setOriginalAvatar] = useState('')
   const [imageLoading, setImageLoading] = useState(false)
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const { keycloak } = useKeycloak()
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function UserSettings() {
   }
 
   const handleCancel = () => {
-    history.push("/")
+    navigate("/")
   }
 
   const handleSave = async () => {
@@ -45,7 +45,7 @@ function UserSettings() {
       const userExtra = { avatar }
       await moviesApi.saveUserExtrasMe(keycloak.token, userExtra)
       keycloak['avatar'] = avatar
-      history.push("/")
+      navigate("/")
     } catch (error) {
       handleLogError(error)
     }

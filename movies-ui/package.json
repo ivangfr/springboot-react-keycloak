@@ -13,7 +13,7 @@
     "@react-keycloak/web": "^3.4.0",
     "axios": "^1.4.0",
     "keycloak-js": "^22.0.1",
-    "react-router-dom": "^5.3.4",
+    "react-router-dom": "^6.14.2",
     "semantic-ui-react": "^2.1.4"
   },
   "scripts": {

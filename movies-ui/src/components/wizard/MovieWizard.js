@@ -6,9 +6,9 @@ import { omdbApi } from '../misc/OmdbApi'
 import CompleteStep from './CompleteStep'
 import FormStep from './FormStep'
 import SearchStep from './SearchStep'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { isAdmin } from '../misc/Helpers'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useKeycloak } from '@react-keycloak/web'
 
 function MovieWizard() {
@@ -32,7 +32,7 @@ function MovieWizard() {
   const [directorError, setDirectorError] = useState(false)
   const [yearError, setYearError] = useState(false)
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const { keycloak } = useKeycloak()
 
   const handlePreviousStep = () => {
@@ -117,7 +117,7 @@ function MovieWizard() {
     const movie = { imdbId, title, director, year, poster }
     try {
       await moviesApi.saveMovie(movie, keycloak.token)
-      history.push("/home")
+      navigate("/home")
     } catch (error) {
       handleLogError(error)
     }
@@ -230,7 +230,7 @@ function MovieWizard() {
   }
 
 
-  return keycloak && keycloak.authenticated && isAdmin(keycloak) ? getContent() : <Redirect to='/' />
+  return keycloak && keycloak.authenticated && isAdmin(keycloak) ? getContent() : <Navigate to='/' />
 }
 
 export default MovieWizard

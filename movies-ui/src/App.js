@@ -1,7 +1,7 @@
 import React from 'react'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import Keycloak from 'keycloak-js'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './components/home/Home'
 import { moviesApi } from './components/misc/MoviesApi'
 import Navbar from './components/misc/Navbar'
@@ -56,15 +56,15 @@ function App() {
     >
       <Router>
         <Navbar />
-        <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/home' component={Home} />
-          <Route path='/movies/:id' component={MovieDetail} />
-          <PrivateRoute path='/movies' component={MoviesPage} />
-          <PrivateRoute path='/wizard' component={MovieWizard} />
-          <PrivateRoute path='/settings' component={UserSettings} />
-          <Route component={Home} />
-        </Switch>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/movies/:id' element={<MovieDetail />} />
+          <Route path="/movies" element={<PrivateRoute><MoviesPage /></PrivateRoute>} />
+          <Route path="/wizard" element={<PrivateRoute><MovieWizard /></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><UserSettings /></PrivateRoute>} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </Router>
     </ReactKeycloakProvider>
   )

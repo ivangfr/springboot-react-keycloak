@@ -5,7 +5,7 @@ import { moviesApi } from '../misc/MoviesApi'
 import MoviesForm from './MoviesForm'
 import MoviesTable from './MoviesTable'
 import { isAdmin } from '../misc/Helpers'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import ConfirmationModal from '../misc/ConfirmationModal'
 import { useKeycloak } from '@react-keycloak/web'
 
@@ -141,7 +141,7 @@ function MoviesPage() {
   }
 
   if (!isAdmin(keycloak)) {
-    return <Redirect to='/' />
+    return <Navigate to='/' />
   }
 
   return (
