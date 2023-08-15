@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: tournaments-api
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/tournamentsdb
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/company-services
+
+jwt:
+  auth:
+    converter:
+      resource-id: tournaments-app
+      principal-attribute: preferred_username
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000
+
+management:
+  endpoints:
+    web:
+      exposure.include: beans, env, health, info, metrics, mappings
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC
+    disable-swagger-default-url: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
