@@ -1,9 +1,9 @@
 spring:
   application:
-    name: movies-api
+    name: tournaments-api
   data:
     mongodb:
-      uri: mongodb://localhost:27017/moviesdb
+      uri: mongodb://localhost:27017/tournamentsdb
   security:
     oauth2:
       resourceserver:
@@ -13,7 +13,7 @@ spring:
 jwt:
   auth:
     converter:
-      resource-id: movies-app
+      resource-id: tournaments-app
       principal-attribute: preferred_username
 
 app:

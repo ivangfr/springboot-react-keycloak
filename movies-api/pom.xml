@@ -9,9 +9,9 @@
 	</parent>
 
 	<groupId>com.ivanfranchin</groupId>
-	<artifactId>movies-api</artifactId>
+	<artifactId>tournaments-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>movies-api</name>
+	<name>tournaments-api</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
