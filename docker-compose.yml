@@ -23,7 +23,7 @@ services:
       test: "pg_isready -U postgres"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0.1
+    image: quay.io/keycloak/keycloak:23.0.6
     container_name: keycloak
     environment:
       - KEYCLOAK_ADMIN=admin
