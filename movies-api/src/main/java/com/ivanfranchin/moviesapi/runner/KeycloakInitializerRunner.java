@@ -44,6 +44,7 @@ public class KeycloakInitializerRunner implements CommandLineRunner {
         realmRepresentation.setRealm(COMPANY_SERVICE_REALM_NAME);
         realmRepresentation.setEnabled(true);
         realmRepresentation.setRegistrationAllowed(true);
+        realmRepresentation.setRequiredActions(List.of());
 
         // Client
         ClientRepresentation clientRepresentation = new ClientRepresentation();

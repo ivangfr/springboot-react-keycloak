@@ -120,7 +120,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 |-------------|---------------------------------------|---------------------------------------|
 | movie-api   | http://localhost:9080/swagger-ui.html | [Access Token](#getting-access-token) |
 | movie-ui    | http://localhost:3000                 | `admin/admin` or `user/user`          |
-| Keycloak    | http://localhost:8080/admin           | `admin/admin`                         |
+| Keycloak    | http://localhost:8080                 | `admin/admin`                         |
 
 ## Demo
 
@@ -184,8 +184,9 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
     "title": "I, Tonya",
     "director": "Craig Gillespie",
     "year": "2017",
-    "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"
-  }
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg",
+    "comments": []
+}
   ```
 
 - Getting the list of movies. This endpoint does not requires access token
