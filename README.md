@@ -186,7 +186,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
     "year": "2017",
     "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg",
     "comments": []
-}
+  }
   ```
 
 - Getting the list of movies. This endpoint does not requires access token
