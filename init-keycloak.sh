@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ -z $(docker ps --filter "name=keycloak" -q) ]]; then
+  echo "[WARNING] You must initialize the envionment (./init-environment.sh) before initializing keycloak"
+  exit 1
+fi
+
 KEYCLOAK_HOST_PORT=${1:-"localhost:8080"}
 echo
 echo "KEYCLOAK_HOST_PORT: $KEYCLOAK_HOST_PORT"
