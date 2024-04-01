@@ -32,15 +32,15 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
   `movie-api` has the following endpoints
 
-  | Endpoint                                                          | Secured | Roles                       |
-  |-------------------------------------------------------------------|---------|-----------------------------|
-  | `GET /api/userextras/me`                                          | Yes     | `MOVIES_MANAGER` and `USER` |
-  | `POST /api/userextras/me -d {avatar}`                             | Yes     | `MOVIES_MANAGER` and `USER` | 
-  | `GET /api/movies`                                                 | No      |                             |
-  | `GET /api/movies/{imdbId}`                                        | No      |                             |
-  | `POST /api/movies -d {"imdb","title","director","year","poster"}` | Yes     | `MOVIES_MANAGER`            |
-  | `DELETE /api/movies/{imdbId}`                                     | Yes     | `MANAGE_MOVIES`             |
-  | `POST /api/movies/{imdbId}/comments -d {"text"}`                  | Yes     | `MOVIES_MANAGER` and `USER` |
+  | Endpoint                                                          | Secured | Roles                            |
+  |-------------------------------------------------------------------|---------|----------------------------------|
+  | `GET /api/userextras/me`                                          | Yes     | `MOVIES_ADMIN` and `MOVIES_USER` |
+  | `POST /api/userextras/me -d {avatar}`                             | Yes     | `MOVIES_ADMIN` and `MOVIES_USER` | 
+  | `GET /api/movies`                                                 | No      |                                  |
+  | `GET /api/movies/{imdbId}`                                        | No      |                                  |
+  | `POST /api/movies -d {"imdb","title","director","year","poster"}` | Yes     | `MOVIES_ADMIN`                   |
+  | `DELETE /api/movies/{imdbId}`                                     | Yes     | `MOVIES_ADMIN`                   |
+  | `POST /api/movies/{imdbId}/comments -d {"text"}`                  | Yes     | `MOVIES_ADMIN` and `MOVIES_USER` |
 
 - ### movies-ui
 
@@ -56,9 +56,9 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - [`jq`](https://stedolan.github.io/jq)
 - [`OMDb API`](https://www.omdbapi.com/) KEY
 
-  To use the `Wizard` option to search and add a movie, you need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
+  To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
-  Once you have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content 
+  Once we have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content 
   ```
   REACT_APP_OMDB_API_KEY=<your-api-key>
   ```
@@ -79,6 +79,29 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
   docker compose ps
   ```
 
+## Initialize Keycloak
+
+In a terminal and inside `springboot-react-keycloak` root folder run
+```
+./init-keycloak.sh
+```
+
+This script will:
+- create `company-services` realm;
+- disable the required action `Verify Profile`;
+- create `movies-app` client;
+- create the client role `MOVIES_USER` for the `movies-app` client;
+- create the client role `MOVIES_ADMIN` for the `movies-app` client;
+- create `USERS` group;
+- create `ADMINS` group;
+- add `USERS` group as realm default group;
+- assign `MOVIES_USER` client role to `USERS` group;
+- assign `MOVIES_USER` and `MOVIES_ADMIN` client roles to `ADMINS` group;
+- create `user` user;
+- assign `USERS` group to user;
+- create `admin` user;
+- assign `ADMINS` group to admin.
+
 ## Running movies-app using Maven & Npm
 
 - **movies-api**
@@ -89,14 +112,6 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
     ```
     ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
     ```
-
-    Once the startup finishes, `KeycloakInitializerRunner.java` class will run and initialize `company-services` realm in `Keycloak`. Basically, it will create:
-    - Realm: `company-services`
-    - Client: `movies-app`
-    - Client Roles: `MOVIES_MANAGER` and `USER`
-    - Two users
-      - `admin`: with roles `MANAGE_MOVIES` and `USER`
-      - `user`: only with role `USER`
 
   - We can also configure **Social Identity Providers** such as, `GitHub`, `Google`, `Facebook` and `Instagram`. I've written two articles in **Medium** where I explain step-by-step how to integrate [GitHub](https://medium.com/@ivangfr/integrating-github-as-a-social-identity-provider-in-keycloak-982f521a622f) and [Google](https://medium.com/@ivangfr/integrating-google-as-a-social-identity-provider-in-keycloak-c905577ec499).
 
@@ -134,7 +149,7 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 ## Testing movies-api endpoints
 
-You can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. However, for the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, you need to inform an access token issued by `Keycloak`.
+We can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. For the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, we need to inform an access token issued by `Keycloak`.
 
 ### Getting Access Token
 
@@ -152,7 +167,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
   echo $ACCESS_TOKEN
   ```
-  > **Note**: In [jwt.io](https://jwt.io), you can decode and verify the `JWT` access token
+  > **Note**: In [jwt.io](https://jwt.io), we can decode and verify the `JWT` access token
 
 ### Calling movies-api endpoints using curl
 
@@ -217,7 +232,7 @@ You can manage movies by accessing directly `movies-api` endpoints using the Swa
 
 - In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field. Then, click `Authorize` and `Close` to finalize.
 
-- Done! You can now access the secured endpoints
+- Done! We can now access the secured endpoints
 
 ## Useful Commands
 
