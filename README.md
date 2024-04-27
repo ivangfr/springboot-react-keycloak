@@ -30,7 +30,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   
   `movies-api` stores its data in a [`Mongo`](https://www.mongodb.com/) database.
 
-  `movie-api` has the following endpoints
+  `movie-api` has the following endpoints:
 
   | Endpoint                                                          | Secured | Roles                            |
   |-------------------------------------------------------------------|---------|----------------------------------|
@@ -58,7 +58,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
   To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
-  Once we have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content 
+  Once we have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content:
   ```
   REACT_APP_OMDB_API_KEY=<your-api-key>
   ```
@@ -69,14 +69,14 @@ As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key
 
 ## Start Environment
 
-In a terminal and inside `springboot-react-keycloak` root folder run
+In a terminal and inside `springboot-react-keycloak` root folder run:
 ```
 ./init-environment.sh
 ```
 
 ## Initialize Keycloak
 
-In a terminal and inside `springboot-react-keycloak` root folder run
+In a terminal and inside `springboot-react-keycloak` root folder run:
 ```
 ./init-keycloak.sh
 ```
@@ -101,9 +101,9 @@ This script will:
 
 - **movies-api**
 
-  - Open a terminal and navigate to `springboot-react-keycloak/movies-api` folder
+  - Open a terminal and navigate to `springboot-react-keycloak/movies-api` folder;
 
-  - Run the following `Maven` command to start the application
+  - Run the following `Maven` command to start the application:
     ```
     ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
     ```
@@ -112,14 +112,14 @@ This script will:
 
 - **movies-ui**
 
-  - Open another terminal and navigate to `springboot-react-keycloak/movies-ui` folder
+  - Open another terminal and navigate to `springboot-react-keycloak/movies-ui` folder;
 
-  - Run the command below if you are running the application for the first time
+  - Run the command below if you are running the application for the first time:
     ```
     npm install
     ```
 
-  - Run the `npm` command below to start the application
+  - Run the `npm` command below to start the application:
     ```
     npm start
     ```
@@ -134,11 +134,11 @@ This script will:
 
 ## Demo
 
-- The gif below shows an `admin` logging in and adding one movie using the wizard feature
+- The gif below shows an `admin` logging in and adding one movie using the wizard feature:
 
   ![demo-admin](documentation/demo-admin.gif)
 
-- The gif below shows a `user` logging in using his Github account; then he changes his avatar and comment a movie
+- The gif below shows a `user` logging in using his Github account; then he changes his avatar and comment a movie:
 
   ![demo-user-github](documentation/demo-user-github.gif)
 
@@ -148,9 +148,9 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
 
 ### Getting Access Token
 
-- Open a terminal
+- Open a terminal.
 
-- Run the following commands to get the access token
+- Run the following commands to get the access token:
   ```
   ACCESS_TOKEN="$(curl -s -X POST \
     "http://localhost:8080/realms/company-services/protocol/openid-connect/token" \
@@ -162,23 +162,23 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
 
   echo $ACCESS_TOKEN
   ```
-  > **Note**: In [jwt.io](https://jwt.io), we can decode and verify the `JWT` access token
+  > **Note**: In [jwt.io](https://jwt.io), we can decode and verify the `JWT` access token.
 
 ### Calling movies-api endpoints using curl
 
-- Trying to add a movie without access token
+- Trying to add a movie without access token:
   ```
   curl -i -X POST "http://localhost:9080/api/movies" \
     -H "Content-Type: application/json" \
     -d '{ "imdbId": "tt5580036", "title": "I, Tonya", "director": "Craig Gillespie", "year": 2017, "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"}'
   ```
 
-  It should return
+  It should return:
   ```
   HTTP/1.1 401
   ```
 
-- Trying again to add a movie, now with access token (obtained at #getting-access-token)
+- Trying again to add a movie, now with access token (obtained at #getting-access-token):
   ```
   curl -i -X POST "http://localhost:9080/api/movies" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
@@ -186,7 +186,7 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
     -d '{ "imdbId": "tt5580036", "title": "I, Tonya", "director": "Craig Gillespie", "year": 2017, "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"}'
   ```
 
-  It should return
+  It should return:
   ```
   HTTP/1.1 201
   {
@@ -199,12 +199,12 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
   }
   ```
 
-- Getting the list of movies. This endpoint does not requires access token
+- Getting the list of movies. This endpoint does not requires access token:
   ```
   curl -i http://localhost:9080/api/movies
   ```
 
-  It should return
+  It should return:
   ```
   HTTP/1.1 200
   [
@@ -221,19 +221,19 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
 
 ### Calling movies-api endpoints using Swagger
 
-- Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html
+- Access `movies-api` Swagger website, http://localhost:9080/swagger-ui.html.
 
 - Click `Authorize` button.
 
 - In the form that opens, paste the `access token` (obtained at [getting-access-token](#getting-access-token)) in the `Value` field. Then, click `Authorize` and `Close` to finalize.
 
-- Done! We can now access the secured endpoints
+- Done! We can now access the secured endpoints.
 
 ## Useful Commands
 
 - **MongoDB**
 
-  List all movies
+  List all movies:
   ```
   docker exec -it mongodb mongosh moviesdb
   db.movies.find()
@@ -242,18 +242,18 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
 
 ## Shutdown
 
-- To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`
+- To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below
+- To stop and remove docker containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below:
   ```
   ./shutdown-environment.sh
   ```
 
 ## How to upgrade movies-ui dependencies to latest version
 
-- In a terminal, make sure you are in `springboot-react-keycloak/movies-ui` folder
+- In a terminal, make sure you are in `springboot-react-keycloak/movies-ui` folder;
 
-- Run the following commands
+- Run the following commands:
   ```
   npm upgrade
   npm i -g npm-check-updates
