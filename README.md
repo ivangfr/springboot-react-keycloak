@@ -1,6 +1,6 @@
 # springboot-react-keycloak
 
-The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with PKCE). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) Rest API called `movies-api` and another is a [React](https://react.dev/) application called `movies-ui`.
+The goal of this project is to secure `movies-app` using [`Keycloak`](https://www.keycloak.org/)(with PKCE). `movies-app` consists of two applications: one is a [Spring Boot](https://docs.spring.io/spring-boot/index.html) Rest API called `movies-api` and another is a [React](https://react.dev/) application called `movies-ui`.
 
 ## Proof-of-Concepts & Articles
 
@@ -53,7 +53,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - [`Java 21+`](https://www.oracle.com/java/technologies/downloads/#java21)
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Docker`](https://www.docker.com/)
-- [`jq`](https://stedolan.github.io/jq)
+- [`jq`](https://jqlang.github.io/jq/)
 - [`OMDb API`](https://www.omdbapi.com/) KEY
 
   To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
@@ -65,7 +65,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## PKCE
 
-As `Keycloak` supports [`PKCE`](https://tools.ietf.org/html/rfc7636) (`Proof Key for Code Exchange`) since version `7.0.0`, we are using it in this project. 
+As `Keycloak` supports [`PKCE`](https://datatracker.ietf.org/doc/html/rfc7636) (`Proof Key for Code Exchange`) since version `7.0.0`, we are using it in this project. 
 
 ## Start Environment
 
