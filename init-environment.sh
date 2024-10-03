@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-MONGO_VERSION="7.0.12"
-POSTGRES_VERSION="16.3"
-KEYCLOAK_VERSION="25.0.2"
+MONGO_VERSION="7.0.14"
+POSTGRES_VERSION="17.0"
+KEYCLOAK_VERSION="25.0.6"
 
 source scripts/my-functions.sh
 

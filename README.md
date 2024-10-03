@@ -178,7 +178,7 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
   HTTP/1.1 401
   ```
 
-- Trying again to add a movie, now with access token (obtained at #getting-access-token):
+- Trying again to add a movie, now with access token (obtained at [getting-access-token](#getting-access-token)):
   ```
   curl -i -X POST "http://localhost:9080/api/movies" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
