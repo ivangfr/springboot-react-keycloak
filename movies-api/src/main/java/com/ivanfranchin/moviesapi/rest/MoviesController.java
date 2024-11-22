@@ -81,7 +81,7 @@ public class MoviesController {
                                     Principal principal) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
         Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.getText(), LocalDateTime.now());
-        movie.getComments().add(0, comment);
+        movie.getComments().addFirst(comment);
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
     }
