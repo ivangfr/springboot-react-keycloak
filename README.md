@@ -52,7 +52,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - [`Java 21+`](https://www.oracle.com/java/technologies/downloads/#java21)
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [`Docker`](https://www.docker.com/)
+- [`Podman`](https://podman.io)
 - [`jq`](https://jqlang.github.io/jq/)
 - [`OMDb API`](https://www.omdbapi.com/) KEY
 
@@ -235,7 +235,7 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
 
   List all movies:
   ```
-  docker exec -it mongodb mongosh moviesdb
+  podman exec -it mongodb mongosh moviesdb
   db.movies.find()
   ```
   > Type `exit` to get out of MongoDB shell

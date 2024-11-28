@@ -13,13 +13,13 @@ echo "===================="
 echo
 echo "Creating network"
 echo "----------------"
-docker network create springboot-react-keycloak-net
+podman network create springboot-react-keycloak-net
 
 echo
 echo "Starting mongodb"
 echo "----------------"
 
-docker run -d \
+podman run -d \
   --name mongodb \
   -p 27017:27017 \
   --network=springboot-react-keycloak-net \
@@ -29,7 +29,7 @@ echo
 echo "Starting postgres"
 echo "-----------------"
 
-docker run -d \
+podman run -d \
     --name postgres \
     -p 5432:5432 \
     -e POSTGRES_DB=keycloak \
@@ -42,7 +42,7 @@ echo
 echo "Starting keycloak"
 echo "-----------------"
 
-docker run -d \
+podman run -d \
     --name keycloak \
     -p 8080:8080 \
     -e KEYCLOAK_ADMIN=admin \
