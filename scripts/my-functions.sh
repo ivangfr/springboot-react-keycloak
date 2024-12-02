@@ -11,7 +11,7 @@ function wait_for_container_log() {
   SECONDS=0
 
   while true ; do
-    local log=$(podman logs $1 2>&1 | grep "$2")
+    local log=$(docker logs $1 2>&1 | grep "$2")
     if [ -n "$log" ] ; then
       echo $log
       break
