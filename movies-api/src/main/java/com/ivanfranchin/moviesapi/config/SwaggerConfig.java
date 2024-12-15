@@ -16,7 +16,7 @@ public class SwaggerConfig {
     private String applicationName;
 
     @Bean
-    public OpenAPI customOpenAPI() {
+    OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(
                         new Components().addSecuritySchemes(BEARER_KEY_SECURITY_SCHEME,
@@ -25,12 +25,12 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi customApi() {
+    GroupedOpenApi customApi() {
         return GroupedOpenApi.builder().group("api").pathsToMatch("/api/**").build();
     }
 
     @Bean
-    public GroupedOpenApi actuatorApi() {
+    GroupedOpenApi actuatorApi() {
         return GroupedOpenApi.builder().group("actuator").pathsToMatch("/actuator/**").build();
     }
 

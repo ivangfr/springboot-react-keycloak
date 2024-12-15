@@ -37,7 +37,7 @@ public class UserExtraController {
                                    Principal principal) {
         Optional<UserExtra> userExtraOptional = userExtraService.getUserExtra(principal.getName());
         UserExtra userExtra = userExtraOptional.orElseGet(() -> new UserExtra(principal.getName()));
-        userExtra.setAvatar(updateUserExtraRequest.getAvatar());
+        userExtra.setAvatar(updateUserExtraRequest.avatar());
         return userExtraService.saveUserExtra(userExtra);
     }
 }

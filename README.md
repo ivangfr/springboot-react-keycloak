@@ -58,7 +58,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
   To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
-  Once we have the API KEY, create a file called `.env.local` in `springboot-react-keycloak/movies-ui` folder with the following content:
+  Once we have the API KEY, create a file called `.env.local` in the `springboot-react-keycloak/movies-ui` folder with the following content:
   ```
   REACT_APP_OMDB_API_KEY=<your-api-key>
   ```
@@ -69,14 +69,14 @@ As `Keycloak` supports [`PKCE`](https://datatracker.ietf.org/doc/html/rfc7636) (
 
 ## Start Environment
 
-In a terminal and inside `springboot-react-keycloak` root folder run:
+In a terminal and inside the `springboot-react-keycloak` root folder run:
 ```
 ./init-environment.sh
 ```
 
 ## Initialize Keycloak
 
-In a terminal and inside `springboot-react-keycloak` root folder run:
+In a terminal and inside the `springboot-react-keycloak` root folder run:
 ```
 ./init-keycloak.sh
 ```
@@ -101,7 +101,7 @@ This script will:
 
 - **movies-api**
 
-  - Open a terminal and navigate to `springboot-react-keycloak/movies-api` folder;
+  - Open a terminal and navigate to the `springboot-react-keycloak/movies-api` folder;
 
   - Run the following `Maven` command to start the application:
     ```
@@ -112,7 +112,7 @@ This script will:
 
 - **movies-ui**
 
-  - Open another terminal and navigate to `springboot-react-keycloak/movies-ui` folder;
+  - Open another terminal and navigate to the `springboot-react-keycloak/movies-ui` folder;
 
   - Run the command below if you are running the application for the first time:
     ```
@@ -244,14 +244,14 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
 
 - To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker containers, network and volumes, go to a terminal and, inside `springboot-react-keycloak` root folder, run the command below:
+- To stop and remove docker containers, network and volumes, go to a terminal and, inside the `springboot-react-keycloak` root folder, run the command below:
   ```
   ./shutdown-environment.sh
   ```
 
 ## How to upgrade movies-ui dependencies to latest version
 
-- In a terminal, make sure you are in `springboot-react-keycloak/movies-ui` folder;
+- In a terminal, make sure you are in the `springboot-react-keycloak/movies-ui` folder;
 
 - Run the following commands:
   ```

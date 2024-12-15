@@ -2,7 +2,7 @@
 
 MONGO_VERSION="8.0.3"
 POSTGRES_VERSION="17.2"
-KEYCLOAK_VERSION="26.0.6"
+KEYCLOAK_VERSION="26.0.7"
 
 source scripts/my-functions.sh
 

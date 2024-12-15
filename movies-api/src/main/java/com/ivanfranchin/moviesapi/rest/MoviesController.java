@@ -80,7 +80,7 @@ public class MoviesController {
                                     @Valid @RequestBody AddCommentRequest addCommentRequest,
                                     Principal principal) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
-        Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.getText(), LocalDateTime.now());
+        Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.text(), LocalDateTime.now());
         movie.getComments().addFirst(comment);
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
