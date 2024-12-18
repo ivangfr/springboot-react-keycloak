@@ -1,8 +1,9 @@
-package com.ivanfranchin.moviesapi.mapper;
+package com.ivanfranchin.moviesapi.movie.mapper;
 
-import com.ivanfranchin.moviesapi.model.Movie;
-import com.ivanfranchin.moviesapi.rest.dto.MovieDto;
-import com.ivanfranchin.moviesapi.service.UserExtraService;
+import com.ivanfranchin.moviesapi.movie.dto.MovieDto;
+import com.ivanfranchin.moviesapi.movie.model.Movie;
+import com.ivanfranchin.moviesapi.userextra.UserExtraService;
+import com.ivanfranchin.moviesapi.userextra.model.UserExtra;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class MovieDtoMapperImpl implements MovieDtoMapper {
+public class MovieDtoMapper {
 
     private final UserExtraService userExtraService;
 
-    @Override
     public MovieDto toMovieDto(Movie movie) {
         List<MovieDto.CommentDto> comments = movie.getComments().stream()
                 .map(this::toMovieDtoCommentDto)
@@ -31,14 +31,18 @@ public class MovieDtoMapperImpl implements MovieDtoMapper {
         );
     }
 
-    @Override
     public MovieDto.CommentDto toMovieDtoCommentDto(Movie.Comment comment) {
         String username = comment.getUsername();
-        String avatar = userExtraService.getUserExtra(username).isPresent() ?
-                userExtraService.getUserExtra(username).get().getAvatar() : username;
+        String avatar = getAvatarForUser(username);
         String text = comment.getText();
         LocalDateTime timestamp = comment.getTimestamp();
 
         return new MovieDto.CommentDto(username, avatar, text, timestamp);
+    }
+
+    private String getAvatarForUser(String username) {
+        return userExtraService.getUserExtra(username)
+                .map(UserExtra::getAvatar)
+                .orElse(username);
     }
 }

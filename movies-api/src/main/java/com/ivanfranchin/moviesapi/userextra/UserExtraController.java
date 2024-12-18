@@ -1,8 +1,7 @@
-package com.ivanfranchin.moviesapi.rest;
+package com.ivanfranchin.moviesapi.userextra;
 
-import com.ivanfranchin.moviesapi.model.UserExtra;
-import com.ivanfranchin.moviesapi.rest.dto.UserExtraRequest;
-import com.ivanfranchin.moviesapi.service.UserExtraService;
+import com.ivanfranchin.moviesapi.userextra.dto.UserExtraRequest;
+import com.ivanfranchin.moviesapi.userextra.model.UserExtra;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

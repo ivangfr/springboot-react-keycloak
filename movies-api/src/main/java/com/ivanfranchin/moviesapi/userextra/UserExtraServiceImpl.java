@@ -1,8 +1,7 @@
-package com.ivanfranchin.moviesapi.service;
+package com.ivanfranchin.moviesapi.userextra;
 
-import com.ivanfranchin.moviesapi.exception.UserExtraNotFoundException;
-import com.ivanfranchin.moviesapi.model.UserExtra;
-import com.ivanfranchin.moviesapi.repository.UserExtraRepository;
+import com.ivanfranchin.moviesapi.userextra.exception.UserExtraNotFoundException;
+import com.ivanfranchin.moviesapi.userextra.model.UserExtra;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;

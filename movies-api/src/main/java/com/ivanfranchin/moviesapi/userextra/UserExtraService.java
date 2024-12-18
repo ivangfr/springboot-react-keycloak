@@ -1,6 +1,6 @@
-package com.ivanfranchin.moviesapi.service;
+package com.ivanfranchin.moviesapi.userextra;
 
-import com.ivanfranchin.moviesapi.model.UserExtra;
+import com.ivanfranchin.moviesapi.userextra.model.UserExtra;
 
 import java.util.Optional;
 

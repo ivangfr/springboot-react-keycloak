@@ -1,6 +1,6 @@
-package com.ivanfranchin.moviesapi.service;
+package com.ivanfranchin.moviesapi.movie;
 
-import com.ivanfranchin.moviesapi.model.Movie;
+import com.ivanfranchin.moviesapi.movie.model.Movie;
 
 import java.util.List;
 

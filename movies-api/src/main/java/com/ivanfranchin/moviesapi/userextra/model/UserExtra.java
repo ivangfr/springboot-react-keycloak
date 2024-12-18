@@ -1,4 +1,4 @@
-package com.ivanfranchin.moviesapi.model;
+package com.ivanfranchin.moviesapi.userextra.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

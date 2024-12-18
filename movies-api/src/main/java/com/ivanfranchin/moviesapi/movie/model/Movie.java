@@ -1,7 +1,7 @@
-package com.ivanfranchin.moviesapi.model;
+package com.ivanfranchin.moviesapi.movie.model;
 
-import com.ivanfranchin.moviesapi.rest.dto.CreateMovieRequest;
-import com.ivanfranchin.moviesapi.rest.dto.UpdateMovieRequest;
+import com.ivanfranchin.moviesapi.movie.dto.CreateMovieRequest;
+import com.ivanfranchin.moviesapi.userextra.dto.UpdateMovieRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;

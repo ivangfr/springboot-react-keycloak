@@ -1,4 +1,4 @@
-package com.ivanfranchin.moviesapi.rest.dto;
+package com.ivanfranchin.moviesapi.movie.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

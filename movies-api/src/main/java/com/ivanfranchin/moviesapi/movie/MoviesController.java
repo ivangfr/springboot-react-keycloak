@@ -1,12 +1,11 @@
-package com.ivanfranchin.moviesapi.rest;
+package com.ivanfranchin.moviesapi.movie;
 
-import com.ivanfranchin.moviesapi.mapper.MovieDtoMapper;
-import com.ivanfranchin.moviesapi.model.Movie;
-import com.ivanfranchin.moviesapi.rest.dto.AddCommentRequest;
-import com.ivanfranchin.moviesapi.rest.dto.CreateMovieRequest;
-import com.ivanfranchin.moviesapi.rest.dto.MovieDto;
-import com.ivanfranchin.moviesapi.rest.dto.UpdateMovieRequest;
-import com.ivanfranchin.moviesapi.service.MovieService;
+import com.ivanfranchin.moviesapi.movie.dto.AddCommentRequest;
+import com.ivanfranchin.moviesapi.movie.dto.CreateMovieRequest;
+import com.ivanfranchin.moviesapi.movie.dto.MovieDto;
+import com.ivanfranchin.moviesapi.movie.mapper.MovieDtoMapper;
+import com.ivanfranchin.moviesapi.movie.model.Movie;
+import com.ivanfranchin.moviesapi.userextra.dto.UpdateMovieRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
