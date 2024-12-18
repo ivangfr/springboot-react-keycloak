@@ -7,7 +7,7 @@ import com.ivanfranchin.moviesapi.userextra.model.UserExtra;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class MovieDtoMapper {
         String username = comment.getUsername();
         String avatar = getAvatarForUser(username);
         String text = comment.getText();
-        LocalDateTime timestamp = comment.getTimestamp();
+        Instant timestamp = comment.getTimestamp();
 
         return new MovieDto.CommentDto(username, avatar, text, timestamp);
     }

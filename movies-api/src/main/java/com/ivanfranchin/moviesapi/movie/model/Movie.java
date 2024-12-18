@@ -7,7 +7,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class Movie {
     public static class Comment {
         private String username;
         private String text;
-        private LocalDateTime timestamp;
+        private Instant timestamp;
     }
 
     public static Movie from(CreateMovieRequest createMovieRequest) {

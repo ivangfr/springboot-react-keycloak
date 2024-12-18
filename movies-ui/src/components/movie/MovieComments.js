@@ -1,4 +1,5 @@
 import React from 'react'
+import Moment from 'react-moment';
 import { Header, Comment, Divider } from 'semantic-ui-react'
 import { getAvatarUrl } from '../misc/Helpers'
 
@@ -19,7 +20,7 @@ function MovieComments({ comments }) {
         <Comment.Content>
           <Comment.Author as='a'>{comment.username}</Comment.Author>
           <Comment.Metadata>
-            <div>{comment.timestamp}</div>
+            <Moment format="YYYY-MM-DDTHH:mm:ssZ">{comment.timestamp}</Moment>
           </Comment.Metadata>
           <Comment.Text>{comment.text}</Comment.Text>
         </Comment.Content>

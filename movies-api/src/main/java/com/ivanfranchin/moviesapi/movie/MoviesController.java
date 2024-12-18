@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import static com.ivanfranchin.moviesapi.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
@@ -79,7 +79,7 @@ public class MoviesController {
                                     @Valid @RequestBody AddCommentRequest addCommentRequest,
                                     Principal principal) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
-        Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.text(), LocalDateTime.now());
+        Movie.Comment comment = new Movie.Comment(principal.getName(), addCommentRequest.text(), Instant.now());
         movie.getComments().addFirst(comment);
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
