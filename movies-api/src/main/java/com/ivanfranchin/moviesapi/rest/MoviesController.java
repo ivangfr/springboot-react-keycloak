@@ -1,6 +1,6 @@
 package com.ivanfranchin.moviesapi.rest;
 
-import com.ivanfranchin.moviesapi.mapper.MovieMapper;
+import com.ivanfranchin.moviesapi.mapper.MovieDtoMapper;
 import com.ivanfranchin.moviesapi.model.Movie;
 import com.ivanfranchin.moviesapi.rest.dto.AddCommentRequest;
 import com.ivanfranchin.moviesapi.rest.dto.CreateMovieRequest;
@@ -34,7 +34,7 @@ import static com.ivanfranchin.moviesapi.config.SwaggerConfig.BEARER_KEY_SECURIT
 public class MoviesController {
 
     private final MovieService movieService;
-    private final MovieMapper movieMapper;
+    private final MovieDtoMapper movieMapper;
 
     @GetMapping
     public List<MovieDto> getMovies() {
@@ -51,7 +51,7 @@ public class MoviesController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MovieDto createMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
-        Movie movie = movieMapper.toMovie(createMovieRequest);
+        Movie movie = Movie.from(createMovieRequest);
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
     }
@@ -60,7 +60,7 @@ public class MoviesController {
     @PutMapping("/{imdbId}")
     public MovieDto updateMovie(@PathVariable String imdbId, @Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
         Movie movie = movieService.validateAndGetMovie(imdbId);
-        movieMapper.updateMovieFromDto(updateMovieRequest, movie);
+        Movie.updateFrom(updateMovieRequest, movie);
         movie = movieService.saveMovie(movie);
         return movieMapper.toMovieDto(movie);
     }
