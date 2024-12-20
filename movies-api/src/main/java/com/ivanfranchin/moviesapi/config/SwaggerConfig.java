@@ -29,10 +29,5 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder().group("api").pathsToMatch("/api/**").build();
     }
 
-    @Bean
-    GroupedOpenApi actuatorApi() {
-        return GroupedOpenApi.builder().group("actuator").pathsToMatch("/actuator/**").build();
-    }
-
     public static final String BEARER_KEY_SECURITY_SCHEME = "bearer-key";
 }
