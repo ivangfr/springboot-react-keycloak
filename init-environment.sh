@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-MONGO_VERSION="8.0.3"
+MONGO_VERSION="8.0.5"
 POSTGRES_VERSION="17.2"
-KEYCLOAK_VERSION="26.0.7"
+KEYCLOAK_VERSION="26.1.3"
 
 source scripts/my-functions.sh
 
@@ -45,8 +45,8 @@ echo "-----------------"
 docker run -d \
     --name keycloak \
     -p 8080:8080 \
-    -e KEYCLOAK_ADMIN=admin \
-    -e KEYCLOAK_ADMIN_PASSWORD=admin \
+    -e KC_BOOTSTRAP_ADMIN_USERNAME=admin \
+    -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin \
     -e KC_DB=postgres \
     -e KC_DB_URL_HOST=postgres \
     -e KC_DB_URL_DATABASE=keycloak \

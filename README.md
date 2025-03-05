@@ -44,19 +44,19 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - ### movies-ui
 
-  `React` frontend application where `users` can see and comment movies and `admins` can manage movies. In order to access the application, `user` / `admin` must login using his/her username and password. Those credentials are handled by `Keycloak`. All the requests coming from `movies-ui` to secured endpoints in `movies-api` have a access token (JWT) that is generated when `user` / `admin` logs in.
+  `React` frontend application where `users` can see and comment movies and `admins` can manage movies. To access the application, `user` / `admin` must login using his/her username and password. Those credentials are managed by `Keycloak`. All the requests from `movies-ui` to secured endpoints in `movies-api` include an access token (JWT) that is generated when `user` / `admin` logs in.
   
   `movies-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Prerequisites
 
-- [`Java 21+`](https://www.oracle.com/java/technologies/downloads/#java21)
+- [`Java 21`](https://www.oracle.com/java/technologies/downloads/#java21) or higher;
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- Some containerization tool [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.
+- A containerization tool (e.g., [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.)
 - [`jq`](https://jqlang.github.io/jq/)
 - [`OMDb API`](https://www.omdbapi.com/) KEY
 
-  To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. In order to do it, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
+  To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. To do this, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
   Once we have the API KEY, create a file called `.env.local` in the `springboot-react-keycloak/movies-ui` folder with the following content:
   ```
@@ -69,7 +69,7 @@ As `Keycloak` supports [`PKCE`](https://datatracker.ietf.org/doc/html/rfc7636) (
 
 ## Start Environment
 
-In a terminal and inside the `springboot-react-keycloak` root folder run:
+In a terminal, navigate to the `springboot-react-keycloak` root folder and run:
 ```
 ./init-environment.sh
 ```
@@ -138,13 +138,13 @@ This script will:
 
   ![demo-admin](documentation/demo-admin.gif)
 
-- The gif below shows a `user` logging in using his Github account; then he changes his avatar and comment a movie:
+- The gif below shows a `user` logging in using his Github account; then he changes his avatar and comment on a movie:
 
   ![demo-user-github](documentation/demo-user-github.gif)
 
 ## Testing movies-api endpoints
 
-We can manage movies by accessing directly `movies-api` endpoints using the Swagger website or `curl`. For the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, we need to inform an access token issued by `Keycloak`.
+We can manage movies by directly accessing `movies-api` endpoints using the Swagger website or `curl`. For the secured endpoints like `POST /api/movies`, `PUT /api/movies/{id}`, `DELETE /api/movies/{id}`, etc, we need to inform an access token issued by `Keycloak`.
 
 ### Getting Access Token
 
@@ -199,7 +199,7 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
   }
   ```
 
-- Getting the list of movies. This endpoint does not requires access token:
+- Getting the list of movies. This endpoint does not require access token:
   ```
   curl -i http://localhost:9080/api/movies
   ```
@@ -238,7 +238,7 @@ We can manage movies by accessing directly `movies-api` endpoints using the Swag
   docker exec -it mongodb mongosh moviesdb
   db.movies.find()
   ```
-  > Type `exit` to get out of MongoDB shell
+  > Type `exit` to exit of MongoDB shell.
 
 ## Shutdown
 

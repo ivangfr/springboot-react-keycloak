@@ -1,16 +1,31 @@
 package com.ivanfranchin.moviesapi.movie;
 
+import com.ivanfranchin.moviesapi.movie.exception.MovieNotFoundException;
 import com.ivanfranchin.moviesapi.movie.model.Movie;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface MovieService {
+@RequiredArgsConstructor
+@Service
+public class MovieService {
 
-    Movie validateAndGetMovie(String imdbId);
+    private final MovieRepository movieRepository;
 
-    List<Movie> getMovies();
+    public Movie validateAndGetMovie(String imdbId) {
+        return movieRepository.findById(imdbId).orElseThrow(() -> new MovieNotFoundException(imdbId));
+    }
 
-    Movie saveMovie(Movie movie);
+    public List<Movie> getMovies() {
+        return movieRepository.findAll();
+    }
 
-    void deleteMovie(Movie movie);
+    public Movie saveMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    public void deleteMovie(Movie movie) {
+        movieRepository.delete(movie);
+    }
 }

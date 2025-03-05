@@ -1,14 +1,27 @@
 package com.ivanfranchin.moviesapi.userextra;
 
+import com.ivanfranchin.moviesapi.userextra.exception.UserExtraNotFoundException;
 import com.ivanfranchin.moviesapi.userextra.model.UserExtra;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-public interface UserExtraService {
+@RequiredArgsConstructor
+@Service
+public class UserExtraService {
 
-    UserExtra validateAndGetUserExtra(String username);
+    private final UserExtraRepository userExtraRepository;
 
-    Optional<UserExtra> getUserExtra(String username);
+    public UserExtra validateAndGetUserExtra(String username) {
+        return getUserExtra(username).orElseThrow(() -> new UserExtraNotFoundException(username));
+    }
 
-    UserExtra saveUserExtra(UserExtra userExtra);
+    public Optional<UserExtra> getUserExtra(String username) {
+        return userExtraRepository.findById(username);
+    }
+
+    public UserExtra saveUserExtra(UserExtra userExtra) {
+        return userExtraRepository.save(userExtra);
+    }
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0</version>
+        <version>3.4.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ivanfranchin</groupId>
@@ -28,7 +28,7 @@
     </scm>
     <properties>
         <java.version>21</java.version>
-        <springdoc-openapi.version>2.7.0</springdoc-openapi.version>
+        <springdoc-openapi.version>2.8.5</springdoc-openapi.version>
     </properties>
     <dependencies>
         <dependency>
