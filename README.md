@@ -59,7 +59,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   To use the `Wizard` option to search and add a movie, we need to get an API KEY from OMDb API. To do this, access https://www.omdbapi.com/apikey.aspx and follow the steps provided by the website.
 
   Once we have the API KEY, create a file called `.env.local` in the `springboot-react-keycloak/movies-ui` folder with the following content:
-  ```
+  ```text
   REACT_APP_OMDB_API_KEY=<your-api-key>
   ```
 
@@ -70,14 +70,14 @@ As `Keycloak` supports [`PKCE`](https://datatracker.ietf.org/doc/html/rfc7636) (
 ## Start Environment
 
 In a terminal, navigate to the `springboot-react-keycloak` root folder and run:
-```
+```bash
 ./init-environment.sh
 ```
 
 ## Initialize Keycloak
 
 In a terminal and inside the `springboot-react-keycloak` root folder run:
-```
+```bash
 ./init-keycloak.sh
 ```
 
@@ -104,7 +104,7 @@ This script will:
   - Open a terminal and navigate to the `springboot-react-keycloak/movies-api` folder;
 
   - Run the following `Maven` command to start the application:
-    ```
+    ```bash
     ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=9080"
     ```
 
@@ -115,12 +115,12 @@ This script will:
   - Open another terminal and navigate to the `springboot-react-keycloak/movies-ui` folder;
 
   - Run the command below if you are running the application for the first time:
-    ```
+    ```bash
     npm install
     ```
 
   - Run the `npm` command below to start the application:
-    ```
+    ```bash
     npm start
     ```
 
@@ -151,7 +151,7 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
 - Open a terminal.
 
 - Run the following commands to get the access token:
-  ```
+  ```bash
   ACCESS_TOKEN="$(curl -s -X POST \
     "http://localhost:8080/realms/company-services/protocol/openid-connect/token" \
     -H "Content-Type: application/x-www-form-urlencoded" \
@@ -167,19 +167,19 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
 ### Calling movies-api endpoints using curl
 
 - Trying to add a movie without access token:
-  ```
+  ```bash
   curl -i -X POST "http://localhost:9080/api/movies" \
     -H "Content-Type: application/json" \
     -d '{ "imdbId": "tt5580036", "title": "I, Tonya", "director": "Craig Gillespie", "year": 2017, "poster": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"}'
   ```
 
   It should return:
-  ```
+  ```text
   HTTP/1.1 401
   ```
 
 - Trying again to add a movie, now with access token (obtained at [getting-access-token](#getting-access-token)):
-  ```
+  ```bash
   curl -i -X POST "http://localhost:9080/api/movies" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
@@ -187,7 +187,7 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
   ```
 
   It should return:
-  ```
+  ```text
   HTTP/1.1 201
   {
     "imdbId": "tt5580036",
@@ -200,12 +200,12 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
   ```
 
 - Getting the list of movies. This endpoint does not require access token:
-  ```
+  ```bash
   curl -i http://localhost:9080/api/movies
   ```
 
   It should return:
-  ```
+  ```text
   HTTP/1.1 200
   [
     {
@@ -234,7 +234,7 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
 - **MongoDB**
 
   List all movies:
-  ```
+  ```bash
   docker exec -it mongodb mongosh moviesdb
   db.movies.find()
   ```
@@ -245,7 +245,7 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
 - To stop `movies-api` and `movies-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
 - To stop and remove docker containers, network and volumes, go to a terminal and, inside the `springboot-react-keycloak` root folder, run the command below:
-  ```
+  ```bash
   ./shutdown-environment.sh
   ```
 
@@ -254,7 +254,7 @@ We can manage movies by directly accessing `movies-api` endpoints using the Swag
 - In a terminal, make sure you are in the `springboot-react-keycloak/movies-ui` folder;
 
 - Run the following commands:
-  ```
+  ```bash
   npm upgrade
   npm i -g npm-check-updates
   ncu -u
