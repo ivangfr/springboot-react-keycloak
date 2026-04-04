@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 MONGO_VERSION="8.2.2"
 POSTGRES_VERSION="18.0"
@@ -13,7 +14,7 @@ echo "===================="
 echo
 echo "Creating network"
 echo "----------------"
-docker network create springboot-react-keycloak-net
+docker network create springboot-react-keycloak-net 2>/dev/null || true
 
 echo
 echo "Starting mongodb"

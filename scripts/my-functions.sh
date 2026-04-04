@@ -1,25 +1,29 @@
-#!/usr/bin/env bash
+# This file is intended to be sourced, not executed directly.
+# Usage: source scripts/my-functions.sh
 
 TIMEOUT=120
 
 # -- wait_for_container_log --
 # $1: docker container name
-# S2: spring value to wait to appear in container logs
+# $2: string value to wait to appear in container logs
 function wait_for_container_log() {
-  local log_waiting="Waiting for string '$2' in the $1 logs ..."
+  local container="$1"
+  local search="$2"
+  local log
+  local log_waiting="Waiting for string '$search' in the $container logs ..."
   echo "${log_waiting} It will timeout in ${TIMEOUT}s"
   SECONDS=0
 
   while true ; do
-    local log=$(docker logs $1 2>&1 | grep "$2")
+    log=$(docker logs "$container" 2>&1 | grep "$search") || true
     if [ -n "$log" ] ; then
-      echo $log
+      echo "$log"
       break
     fi
 
-    if [ $SECONDS -ge $TIMEOUT ] ; then
+    if [ "$SECONDS" -ge "$TIMEOUT" ] ; then
       echo "${log_waiting} TIMEOUT"
-      break;
+      break
     fi
     sleep 1
   done
