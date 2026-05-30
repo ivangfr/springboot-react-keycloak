@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MONGO_VERSION="8.2.2"
+MONGO_VERSION="8.2.5"
 POSTGRES_VERSION="18.0"
 KEYCLOAK_VERSION="26.4.7"
 
